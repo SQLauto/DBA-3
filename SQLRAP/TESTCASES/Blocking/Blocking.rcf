@@ -1,0 +1,78 @@
+<TestCase Signature="EA30D2C63CA637CE" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="23" ExecutionOrder="2">
+  <!-- DataType is the type which is used to communicate between Collection and Analysis stage. 
+       Type is the type which does the work of collection of the data...
+  -->	
+  <WorkItem
+    Name            =   "Blocking"
+    Category        =   "Performance"
+    DisplayName     =   "Blocking"
+    Description     =   "The Blocking test case queries the SQL Server system tables and DMVs, collects the blocking information via locks or system resources.  The test case wakeups in regular intervals set by the SQLRAP user in the change screen settings and collects blocking information for the duration, a configurable value."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.TestCases.Blocking.BlockingWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+        <Setting Name="Interval (In Seconds)" Value="10" Description="" Default="10" />
+        <Setting Name="Duration (In Minutes)" Value="60" Description="" Default="60" />
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+		<ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+      <SqlScript FileName ="TestCases\Blocking\SQLVersion.sql" IssueFileRuleQuery = "Blocking"/>
+			<SqlScript FileName ="TestCases\Blocking\SQL_2005_Perf_Stats_Blocking_New.sql" IssueFileRuleQuery = "Blocking"/>
+		</ScriptRule>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.Blocking.BlockingResultData, Microsoft.SqlRap.Client" />
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+ <help:HelpItem FileName="Blocking_help.htm" WorkItem="Blocking" DisplayName="Blocking" Description="Reports the SQL Server sessions blocked, the sessions blocking, head-blockers, queries that those sessions are currently executing etc." Details="The Blocking test case queries the SQL Server system tables and DMVs, collects the blocking information via locks or system resources.  The test case wakeups in regular intervals set by the SQLRAP user in the change screen settings and collects blocking information for the duration, a configurable value."/>
+
+  <RuleSet>
+	<!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	<!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+    </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+  <!--<TableStates>
+    <TableState Name="ServerMain" SortColumn="" SortDirection="descending" Title="Server Information" ShowFilter="true" ShowTitle="true" ShowToolstrip="true" ShowTotalCount="true" ShowSelectedCount="true" UndoEdit="true">
+      <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="ServerName" HeaderText="Server Name" Frozen="true" Visible="true" />
+    </TableState>
+    <TableState Name="HeadBlockerSummary" SortColumn="" SortDirection="descending" Title="Header Blocker summary" ShowFilter="true" ShowTitle="true" ShowToolstrip="true" ShowTotalCount="true" ShowSelectedCount="true" UndoEdit="true">
+      <ColumnState Name="_textBoxColumnMainRunTime" DataPropertyName="RunTime" HeaderText="Run Time" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainHeaderBlockersessionid" DataPropertyName="HeaderBlockerSessionId" HeaderText="Header Blocker Session_id" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainBlockedTaskCount" DataPropertyName="BlockedTaskCount" HeaderText="Blocked Task Count" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainTotWaitDurationms" DataPropertyName="TotWaitDurationMs" HeaderText="Tot Wait Duration Ms" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainBlockingresourcewaitType" DataPropertyName="BlockingResourceWaitType" HeaderText="Blocking Resource Wait Type" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainAvgWaitDurationms" DataPropertyName="AvgWaitDurationMs" HeaderText="Avg Wait Duration Ms" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainMaxwaitDurationms" DataPropertyName="MaxWaitDurationMs" HeaderText="Max Wait Duration Ms" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainMaxBlockingChainDepth" DataPropertyName="MaxBlockingChainDepth" HeaderText="Max Blocking Chain Depth" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainheadblockerProcName" DataPropertyName="HeadBlockerProcName" HeaderText="Head Blocker Proc Name" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainHeadBlockerProcObjId" DataPropertyName="HeadBlockerProcObjid" HeaderText="Head Blocker Proc Objid" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainStmtText" DataPropertyName="StmtText" HeaderText="Stmt Text" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainHeaderBlockerPlanHandle" DataPropertyName="HeaderBlockerPlanHandle" HeaderText="Header Blocker Plan Handle" Frozen="false" Visible="true" />
+    </TableState>
+    <TableState Name="BlockerDetails" SortColumn="" SortDirection="descending" Title="Head Blocker Details" ShowFilter="true" ShowTitle="true" ShowToolstrip="true" ShowTotalCount="true" ShowSelectedCount="true" UndoEdit="true">
+      <ColumnState Name="_textBoxColumnMainRunTime" DataPropertyName="RunTime" HeaderText="Run Time" Frozen="true" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainSessionId" DataPropertyName="SessionId" HeaderText="Session Id" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainBlockingSessionId" DataPropertyName="BlockingSessionId" HeaderText="Blocking Session Id" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainRequestId" DataPropertyName="RequestId" HeaderText="Request Id" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainWaitResource" DataPropertyName="WaitResource" HeaderText="Wait Resource" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainPlanTotalExecCount" DataPropertyName="PlanTotalExecCount" HeaderText="Plan Total Exec Count" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainPlanTotalCpuMs" DataPropertyName="PlanTotalCpuMs" HeaderText="Plan Total Cpu Ms" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainPlanTotalDurationMs" DataPropertyName="PlanTotalDurationMs" HeaderText="Plan Total Duration Ms" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainPlanTotalPhysicalReads" DataPropertyName="PlanTotalPhysicalReads" HeaderText="Plan Total Physical Reads" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainPlanTotalLogicalWrites" DataPropertyName="PlanTotalLogicalWrites" HeaderText="Plan Total Logical Writes" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainPlanTotalLogicalReads" DataPropertyName="PlanTotalLogicalReads" HeaderText="Plan Total Logical Reads" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainDbName" DataPropertyName="DbName" HeaderText="Db Name" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainObjectId" DataPropertyName="ObjectId" HeaderText="Object Id" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainProcName" DataPropertyName="ProcName" HeaderText="Proc Name" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainStmtTxt" DataPropertyName="StmtTxt" HeaderText="Stmt Txt" Frozen="false" Visible="true" />
+      <ColumnState Name="_textBoxColumnMainPlanHandle" DataPropertyName="PlanHandle" HeaderText="Plan Handle" Frozen="false" Visible="true" />
+    </TableState>
+  </TableStates>-->
+  </ResultsViewer>
+</TestCase>
+
+
+

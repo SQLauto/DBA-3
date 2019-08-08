@@ -1,0 +1,63 @@
+<TestCase Signature="2F7707E54573AC2B" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex"  ExecutionOrder="4">
+  <WorkItem
+    Name            =   "TSQLCodingJoins"
+    Category        =   "TSQL Coding"
+    DisplayName     =   "T-SQL Coding: Joins"
+    Description     =   "This test case examines the uncommented codebase for the following practices:
+•	Use of =* right outer joins
+•	Use of *= left outer joins
+"
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.TSQLCodingJoins.TSQLCodingJoinsResultData, Microsoft.SqlRap.Client" />
+
+          <ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+
+            <SqlScript FileName ="Testcases\TSQLCodingJoins\SQLCensus_Join_Issues.sql" IssueFileRuleQuery = ""/>
+          </ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="TSQLCodingJoins.htm" WorkItem="TSQLCodingJoins" DisplayName="T-SQL Coding: Joins" Description="Provide the list of T-SQL objects violate the joins best practices." Details="This test case examines the uncommented codebase for the following practices:
+•	Use of =* right outer joins
+•	Use of *= left outer joins
+"/>
+
+  <RuleSet>
+	  <!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	  <!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+    <Rule Name="SQL_old_style_join_syntax_01" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_old_style_join_syntax_02" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+  </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+  <TableStates>
+		<TableState Name            ="TSQLCodingJoins" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="T-SQL Coding: Joins" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName"  HeaderText = "Database Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtOwnerName"  DataPropertyName ="OwnerName"  HeaderText = "Owner/Schema Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtObjectName"  DataPropertyName ="ObjectName"  HeaderText = "Object Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtObjectType"  DataPropertyName ="ObjectType"  HeaderText = "Object Type"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtIssue"  DataPropertyName ="Issue"  HeaderText = "Issue"  Frozen = "false" Visible="true" />
+      <ColumnState Name="_txtRuleName"  DataPropertyName ="RuleName"  HeaderText = "RuleName"  Frozen = "false" Visible="false" />
+    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

@@ -1,0 +1,61 @@
+<TestCase Signature="925C1E3561F09B26" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="10" ExecutionOrder="2">
+  <!-- DataType is the type which is used to communicate between Collection and Analysis stage. 
+       Type is the type which does the work of collection of the data...
+  -->	
+  <WorkItem
+    Name            =   "SQLServerProperty"
+    Category        =   "Configuration"
+    DisplayName     =   "SQL Server Property"
+    Description     =   "Examines key SQL Server ServerProperty settings."
+    Schema          =   "SQLServerProperty.xsd"
+    DataType        =   "Microsoft.SqlRap.Client.TestCases.SQLServerProperty.Collated,Microsoft.SqlRap.Client"
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.SQLServerProperty.SQLServerPropertyResultData, Microsoft.SqlRap.Client" />
+		<ScriptRule TargetLevel="instance"  IncludeSystemDatabases="false" >
+      <SqlScript FileName ="TestCases\SQLServerProperty\SQL_SERVER_PROPERTY_04.sql" IssueFileRuleQuery = "SQL_SERVER_PROPERTY_04"/>		
+      <SqlScript FileName ="TestCases\SQLServerProperty\SQL_SERVER_PROPERTY_12.sql" IssueFileRuleQuery = "SQL_SERVER_PROPERTY_12"/>
+      <SqlScript FileName ="TestCases\SQLServerProperty\SQL_SERVER_PROPERTY_13.sql" IssueFileRuleQuery = "SQL_SERVER_PROPERTY_13"/>      
+    </ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="SQLServerProperty.htm" WorkItem="SQLServerProperty" DisplayName="SQL Server Property" Description="Gather one or more SQL Server properties and raise issues against the non-default values." Details="Examines key SQL Server ServerProperty settings."/>
+
+  <RuleSet>
+	  <!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	  <!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SQLServerProperty.SQLServerPropertyRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SERVER_PROPERTY_04"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SQLServerProperty.SQLServerPropertyRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SERVER_PROPERTY_12"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SQLServerProperty.SQLServerPropertyRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SERVER_PROPERTY_13"/>
+  </RuleSet>
+<ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+		<TableState Name            ="SQLServerProperty" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="SQL - SQL configuration" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+					<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName" HeaderText = "Server Name" Frozen = "true" Visible="true" />
+					<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName" HeaderText = "Instance Name" Frozen = "true" Visible="true" />
+					<ColumnState Name="_txtServerProperty"  DataPropertyName ="ServerProperty" HeaderText = "Server Property" Frozen = "true" Visible="true" />
+					<ColumnState Name="_txtTargetValue"  DataPropertyName ="TargetValue" HeaderText = "Target Value" Frozen = "true" Visible="true" />
+					<ColumnState Name="_txtPropertyValue"  DataPropertyName ="PropertyValue" HeaderText = "Property Value" Frozen = "true" Visible="true" />
+	    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>
+
+
+

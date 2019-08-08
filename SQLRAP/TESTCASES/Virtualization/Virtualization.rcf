@@ -1,0 +1,176 @@
+<TestCase Signature="5FB75B6A33D27EB4" xmlns="http://www.microsoft.com/StaticWorkItem" xmlns:help="http://www.microsoft.com/Rapid/HelpIndex">
+  <WorkItem Name="Virtualization" Category="Performance" 
+            DisplayName="Virtualization" Description="This test case evaluates issues in your virtualized environment." 
+            Schema="" DataType=""  
+            Type="Microsoft.Rap.TestCases.Common.Virtualization.VirtualizationWorkItem, Microsoft.Rap.TestCases.Common.Virtualization">
+    <!-- Sample settings -->
+    <Configuration/>
+    <State>
+      <StateBag xmlns="">
+        <Query Type="WMI" QueryName="Win32_LogicalDisk" QueryString="SELECT Caption , Compressed , Description , DeviceID , FreeSpace , LastErrorCode , Name , NumberOfBlocks , Size , Status FROM Win32_LogicalDisk" NameSpace ="root\CIMV2" />
+        <Query Type="WMI" QueryName="Win32_ComputerSystem" QueryString="SELECT Caption , CurrentTimeZone , Description , DNSHostName , Domain , DomainRole , Manufacturer , Model , Name , NumberOfLogicalProcessors , NumberOfProcessors , PowerManagementCapabilities , PowerManagementSupported , PowerState , PowerSupplyState , Roles , SystemType , TotalPhysicalMemory FROM Win32_ComputerSystem" NameSpace ="root\CIMV2" />
+        <Query Type="WMI" QueryName="Win32_ServerFeature" QueryString="SELECT * FROM Win32_ServerFeature" NameSpace ="root\CIMV2" />
+        <Query Type="WMI" QueryName="Win32_OperatingSystem" QueryString="SELECT * FROM Win32_OperatingSystem" NameSpace ="root\CIMV2" />
+        <Query Type="WMI" QueryName="Win32_NetworkAdapter" QueryString="SELECT * FROM Win32_NetworkAdapter" Namespace ="root\CIMV2" />
+        <Query Type="WMI" QueryName="Msvm_VirtualSwitch" QueryString="SELECT * FROM Msvm_VirtualSwitch" Namespace ="root\virtualization" />
+        <Query Type="WMI" QueryName="Msvm_ExternalEthernetPort" QueryString="SELECT * FROM Msvm_ExternalEthernetPort" Namespace ="root\virtualization" />
+        <Query Type="WMI" QueryName="Msvm_ComputerSystem" QueryString="SELECT * FROM Msvm_ComputerSystem" Namespace ="root\virtualization" />
+        <Query Type="WMI" QueryName="Msvm_ComputerSystemForGuestOS" QueryString="SELECT * FROM Msvm_ComputerSystem where Name!=&quot;ServerNameToGetdetails&quot;" Namespace ="root\virtualization" WMImethodName="true">
+          <KeySwap Name="Name">
+            <Query QueryName="HDDdetilsOfGuestOS" Type="WMI" Namespace="root\virtualization" QueryString="SELECT * FROM Msvm_DiskDrive WHERE SystemName=&quot;%Name%&quot;" OperatingSystemVersion="6.1.7600.0" />
+            <Query QueryName="KVPobjectsForEachGuestOS" Type="WMI" Namespace="root\virtualization" QueryString="SELECT * FROM Msvm_KvpExchangeComponent WHERE SystemName=&quot;%Name%&quot;" OperatingSystemVersion="6.1.7600.0" />
+            <Query QueryName="DatapointsOfGuestOS" Type="WMI" Namespace="root\virtualization" QueryString="SELECT * FROM Msvm_VirtualSystemsettingData WHERE SystemName=&quot;%Name%&quot;" OperatingSystemVersion="6.1.7600.0" />
+          </KeySwap>
+          <KeySwap Name="__PATH">
+            <Query QueryName="HDDdetilsOfGuestOS" Type="WMI" Namespace="root\virtualization" QueryString="Associators of {%__PATH%} Where ResultClass=Msvm_VirtualSystemSettingData AssocClass=Msvm_SettingsDefineState" OperatingSystemVersion="6.1.7600.0" >
+              <KeySwap Name="__PATH">
+                <Query QueryName="VHDDdetilsOfGuestOS" Type="WMI" Namespace="root\virtualization" QueryString="Associators of {%__PATH%} Where ResultClass=Msvm_ResourceAllocationSettingData AssocClass=Msvm_VirtualSystemSettingDataComponent" OperatingSystemVersion="6.1.7600.0" />
+                <Query QueryName="GlobalSystemSettings" Type="WMI" Namespace="root\virtualization" QueryString="Associators of {%__PATH%} Where resultclass=Msvm_VirtualSystemGlobalSettingData" OperatingSystemVersion="6.1.7600.0" />
+
+              </KeySwap>
+            </Query>
+          </KeySwap>
+       </Query>
+        <Query Type="WMI" QueryName="Msvm_ComputerSystemForVirtualGuestOS" QueryString="SELECT * FROM Msvm_ComputerSystem Where Caption=&quot;Virtual Machine&quot;" Namespace ="root\virtualization">
+          <KeySwap Name="__PATH">
+            <Query QueryName="VirtualSysSettingData" Type="WMI" Namespace="root\virtualization" QueryString="Associators of {%__PATH%} Where ResultClass = MsVM_VirtualSystemSettingData AssocClass=Msvm_SettingsDefineState" OperatingSystemVersion="6.1.7600.0"/>
+          </KeySwap>
+        </Query>
+        <Query QueryName ="EnumKeys" Type ="Registry" ResultType ="string" Hive ="HKLM" SubKey ="System\CurrentControlSet\Enum" UseWow="false" OperatingSystemVersion="6.0.6001,6.0.6002,6.1.7600" >
+          <KeySwap Name = "EnumKeys">
+            <Query QueryName ="EnumSubKeys" Type ="Registry" ResultType ="string" Hive ="HKLM" SubKey ="System\CurrentControlSet\Enum\%EnumKeys%" UseWow="false" OperatingSystemVersion="6.0.6001,6.0.6002,6.1.7600" >
+            </Query>
+          </KeySwap>
+        </Query>
+            <ResultControl Type="Microsoft.Rap.TestCases.Common.Virtualization.Results.VirtualizationResultsData, Microsoft.Rap.TestCases.Common.Virtualization" />
+      </StateBag>                
+    </State>
+	</WorkItem>
+  <help:HelpItem FileName="Virtualization.Help.htm" WorkItem="Virtualization" DisplayName="Virtualization" Description="Comprehensive info on the server virulazation." Details="Comprehensive info on the server virulazation."/>
+  <RuleSet>
+    <Rule Name="Virtualization.HighNumberOfRegistryKeys" Type="Microsoft.Rap.TestCases.Common.Virtualization.Rules.HighNumberOfRestryKeys, Microsoft.Rap.TestCases.Common.Virtualization">
+      <RuleArgument Name ="Count" Value ="5"></RuleArgument>
+    </Rule>
+    <Rule Name="Virtualization.StorageoVersubscription" Type="Microsoft.Rap.TestCases.Common.Virtualization.Rules.StorageOverSubscription, Microsoft.Rap.TestCases.Common.Virtualization"/>
+    <Rule Name="Virtualization.VerifyAdequateSpace" Type="Microsoft.Rap.TestCases.Common.Virtualization.Rules.VerifyAdequateSpace, Microsoft.Rap.TestCases.Common.Virtualization"/>
+    <Rule Name="Virtualization.LogicalToVirtualProRatioLow" Type="Microsoft.Rap.TestCases.Common.Virtualization.Rules.LogToVirtProcRatioLow, Microsoft.Rap.TestCases.Common.Virtualization"/>
+    <Rule Name="Virtualization.Win2003GuestonR2WithSynNetAdapter" Type="Microsoft.Rap.TestCases.Common.Virtualization.Rules.Win2003GuestOnR2withSysNetAdapter, Microsoft.Rap.TestCases.Common.Virtualization"/>
+    <Rule Name="Virtualization.VmachineSnapshotUsage" Type="Microsoft.Rap.TestCases.Common.Virtualization.Rules.VmachineSnapShotUsage, Microsoft.Rap.TestCases.Common.Virtualization"/>
+  </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+    <TableStates>
+      <TableState Title="Root Partitions" Name="RootPartitions" SortColumn="" SortDirection="descending"  ShowSelectedCount="true" UndoEdit="true" ShowTitle="true" ShowFilter ="true" ShowToolstrip="true" ShowTotalCount="true" >
+        <ColumnState Name="Name" Frozen="true" Sortable="true" Visible="true" Alignment="MiddleLeft" HeaderText="Server" />
+        <ColumnState Name="DNSHostName" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="DNSHostName" />
+        <ColumnState Name="Domain" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Domain" />
+        <ColumnState Name="Description" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Description" />
+      </TableState>
+        <TableState Title="Disks" Name="Disks" SortDirection="descending"  ShowSelectedCount="true" UndoEdit="true" ShowTitle="true" ShowFilter ="true" ShowToolstrip="true" ShowTotalCount="true" SortColumn="Check">
+          <ColumnState Name="Caption" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Caption" />
+          <ColumnState Name="Size" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Size (GB)" />
+          <ColumnState Name="FreeSpace" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="FreeSpace (GB)" />
+          <ColumnState Name="Compressed" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Compressed" />
+          <ColumnState Name="Description" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Description" />
+          <ColumnState Name="DeviceID" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  HeaderText="DeviceID" />
+        </TableState>
+        <TableState Title="Networks" Name="Networks" SortDirection="descending"  ShowSelectedCount="true" UndoEdit="true" ShowTitle="true" ShowFilter ="true" ShowToolstrip="true" ShowTotalCount="true" SortColumn="Check">
+          <ColumnState Name="Name" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Name" />
+          <ColumnState Name="Description" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Description" />
+          <ColumnState Name="Speed" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Speed" />
+          <ColumnState Name="AdapterType" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="AdapterType" />
+          <ColumnState Name="AutoSense" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="AutoSense" />
+          <ColumnState Name="NetConnectionID" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  HeaderText="NetConnectionID" />
+          <ColumnState Name="MACAddress" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="MACAddress" />
+          <ColumnState Name="PhysicalAdapter" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="PhysicalAdapter" />
+          <ColumnState Name="Manufacturer" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Manufacturer" />
+          <ColumnState Name="ProductName" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="ProductName" />
+        </TableState>
+        <TableState Title="OS Information" Name="OSInformation" SortDirection="descending" ShowSelectedCount="true" UndoEdit="true" ShowTitle="true" ShowFilter ="true" ShowToolstrip="true" ShowTotalCount="true" SortColumn="Check">
+          <ColumnState Name="Caption" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Caption" />
+          <ColumnState Name="ServicePackMajorVersion" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="ServicePackMajorVersion" />
+          <ColumnState Name="ServicePackMinorVersion" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="ServicePackMinorVersion" />
+          <ColumnState Name="TotalVisibleMemorySize" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="TotalVisibleMemorySize (GB)" />
+          <ColumnState Name="WindowsDirectory" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="WindowsDirectory" />
+          <ColumnState Name="CurrentTimeZone" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  HeaderText="CurrentTimeZone" />
+          <ColumnState Name="OSLanguage" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="OSLanguage" />
+          <ColumnState Name="Locale" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Locale" />
+        </TableState>
+        <TableState Title="Hardware" Name="Hardware" SortDirection="descending"  ShowSelectedCount="true" UndoEdit="true" ShowTitle="true" ShowFilter ="true" ShowToolstrip="true" ShowTotalCount="true" SortColumn="Check">
+          <ColumnState Name="TotalPhysicalMemory" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="TotalPhysicalMemory (GB)" />
+          <ColumnState Name="NumberOfLogicalProcessors" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="NumberOfLogicalProcessors" />
+          <ColumnState Name="Manufacturer" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Manufacturer" />
+          <ColumnState Name="Model" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Model" />
+        </TableState>
+        <TableState Title="Installed Services" Name="Installed Services" SortDirection="descending"   ShowSelectedCount="true" UndoEdit="true" ShowTitle="true" ShowFilter ="true" ShowToolstrip="true" ShowTotalCount="true" SortColumn="Check">
+        </TableState>
+        <TableState Title="Virtual Switches" Name="VirtualSwitches" SortDirection="descending"   ShowSelectedCount="true" UndoEdit="true" ShowTitle="true" ShowFilter ="true" ShowToolstrip="true" ShowTotalCount="true" SortColumn="Check">
+          <ColumnState Name="Name" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Name" />
+          <ColumnState Name="Caption" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Caption" />
+          <ColumnState Name="Number of Connected Guests" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Number of Connected Guests" />
+          <ColumnState Name="ElementName" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="ElementName" />
+          <ColumnState Name="EnabledDefault" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="EnabledDefault" />
+          <ColumnState Name="EnabledState" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="EnabledState" />
+          <ColumnState Name="HealthState" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  HeaderText="HealthState" />
+          <ColumnState Name="MaxChimneyOffloads" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="MaxChimneyOffloads" />
+          <ColumnState Name="MaxVMQOffloads" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="MaxVMQOffloads" />
+          <ColumnState Name="ResetCapability" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="ResetCapability" />
+          <ColumnState Name="Roles" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  HeaderText="Roles" />
+          <ColumnState Name="ScopeOfResidence" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="ScopeOfResidence" />
+          <ColumnState Name="Status" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Status" />
+        </TableState>
+      
+      <TableState Title="Guest Partitions" Name="GuestPartitions" SortColumn="" SortDirection="descending"   ShowSelectedCount="true" UndoEdit="true" ShowTitle="true" ShowFilter ="true" ShowToolstrip="true" ShowTotalCount="true" >
+        <ColumnState Name="HostName" Frozen="true" Sortable="true" Visible="true" Alignment="MiddleLeft" HeaderText="HostName" />
+        <ColumnState Name="ElementName" Frozen="true" Sortable="true" Visible="true" Alignment="MiddleLeft" HeaderText="ElementName" />
+        <ColumnState Name="GuestOperatingSystem" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="GuestOperatingSystem" />
+        <ColumnState Name="NumberOfProcessors" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="NumberOfProcessors" />
+        <ColumnState Name="ProcessorLoadHistory" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="ProcessorLoadHistory" />
+        <ColumnState Name="MemoryUsage" Frozen="true" Sortable="true" Visible="true" Alignment="MiddleLeft" HeaderText="MemoryUsage" />
+        <ColumnState Name="IntegrationServicesVersion" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="IntegrationServicesVersion" />
+        <ColumnState Name="HealthState" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="HealthState" />
+        <ColumnState Name="Heartbeat" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Heartbeat" />
+        <ColumnState Name="StatusDescriptions" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="StatusDescriptions" />
+        <ColumnState Name="Snapshots" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Snapshots" />
+        <ColumnState Name="EnabledState" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="EnabledState" />
+      </TableState>
+        <TableState Title="Disks" Name="Disk"  SortDirection="descending"  ShowSelectedCount="true" UndoEdit="true" ShowTitle="true" ShowFilter ="true" ShowToolstrip="true" ShowTotalCount="true" SortColumn="Check">
+          <ColumnState Name="Path" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Path" />
+          <ColumnState Name="FileSize" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="FileSize (GB)" />
+          <ColumnState Name="InSavedState" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="InSavedState" />
+          <ColumnState Name="InUse" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="InUse" />
+          <ColumnState Name="MaxInternalSize" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="MaxInternalSize (GB)" />
+          <ColumnState Name="Type" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  HeaderText="Type" />
+        </TableState>
+        <TableState Title="Switch Port" Name="SwitchPort" SortDirection="descending"  ShowSelectedCount="true" UndoEdit="true" ShowTitle="true" ShowFilter ="true" ShowToolstrip="true" ShowTotalCount="true" SortColumn="Check">
+          <ColumnState Name="Name" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Name" />
+          <ColumnState Name="Description" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Description" />
+          <ColumnState Name="HealthState" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="HealthState" />
+          <ColumnState Name="OperationalStatus" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="OperationalStatus" />
+          <ColumnState Name="ChimneyOffloadUsage" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="ChimneyOffloadUsage" />
+          <ColumnState Name="VMQOffloadUsage" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  HeaderText="VMQOffloadUsage" />
+          <ColumnState Name="RequestedState" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="RequestedState" />
+          <ColumnState Name="AllowMacSpoofing" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="AllowMacSpoofing" />
+        </TableState>
+        <TableState Title="Networks" Name="Network" SortDirection="descending"  ShowSelectedCount="true" UndoEdit="true" ShowTitle="true" ShowFilter ="true" ShowToolstrip="true" ShowTotalCount="true" SortColumn="Check">
+          <ColumnState Name="Caption" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Caption" />
+          <ColumnState Name="Description" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Description" />
+          <ColumnState Name="ElementName" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="ElementName" />
+          <ColumnState Name="InstanceID" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="InstanceID" />
+          <ColumnState Name="PoolID" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="PoolID" />
+          <ColumnState Name="ResourceSubType" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  HeaderText="ResourceSubType" />
+          <ColumnState Name="ResourceType" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="ResourceType" />
+          <ColumnState Name="StaticMacAddress" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="StaticMacAddress" />
+        </TableState>
+        <TableState Title="Operating System" Name="OperatingSystem" SortDirection="descending"  ShowSelectedCount="true" UndoEdit="true" ShowTitle="true" ShowFilter ="true" ShowToolstrip="true" ShowTotalCount="true" SortColumn="Check">
+          <ColumnState Name="FullyQualifiedDomainName" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="FullyQualifiedDomainName" />
+          <ColumnState Name="OSName" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="OSName" />
+          <ColumnState Name="CSDVersion" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="CSDVersion" />
+          <ColumnState Name="UpTime" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="UpTime" />
+          <ColumnState Name="SuiteMask" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="SuiteMask" />
+          <ColumnState Name="ProductType" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="ProductType" />
+          <ColumnState Name="OSEditionId" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="OSEditionId" />
+        </TableState>
+      
+    </TableStates>
+  </ResultsViewer>
+</TestCase>

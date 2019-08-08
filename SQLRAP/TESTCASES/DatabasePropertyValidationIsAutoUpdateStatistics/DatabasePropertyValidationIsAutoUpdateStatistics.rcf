@@ -1,0 +1,54 @@
+<TestCase Signature="071435314796D73B" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex"  SortOrder="46" ExecutionOrder="2">
+  <WorkItem
+    Name            =   "DatabasePropertyValidationIsAutoUpdateStatistics"
+    Category        =   "Database Properties"
+    DisplayName     =   "IsAutoUpdateStatistics"
+    Description     =   "This test case reports all user databases which have disabled the AUTO_UPDATE_STATISTICS database property."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.DatabasePropertyValidationIsAutoUpdateStatistics.DatabasePropertyValidationIsAutoUpdateStatisticsResultData, Microsoft.SqlRap.Client" />
+       
+		<ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+					
+<SqlScript FileName ="Testcases\DatabasePropertyValidationIsAutoUpdateStatistics\sql_databasepropertyex_IsAutoUpdateStatistics_validation.sql" IssueFileRuleQuery = "sql_databasepropertyex_IsAutoUpdateStatistics_validation"/>
+		</ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="DatabasePropertyValidationIsAutoUpdateStatistics.htm" WorkItem="DatabasePropertyValidationIsAutoUpdateStatistics" DisplayName="DatabasePropertyValidation - IsAutoUpdateStatistics" Description="Checks if the Auto update statistics database option is set to False for one or more databases.  Ignore this issue for SharePoint databases." Details="This test case reports all user databases which have disabled the AUTO_UPDATE_STATISTICS database property."/>
+
+  <RuleSet>
+	<!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	<!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+			
+<Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="sql_databasepropertyex_IsAutoUpdateStatistics_validation"/>
+  </RuleSet>
+<ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+		<TableState Name            ="DatabasePropertyValidationIsAutoUpdateStatistics" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="DatabasePropertyValidation - IsAutoUpdateStatistics" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName"  HeaderText = "Database Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtIsAutoUpdateStatisticsSettingIsOff"  DataPropertyName ="IsAutoUpdateStatisticsSettingIsOff"  HeaderText = "Is The Auto Update Statistics Setting Off?"  Frozen = "false" Visible="true" /> 
+
+	    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

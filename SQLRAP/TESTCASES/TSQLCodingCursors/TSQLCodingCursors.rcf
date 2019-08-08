@@ -1,0 +1,85 @@
+<TestCase Signature="2EAC7B4AB5AF2CFF" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex"  ExecutionOrder="4">
+  <WorkItem
+    Name            =   "TSQLCodingCursors"
+    Category        =   "TSQL Coding"
+    DisplayName     =   "T-SQL Coding: Cursors"
+    Description     =   "This test case examines the uncommented codebase for the following practices:
+•	Declaration of dynamic cursors
+•	Declaration of global cursors
+•	Declaration of insensitive cursors
+•	Declaration of keyset cursors
+•	Declaration of static cursors
+•	Unclosed cursors
+•	Cursors not deallocated
+•	Fetch from global cursor
+•	Fetch from global cursor declared in another procedure
+"
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.TSQLCodingCursors.TSQLCodingCursorsResultData, Microsoft.SqlRap.Client" />
+          <ScriptRule TargetLevel="instance"  IncludeSystemDatabases="false" >
+					
+<SqlScript FileName ="Testcases\TSQLCodingCursors\SQLCensus_Cursor_Issues.sql" IssueFileRuleQuery = ""/>		
+		</ScriptRule>
+        </StateBag>
+    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="TSQLCodingCursors.htm" WorkItem="TSQLCodingCursors" DisplayName="T-SQL Coding: Cursors" Description="Provide the list of T-SQL objects violate the cursor best practices." Details="This test case examines the codemap for the following practices:
+•	Declaration of dynamic cursors
+•	Declaration of global cursors
+•	Declaration of insensitive cursors
+•	Declaration of keyset cursors
+•	Declaration of static cursors
+•	Unclosed cursors
+•	Cursors not deallocated
+•	Fetch from global cursor
+•	Fetch from global cursor declared in another procedure
+"/>
+
+  <RuleSet>
+	  <!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	  <!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+    <Rule Name="SQL_cursor_dynamic_statement" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_cursor_fetch_global_statement" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_cursor_global_fetch_statement" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_cursor_global_statement" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_cursor_insensitive_statement" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_cursor_keyset_statement" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_cursor_not_closed_statement" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_cursor_not_deallocated_statement" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_cursor_static_statement" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+  </RuleSet>
+  
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+   <TableStates>
+		<TableState Name            ="TSQLCodingCursors" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="T-SQL Coding: Cursors" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName"  HeaderText = "Database Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtOwnerName"  DataPropertyName ="OwnerName"  HeaderText = "Owner/Schema Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtObjectName"  DataPropertyName ="ObjectName"  HeaderText = "Object Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtObjectType"  DataPropertyName ="ObjectType"  HeaderText = "Object Type"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtIssue"  DataPropertyName ="Issue"  HeaderText = "Issue"  Frozen = "false" Visible="true" />
+      <ColumnState Name="_txtRuleName"  DataPropertyName ="RuleName"  HeaderText = "RuleName"  Frozen = "false" Visible="false" />
+
+    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

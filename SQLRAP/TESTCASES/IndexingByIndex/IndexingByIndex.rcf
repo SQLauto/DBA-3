@@ -1,0 +1,177 @@
+<TestCase Signature="18A2839F1A94328C" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="28" ExecutionOrder="4">
+  <!-- DataType is the type which is used to communicate between Collection and Analysis stage. 
+       Type is the type which does the work of collection of the data...
+  -->	
+  <WorkItem
+    Name            =   "IndexingByIndex"
+    Category        =   "Indexing"
+    DisplayName     =   "Indexing: Data Collection by Index"
+    Description     =   "The Indexing test case examines the selected databases on the instance for the following practices:
+•	Tables with more indexes than columns
+•	Row length of each index (informational)
+•	Tables with indexes whose length exceeds 900 bytes
+•	Tables with indexes whose length is less than five bytes
+"
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+
+
+    <State>
+      <StateBag>
+        <ResultControl Type="Microsoft.SqlRap.Client.TestCases.IndexingByIndex.IndexingByIndexResultData, Microsoft.SqlRap.Client" />
+      <!-- Server ,Database or instance-->
+      <ScriptRule TargetLevel="database" IncludeSystemDatabases="false">
+        <SqlScript FileName ="Testcases\IndexingByIndex\SQL_indexes_by_index.sql" IssueFileRuleQuery = ""/>
+      </ScriptRule>
+      </StateBag>
+    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="Indexing.htm" WorkItem="IndexingByIndex" DisplayName="IndexingByIndex" Description="Gather the index data for each index of every user database." Details="The Indexing test case examines the selected databases on the instance for the following practices:
+•	Tables with more indexes than columns
+•	Row length of each index (informational)
+•	Tables with indexes whose length exceeds 900 bytes
+•	Tables with indexes whose length is less than five bytes
+"/>
+
+  <RuleSet>
+	<!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	<!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+		<!--<Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlDBProcessor, Microsoft.SqlRap.Client" Name="SQL_index_row_length_greater_than_max_length"/>-->
+    <!--<Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlDBProcessor, Microsoft.SqlRap.Client" Name="SQL_index_row_length"/>-->
+    <!--<Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlDBProcessor, Microsoft.SqlRap.Client" Name="SQL_index_row_length_short_length"/>-->
+    
+    <Rule Name="SQL_index_row_length_greater_than_max_length" Type="Microsoft.SqlRap.Client.Core.IndexingRuleProcessor, Microsoft.SqlRap.Client">
+      <RuleArgument Name="RowName1" Value="IndexRowLength" />
+      <RuleArgument Name="Field1" Value="IndexRowLength" />
+      <RuleArgument Name="Value1" Value="900" />
+      <RuleArgument Name="Operation1" Value="GreaterThan" />
+      <RuleArgument Name="Type1" Value="int" />
+      <RuleArgument Name="RowName2" Value="HypotheticalIndex" />
+      <RuleArgument Name="Field2" Value="HypotheticalIndex" />
+      <RuleArgument Name="Value2" Value="0" />
+      <RuleArgument Name="Operation2" Value="Equals" />
+      <RuleArgument Name="Type2" Value="int" />
+      <RuleArgument Name="RowName3" Value="IsStatistics" />
+      <RuleArgument Name="Field3" Value="IsStatistics" />
+      <RuleArgument Name="Value3" Value="0" />
+      <RuleArgument Name="Operation3" Value="Equals" />
+      <RuleArgument Name="Type3" Value="int" />
+      <RuleArgument Name="BitwiseOperation" Value="And" />
+    </Rule>
+    <Rule Name="SQL_index_row_length" Type="Microsoft.SqlRap.Client.Core.IndexingRuleProcessor, Microsoft.SqlRap.Client">
+      <RuleArgument Name="RowName1" Value="HypotheticalIndex" />
+      <RuleArgument Name="Field1" Value="HypotheticalIndex" />
+      <RuleArgument Name="Value1" Value="0" />
+      <RuleArgument Name="Operation1" Value="Equals" />
+      <RuleArgument Name="Type1" Value="int" />
+      <RuleArgument Name="RowName2" Value="IsStatistics" />
+      <RuleArgument Name="Field2" Value="IsStatistics" />
+      <RuleArgument Name="Value2" Value="0" />
+      <RuleArgument Name="Operation2" Value="Equals" />
+      <RuleArgument Name="Type2" Value="int" />
+      <RuleArgument Name="BitwiseOperation" Value="And" />
+    </Rule>
+    <Rule Name="SQL_index_hypothetical_indexes" Type="Microsoft.SqlRap.Client.Core.IndexingRuleProcessor, Microsoft.SqlRap.Client">
+      <RuleArgument Name="RowName1" Value="HypotheticalIndex" />
+      <RuleArgument Name="Field1" Value="HypotheticalIndex" />
+      <RuleArgument Name="Value1" Value="1" />
+      <RuleArgument Name="Operation1" Value="Equals" />
+      <RuleArgument Name="Type1" Value="int" />
+      <RuleArgument Name="RowName2" Value="IsStatistics" />
+      <RuleArgument Name="Field2" Value="IsStatistics" />
+      <RuleArgument Name="Value2" Value="0" />
+      <RuleArgument Name="Operation2" Value="Equals" />
+      <RuleArgument Name="Type2" Value="int" />
+      <RuleArgument Name="BitwiseOperation" Value="And" />
+    </Rule>
+    <Rule Name="SQL_index_fillfactor" Type="Microsoft.SqlRap.Client.Core.IndexingRuleProcessor, Microsoft.SqlRap.Client">
+      <RuleArgument Name="RowName1" Value="HypotheticalIndex" />
+      <RuleArgument Name="Field1" Value="HypotheticalIndex" />
+      <RuleArgument Name="Value1" Value="0" />
+      <RuleArgument Name="Operation1" Value="Equals" />
+      <RuleArgument Name="Type1" Value="int" />
+      <RuleArgument Name="RowName2" Value="IsStatistics" />
+      <RuleArgument Name="Field2" Value="IsStatistics" />
+      <RuleArgument Name="Value2" Value="0" />
+      <RuleArgument Name="Operation2" Value="Equals" />
+      <RuleArgument Name="Type2" Value="int" />
+      <RuleArgument Name="RowName3" Value="IndexFillFactor" />
+      <RuleArgument Name="Field3" Value="IndexFillFactor" />
+      <RuleArgument Name="Value3" Value="0" />
+      <RuleArgument Name="Operation3" Value="GreaterThan" />
+      <RuleArgument Name="Type3" Value="int" />
+      <RuleArgument Name="BitwiseOperation" Value="And" />
+    </Rule>
+    <Rule Name="SQL_index_fragmented_indexes" Type="Microsoft.SqlRap.Client.Core.IndexingRuleProcessor, Microsoft.SqlRap.Client">
+      <RuleArgument Name="RowName1" Value="PercentPageFragmentation" />
+      <RuleArgument Name="Field1" Value="PercentPageFragmentation" />
+      <RuleArgument Name="Value1" Value="5" />
+      <RuleArgument Name="Operation1" Value="GreaterThenOrEqualTo" />
+      <RuleArgument Name="Type1" Value="double" />
+      <RuleArgument Name="RowName2" Value="PageCount" />
+      <RuleArgument Name="Field2" Value="PageCount" />
+      <RuleArgument Name="Value2" Value="1000" />
+      <RuleArgument Name="Operation2" Value="GreaterThenOrEqualTo" />
+      <RuleArgument Name="Type2" Value="int" />
+      <RuleArgument Name="RowName3" Value="HypotheticalIndex" />
+      <RuleArgument Name="Field3" Value="HypotheticalIndex" />
+      <RuleArgument Name="Value3" Value="0" />
+      <RuleArgument Name="Operation3" Value="Equals" />
+      <RuleArgument Name="Type3" Value="int" />
+      <RuleArgument Name="RowName4" Value="IsStatistics" />
+      <RuleArgument Name="Field4" Value="IsStatistics" />
+      <RuleArgument Name="Value4" Value="0" />
+      <RuleArgument Name="Operation4" Value="Equals" />
+      <RuleArgument Name="Type4" Value="int" />
+      <RuleArgument Name="BitwiseOperation" Value="And" />
+    </Rule>
+    <Rule Name="SQL_index_unaligned_partitions" Type="Microsoft.SqlRap.Client.Core.IndexingRuleProcessor, Microsoft.SqlRap.Client">
+      <RuleArgument Name="RowName" Value="PartitionMessage" />
+      <RuleArgument Name="Field" Value="PartitionMessage" />
+      <RuleArgument Name="Value" Value="" />
+      <RuleArgument Name="Operation" Value="NotEquals" />
+      <RuleArgument Name="Type" Value="string" />
+    </Rule>
+    
+  </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+		<TableState Name            ="IndexingByIndex" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="Indexing" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+					  <ColumnState Name="_txtServerName"  DataPropertyName ="ServerName" HeaderText = "Server Name" Frozen = "false" Visible="true" />
+					  <ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName" HeaderText = "Instance Name" Frozen = "false" Visible="true" />
+					  <ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName" HeaderText = "Database Name" Frozen = "false" Visible="true" />
+					  <ColumnState Name="_txtOwnerName"  DataPropertyName ="OwnerName" HeaderText = "Owner/Schema Name" Frozen = "false" Visible="true" />
+					  <ColumnState Name="_txtTableName"  DataPropertyName ="TableName" HeaderText = "Table Name" Frozen = "false" Visible="true" />
+          	<ColumnState Name="_txtIndexName"  DataPropertyName ="IndexName" HeaderText = "Index Name" Frozen = "false" Visible="true" />
+            <ColumnState Name="_txtPartitionNumber"  DataPropertyName ="PartitionNumber" HeaderText = "Partition Number" Frozen = "false" Visible="true" ColumnType="int"/>
+          	<ColumnState Name="_txtIndexRowLength"  DataPropertyName ="IndexRowLength" HeaderText = "Index Row Length" Frozen = "false" Visible="true" ColumnType="int"/>
+          	<ColumnState Name="_txtIndexFillfactor"  DataPropertyName ="IndexFillFactor" HeaderText = "Index Fillfactor" Frozen = "false" Visible="true" ColumnType="int"/>
+          	<ColumnState Name="_txtHypotheticalIndex"  DataPropertyName ="HypotheticalIndex" HeaderText = "Hypothetical Index" Frozen = "false" Visible="true" ColumnType="int"/>
+          	<ColumnState Name="_txtPercentPageFragmentation"  DataPropertyName ="PercentPageFragmentation" HeaderText = "Percent Page Fragmentation" Frozen = "false" Visible="true" ColumnType="double"/>
+          	<ColumnState Name="_txtAverageFragmentSizeInPages"  DataPropertyName ="AverageFragmentSizeInPages" HeaderText = "Average Fragment Size In Pages" Frozen = "false" Visible="true" ColumnType="double"/>
+          	<ColumnState Name="_txtIndexDepth"  DataPropertyName ="IndexDepth" HeaderText = "Index Depth" Frozen = "false" Visible="true" ColumnType="int"/>
+          	<ColumnState Name="_txtIsStatistics"  DataPropertyName ="IsStatistics" HeaderText = "Is Statistics" Frozen = "false" Visible="true" ColumnType="int"/>
+          	<ColumnState Name="_txtPageCount"  DataPropertyName ="PageCount" HeaderText = "Page Count" Frozen = "false" Visible="true" ColumnType="int"/>
+            <ColumnState Name="_txtFileGroupName"  DataPropertyName ="FileGroupName" HeaderText = "File Group Name" Frozen = "false" Visible="true" />
+            <ColumnState Name="_txtPartitionSchemeName"  DataPropertyName ="PartitionSchemeName" HeaderText = "Partition Scheme Name" Frozen = "false" Visible="true" />
+            <ColumnState Name="_txtPartitionFunctionName"  DataPropertyName ="PartitionFunctionName" HeaderText = "Partition Function Name" Frozen = "false" Visible="true" />
+      <ColumnState Name="_txtPartitionMessage"  DataPropertyName ="PartitionMessage" HeaderText = "Partition Message" Frozen = "false" Visible="true" />
+		</TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

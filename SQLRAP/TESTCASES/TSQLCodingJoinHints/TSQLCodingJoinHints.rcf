@@ -1,0 +1,58 @@
+<TestCase Signature="6376ABD3EC2369BE" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex"  ExecutionOrder="4">
+  <WorkItem
+    Name            =   "TSQLCodingJoinHints"
+    Category        =   "TSQL Coding"
+    DisplayName     =   "T-SQL Coding: Join Hints"
+    Description     =   "This test case examines the uncommented codebase for hint usage."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.TSQLCodingJoinHints.TSQLCodingJoinHintsResultData, Microsoft.SqlRap.Client" />
+
+          <ScriptRule TargetLevel="instance"  IncludeSystemDatabases="false" >
+
+            <SqlScript FileName ="Testcases\TSQLCodingJoinHints\SQLCensus_JoinHint_Issues.sql" IssueFileRuleQuery = ""/>
+          </ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="TSQLCodingJoinHints.htm" WorkItem="TSQLCodingJoinHints" DisplayName="T-SQL Coding: Join Hints" Description="Provide the list of T-SQL objects uses explicit join hints." Details="This test case examines the uncommented codebase for hint usage."/>
+
+  <RuleSet>
+    <Rule Name="SQL_join_hints_hash" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_join_hints_loop" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_join_hints_merge" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_join_hints_remote" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+  </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+
+    <TableStates>
+		<TableState Name            ="TSQLCodingJoinHints" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="T-SQL Coding: Join Hints" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName"  HeaderText = "Database Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtOwnerName"  DataPropertyName ="OwnerName"  HeaderText = "Owner/Schema Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtObjectName"  DataPropertyName ="ObjectName"  HeaderText = "Object Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtObjectType"  DataPropertyName ="ObjectType"  HeaderText = "Object Type"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtIssue"  DataPropertyName ="Issue"  HeaderText = "Issue"  Frozen = "false" Visible="true" />
+      <ColumnState Name="_txtRuleName"  DataPropertyName ="RuleName"  HeaderText = "RuleName"  Frozen = "false" Visible="false" />
+    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

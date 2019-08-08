@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="SQLInfo"
+    targetNamespace="http://tempuri.org/SQLInfo.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/SQLInfo.xsd"
+    xmlns:mstns="http://tempuri.org/SQLInfo.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<!-- 
+	<xs:element name="Server" type="Server" />
+	
+	<xs:complexType name="Server">
+		<xs:attribute name="InstanceName" type="xs:string" use="required" />
+		<xs:attribute name="BuildNumber" type="xs:string" use="required" />
+		<xs:attribute name="Edition" type="xs:string" use="required" />
+		<xs:attribute name="ServicePack" type="xs:string" use="required" />
+	</xs:complexType>
+
+	-->
+	<xs:complexType name="Database">
+
+		<xs:attribute name="InstanceName" type="xs:string" use="required" />
+		<xs:attribute name="BuildNumber" type="xs:string" use="required" />
+		<xs:attribute name="Edition" type="xs:string" use="required" />
+		<xs:attribute name="ServicePack" type="xs:string" use="required" />
+		<xs:attribute name="IsTheAutoCreateStatisticsSettingOff" type="xs:string" use="required" />
+	</xs:complexType>
+	<xs:complexType name="Instance">
+		<xs:sequence>
+			<xs:element ref="Database" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Server">
+		<xs:sequence>
+			<xs:element ref="Instance" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="Server" type="Server" />
+	<xs:element name="Instance" type="Instance" />
+	<xs:element name="Database" type="Database" />
+</xs:schema>

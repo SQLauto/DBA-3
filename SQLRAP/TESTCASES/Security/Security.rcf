@@ -1,0 +1,98 @@
+<TestCase Signature="156C08FB71865616" xmlns="http://www.microsoft.com/StaticWorkItem" xmlns:help="http://www.microsoft.com/Rapid/HelpIndex">
+  <WorkItem Name="Security" Category="Security" 
+            DisplayName="Security" Description="Security Description" 
+            Schema="" DataType=""  
+            Type="Microsoft.SqlRap.Client.TestCases.Security.SecurityWorkItem, Microsoft.SqlRap.Client">
+    <!-- Sample settings -->
+    <Configuration/>
+    <State>
+      <StateBag xmlns="">
+        <Query Type="Sql" QueryName="IsClustered" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="IsClustered.sql" RuleName="IsClustered"/>
+        <Query Type="Sql" QueryName="ActiveNode" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="ActiveNode.sql" RuleName="ActiveNode"/>
+        <Query Type="Sql" QueryName="SqlVersion" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="SQLVersion.sql"/>        
+        <Query Type="Sql" QueryName="TrustWorthy" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="TrustWorthy.sql" RuleName="TrustWorthy"/>
+        <Query Type="Sql" QueryName="LoginsWithBlankPassword" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="BlankPassword.sql" RuleName="BlankPassword"/>
+        <Query Type="Sql" QueryName="LoginsWithSamePassword" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="SamePassword.sql" RuleName="SamePassword"/>
+        <Query Type="Sql" QueryName="PasswordPolicyViolation" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="PasswordPolicyViolation.sql" RuleName="PasswordPolicyViolation"/>
+        <Query Type="Sql" QueryName="ProxyAccount" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="ProxyAccount.sql" RuleName="ProxyAccount"/>
+        <Query Type="Sql" QueryName="NonDefaultLogins" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="NonDefaultLogins.sql" RuleName="NonDefaultLogins"/>
+        <Query Type="Sql" QueryName="XP_Cmdshell_norestrict_2000" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="SQL_SYS_CFNG_XP_cmdshell_norestrict_2000.sql" RuleName="XP_Cmdshell_norestrict_2000"/>
+        <Query Type="Sql" QueryName="XP_Cmdshell_Status_2000" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="SQL_SYS_CFNG_xp_cmdshell_Status_2000.sql" RuleName="XP_Cmdshell_Status_2000"/>
+        <Query Type="Sql" QueryName="XP_Cmdshell_norestrict_2005" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="SQL_SYS_CFNG_XP_cmdshell_norestrict_2005.sql" RuleName="XP_Cmdshell_norestrict_2005"/>
+        <Query Type="Sql" QueryName="XP_Cmdshell_Status_2005" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="SQL_SYS_CFNG_xp_cmdshell_Status_2005.sql" RuleName="XP_Cmdshell_Status_2005"/>
+        <Query Type="Sql" QueryName="CrossDB" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="CrossDB.sql" RuleName="CrossDB"/>
+        <Query Type="Sql" QueryName="AuditMode" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="C2AuditMode.sql" RuleName="C2AuditMode"/>
+        <Query Type="Sql" QueryName="AuthenticationMode" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="AuthenticationMode.sql" RuleName="AuthenticationMode"/>
+        <Query Type="Sql" QueryName="GuestUser" InstanceName="currentInstance" DatabaseName="currentDb" SqlScriptFileName="Guest.sql" RuleName="GuestUser"/>
+        <Query Type="Sql" QueryName="WeakUserKey" InstanceName="currentInstance" DatabaseName="currentDb" SqlScriptFileName="WeakUserKey.sql" RuleName="WeakUserKey"/>
+        <Query Type="Sql" QueryName="Asymmetrickey" InstanceName="currentInstance" DatabaseName="currentDb" SqlScriptFileName="Asymmetrickey.sql" RuleName="Asymmetrickey"/>
+        <Query Type="Sql" QueryName="DBowner" InstanceName="currentInstance" DatabaseName="currentDb" SqlScriptFileName="db_owner.sql" RuleName="db_owner"/>
+        <Query Type="Sql" QueryName="DataFolderPath" InstanceName="currentInstance" DatabaseName="currentDb" SqlScriptFileName="DataFolderPath.sql" />
+        <Query Type="WMI" ResultType="string" Name="SqlServerStartName" Object="Win32_Service" Field="StartName" />
+        <Query Type="WMI" ResultType="string" Name="SqlServerAgentStartName" Object="Win32_Service" Field="StartName" />
+        <Query Type="WMI" ResultType="string" Name="SqlServerFullTextStartName" Object="Win32_Service" Field="StartName" />
+        <Query Type="WMI" ResultType="string" Name="SqlServerBrowserStartName" Object="Win32_Service" Field="StartName" />
+        <Query Type="WMI" ResultType="string" Name="PathName" Object="Win32_Service" Field="PathName" />
+        <Query Type="Registry" ResultType="string" Name="SQLServerServiceGrpSID" Hive="HKLM" SubKey="SOFTWARE\Microsoft\Microsoft SQL Server\SQLINSTANCE\Setup" KeyName="SQLGroup"/>
+
+        <Query QueryName="SqlInstanceNames" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL" KeyName="[[InstanceName]]">
+          <KeySwap Name="SqlInstanceNames" >
+            <Query QueryName="SQLGroup" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SOFTWARE\Microsoft\Microsoft SQL Server\%SqlInstanceNames%\Setup" KeyName="SQLGroup" />
+            <Query QueryName="AGTGroup" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SOFTWARE\Microsoft\Microsoft SQL Server\%SqlInstanceNames%\Setup" KeyName="AGTGroup" />
+          </KeySwap>
+        </Query>
+        
+        <TargetType Type = "Cluster">
+          <Query QueryName="ClusterNodes" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Nodes">
+            <KeySwap Name="ClusterNodes" >
+              <Query QueryName="NodeName" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Nodes\%ClusterNodes%" KeyName="NodeName" />
+            </KeySwap>
+          </Query>
+          <Query QueryName="ClusterResourceKeys" Type ="Registry" ResultType ="string" Hive ="HKLM" SubKey ="Cluster\Resources">
+            <KeySwap Name= "ClusterResourceKeys" >
+              <Query QueryName="ResourceType" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResourceKeys%" KeyName="Type" />
+              <Query QueryName="ResourceDependsOn" Type="Registry" ResultType="stringarray" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResourceKeys%" KeyName="DependsOn" />
+              <Query QueryName="ResourcePossibleOwners" Type="Registry" ResultType="stringarray" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResourceKeys%" KeyName="PossibleOwners" />
+              <Query QueryName="ResourceParametersName" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResourceKeys%\Parameters" KeyName="Name" />
+              <Query QueryName="ResourceParametersInstanceName" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResourceKeys%\Parameters" KeyName="InstanceName" />
+              <Query QueryName="ResourceParametersVirtualServerName" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResourceKeys%\Parameters" KeyName="VirtualServerName" />
+              <Query QueryName="ResourceName" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResourceKeys%" KeyName="Name" />              
+            </KeySwap>
+          </Query>
+
+          <Query QueryName="PossibleOwners" Type ="WMI" Namespace ="root\MSCluster" QueryString ="select GroupComponent, PartComponent from MSCluster_ResourceToPossibleOwner" OperatingSystemVersion="5.2.3790,6.0.6001,6.0.6002,6.1.7600" />
+          
+        </TargetType>
+        <ResultControl Type="Microsoft.SqlRap.Client.TestCases.Security.SecurityResultsControl, Microsoft.SqlRap.Client" />
+      </StateBag>
+    </State>
+  </WorkItem>
+  <help:HelpItem FileName="Security.Help.htm" WorkItem="Security" DisplayName="Security" Description="Comprehensive data around OS, SQL Server instance, service accounts, SQL Server data folder permissions and individual database security." Details="Comprehensive data around OS, SQL Server instance, service accounts, SQL Server data folder permissions and individual database security."/>
+  <RuleSet>
+    <Rule Name="cLocalSystem" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cLocalSystem, Microsoft.SqlRap.Client" />
+    <Rule Name="cBuiltinAdmin" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cBuiltinAdmin, Microsoft.SqlRap.Client" />
+    <Rule Name="cDomainAdmin" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cDomainAdmin, Microsoft.SqlRap.Client" />
+    <Rule Name="cDBEngineInDomainAccount" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cDBEngineInDomainAccount, Microsoft.SqlRap.Client" />
+    <Rule Name="cSqlAgentService" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cSqlAgentService, Microsoft.SqlRap.Client" />
+    <Rule Name="cSqlServerBrowserService" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cSqlServerBrowserService, Microsoft.SqlRap.Client" />
+    <Rule Name="cSqlServerFullTextService" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cSqlServerFullTextService, Microsoft.SqlRap.Client" />
+    <Rule Name="cBinnPermissions" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cBinnPermissions, Microsoft.SqlRap.Client" />
+    <Rule Name="cDataFolderPermissions" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cDataFolderPermissions, Microsoft.SqlRap.Client" />
+    <Rule Name="cSqlServerAgentProxyAccount" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cSqlServerAgentProxyAccount, Microsoft.SqlRap.Client" />
+    <Rule Name="cTrustWorthy" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cTrustWorthy, Microsoft.SqlRap.Client" />
+    <Rule Name="cNonDefaultLogins" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cNonDefaultLogins, Microsoft.SqlRap.Client" />
+    <Rule Name="cNonDefaultUserforDBOwner" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cNonDefaultUserforDBOwner, Microsoft.SqlRap.Client" />
+    <Rule Name="cLoginsWithSameBlankPwd" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cLoginsWithSameBlankPwd, Microsoft.SqlRap.Client" />
+    <Rule Name="cPasswordPolicy" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cPasswordPolicy, Microsoft.SqlRap.Client" />
+    <Rule Name="cGuestUser" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cGuestUser, Microsoft.SqlRap.Client" />
+    <Rule Name="cWeakUserKey" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cWeakUserKey, Microsoft.SqlRap.Client" />
+    <Rule Name="cAsymmetricKey" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cAsymmetricKey, Microsoft.SqlRap.Client" />
+
+    <Rule Name="cSqlServerServiceMissingUserRights" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cSqlServerServiceMissingUserRights, Microsoft.SqlRap.Client" />
+    <Rule Name="cSqlServerAgentServiceMissingUserRights" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cSqlServerAgentServiceMissingUserRights, Microsoft.SqlRap.Client" />
+    <Rule Name="cAllowLogOnRemoteUserRights" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cAllowLogOnRemoteUserRights, Microsoft.SqlRap.Client" />
+    <Rule Name="cAllowLogOnLocallyUserRights" Type="Microsoft.SqlRap.Client.TestCases.Security.Rules.cAllowLogOnLocallyUserRights, Microsoft.SqlRap.Client" />
+  </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">    
+  </ResultsViewer>
+</TestCase>

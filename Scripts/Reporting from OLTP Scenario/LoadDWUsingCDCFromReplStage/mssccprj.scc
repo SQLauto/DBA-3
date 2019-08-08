@@ -1,0 +1,5 @@
+SCC = This is a Source Code Control file
+
+[Change Data Capture Sample.sln]
+SCC_Aux_Path = "c:\vss"
+SCC_Project_Name = "$/MCM/Scripts/Reporting from OLTP Scenario/LoadDWUsingCDCFromReplStage", IIKAAAAA

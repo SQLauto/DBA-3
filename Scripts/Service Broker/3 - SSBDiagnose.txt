@@ -1,0 +1,5 @@
+Example query:
+
+ssbdiagnose -E CONFIGURATION FROM SERVICE Services/LogService -S GREGVISTA -d SBroker TO SERVICE Services/LogService -S GREGVISTA -d SBroker ON CONTRACT MessageContracts/LogContract
+
+Look at options in BOL

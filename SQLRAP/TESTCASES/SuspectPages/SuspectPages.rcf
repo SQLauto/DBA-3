@@ -1,0 +1,57 @@
+<TestCase Signature="A001B6F421B4B5D3" SortOrder="22" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" ExecutionOrder="2">
+  <WorkItem
+    Name            =   "SuspectPages"
+    Category        =   "SQL Operations"
+    DisplayName     =   "Suspect Pages"
+    Description     =   ""
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.SuspectPages.SuspectPagesResultData, Microsoft.SqlRap.Client" />
+        
+		    <ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >					
+          <SqlScript FileName ="Testcases\SuspectPages\sql_suspect_pages.sql" IssueFileRuleQuery = "sql_suspect_pages"/>
+		    </ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="SuspectPages.htm" WorkItem="SuspectPages" DisplayName="Suspect Pages" Description="Reports if there are any suspected pages recorded." Details="Reports if there are any suspected pages recorded."/>
+
+  <RuleSet>
+	<!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	<!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+			
+<Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="sql_suspect_pages"/>
+  </RuleSet>
+<ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+		<TableState Name            ="SuspectPages" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="Suspect Pages" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName"  HeaderText = "Database Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtFileId"  DataPropertyName ="FileId"  HeaderText = "File Id"  Frozen = "false" Visible="true" ColumnType="int" /> 
+			<ColumnState Name="_txtPageId"  DataPropertyName ="PageId"  HeaderText = "Page Id"  Frozen = "false" Visible="true" ColumnType="int" /> 
+			<ColumnState Name="_txtEventType"  DataPropertyName ="EventType"  HeaderText = "Event Type"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtErrorCount"  DataPropertyName ="ErrorCount"  HeaderText = "Error Count"  Frozen = "false" Visible="true" ColumnType="int" /> 
+			<ColumnState Name="_txtLastUpdateDate"  DataPropertyName ="LastUpdateDate"  HeaderText = "Last Update Date"  Frozen = "false" Visible="true" /> 
+
+	    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

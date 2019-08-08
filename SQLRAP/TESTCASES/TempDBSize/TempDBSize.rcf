@@ -1,0 +1,53 @@
+<TestCase Signature="12852318DC1B07D8" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="20" ExecutionOrder="2">
+  <WorkItem
+    Name            =   "TempDBSize"
+    Category        =   "SQL Operations"
+    DisplayName     =   "TempDBSize"
+    Description     =   ""
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.TempDBSize.TempDBSizeResultData, Microsoft.SqlRap.Client" />
+		    <ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+          <SqlScript FileName ="Testcases\TempDBSize\TempDB_DefaultSize.sql" IssueFileRuleQuery = "TempDB_DefaultSize"/>
+          <SqlScript FileName ="Testcases\TempDBSize\highTempDbUsage2005.sql" IssueFileRuleQuery = "highTempDbUsage2005"/>          
+        </ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="TempDBSize.htm" WorkItem="TempDBSize" DisplayName="TempDB Size" Description="Evaluates the initial tempdb size and raise an issue if the size is set to a default size." Details="Evaluates the initial tempdb size and raise an issue if the size is set to a default size."/>
+
+  <RuleSet>
+	  <!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+    <Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="TempDB_DefaultSize"/>
+    <Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="highTempDbUsage2005"/>
+  </RuleSet>
+<ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+		<TableState Name            ="TempDBSize" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="TempDBSize" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName"  HeaderText = "Database Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtLogicalName"  DataPropertyName ="LogicalName"  HeaderText = "Logical Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtPhysicalPath"  DataPropertyName ="PhysicalPath"  HeaderText = "Physical Path"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtSizeinMB"  DataPropertyName ="SizeinMB"  HeaderText = "Size in MB"  Frozen = "false" Visible="true" ColumnType="int" /> 
+	  </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

@@ -1,0 +1,76 @@
+<TestCase Signature="43897261C7F53BF4" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex"  ExecutionOrder="4">
+  <WorkItem
+    Name            =   "TSQLCodingQueryHints"
+    Category        =   "TSQL Coding"
+    DisplayName     =   "T-SQL Coding: Query Hints"
+    Description     =   ""
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.TSQLCodingQueryHints.TSQLCodingQueryHintsResultData, Microsoft.SqlRap.Client" />
+          <ScriptRule TargetLevel="instance"  IncludeSystemDatabases="false" >
+					
+<SqlScript FileName ="Testcases\TSQLCodingQueryHints\SQLCensus_QueryHint_Issues.sql" IssueFileRuleQuery = ""/>		
+		</ScriptRule>
+        </StateBag>
+      </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="TSQLCodingQueryHints.htm" WorkItem="TSQLCodingQueryHints" DisplayName="T-SQL Coding: Query Hints" Description="Provide the list of T-SQL objects uses query hints." Details="Provide the list of T-SQL objects uses query hints."/>
+
+  <RuleSet>
+	  <!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	  <!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+    <Rule Name="SQL_query_hints_concat_union" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_expand_views" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_fast" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_force_order" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_hash_group" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_hash_join" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_hash_union" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_keep_plan" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_keepfixed_plan" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_loop_join" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_maxdop" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_maxrecursion" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_merge_join" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_merge_union" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_optimize_for" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_order_group" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_parameterization_forced" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_parameterization_simple" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_recompile" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_robust_plan" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_query_hints_use_plan" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+  </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+    <TableStates>
+		<TableState Name            ="TSQLCodingQueryHints" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="T-SQL Coding: Query Hints" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName"  HeaderText = "Database Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtOwnerName"  DataPropertyName ="OwnerName"  HeaderText = "Owner/Schema Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtObjectName"  DataPropertyName ="ObjectName"  HeaderText = "Object Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtObjectType"  DataPropertyName ="ObjectType"  HeaderText = "Object Type"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtIssue"  DataPropertyName ="Issue"  HeaderText = "Issue"  Frozen = "false" Visible="true" />
+      <ColumnState Name="_txtRuleName"  DataPropertyName ="RuleName"  HeaderText = "RuleName"  Frozen = "false" Visible="false" />
+
+    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

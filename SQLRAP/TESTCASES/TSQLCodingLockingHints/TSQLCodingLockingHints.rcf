@@ -1,0 +1,107 @@
+<TestCase Signature="FCC15CF9BC0763D6" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex"  ExecutionOrder="4">
+  <WorkItem
+    Name            =   "TSQLCodingLockingHints"
+    Category        =   "TSQL Coding"
+    DisplayName     =   "T-SQL Coding: Locking Hints"
+    Description     =   "This test case examines the uncommented codebase for locking hint usage."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.TSQLCodingLockingHints.TSQLCodingLockingHintsResultData, Microsoft.SqlRap.Client" />
+
+          <ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+
+
+            <SqlScript FileName ="Testcases\TSQLCodingLockingHints\SQLCensus_LockingHint_Issues.sql" IssueFileRuleQuery = ""/>
+
+          </ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="TSQLCodingLockingHints.htm" WorkItem="TSQLCodingLockingHints" DisplayName="T-SQL Coding: Locking Hints" Description="Provide the list of T-SQL objects uses the locking hints." Details="This test case examines the uncommented codebase for locking hint usage."/>
+
+  <RuleSet>
+	  <!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	  <!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+    <!--<Rule Name="SQL_locking_hints_holdlock" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <Rule Name="SQL_locking_hints_holdlock_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_locking_hints_holdlock_no_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <!--<Rule Name="SQL_locking_hints_nolock" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <Rule Name="SQL_locking_hints_nolock_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_locking_hints_nolock_no_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <!--<Rule Name="SQL_locking_hints_paglock" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <Rule Name="SQL_locking_hints_paglock_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_locking_hints_paglock_no_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <!--<Rule Name="SQL_locking_hints_paglock_nolock" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <!--<Rule Name="SQL_locking_hints_readcommitted" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <Rule Name="SQL_locking_hints_readcommitted_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_locking_hints_readcommitted_no_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <!--<Rule Name="SQL_locking_hints_readcommitted_nolock" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <!--<Rule Name="SQL_locking_hints_readpast" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <Rule Name="SQL_locking_hints_readpast_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_locking_hints_readpast_no_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <!--<Rule Name="SQL_locking_hints_readpast_nolock" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <!--<Rule Name="SQL_locking_hints_repeatableread" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <Rule Name="SQL_locking_hints_repeatableread_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_locking_hints_repeatableread_no_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <!--<Rule Name="SQL_locking_hints_repeatableread_nolock" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <!--<Rule Name="SQL_locking_hints_readuncommitted" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <Rule Name="SQL_locking_hints_readuncommitted_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_locking_hints_readuncommitted_no_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <!--<Rule Name="SQL_locking_hints_readuncommitted_nolock" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <!--<Rule Name="SQL_locking_hints_rowlock" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <Rule Name="SQL_locking_hints_rowlock_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_locking_hints_rowlock_no_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <!--<Rule Name="SQL_locking_hints_rowlock_nolock" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <!--<Rule Name="SQL_locking_hints_serializable" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <Rule Name="SQL_locking_hints_serializable_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_locking_hints_serializable_no_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <!--<Rule Name="SQL_locking_hints_serializable_nolock" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <!--<Rule Name="SQL_locking_hints_tablock" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <Rule Name="SQL_locking_hints_tablock_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_locking_hints_tablock_no_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <!--<Rule Name="SQL_locking_hints_tablock_nolock" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <!--<Rule Name="SQL_locking_hints_tablockx" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <Rule Name="SQL_locking_hints_tablockx_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_locking_hints_tablockx_no_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <!--<Rule Name="SQL_locking_hints_tablockx_nolock" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <!--<Rule Name="SQL_locking_hints_updlock" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <Rule Name="SQL_locking_hints_updlock_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_locking_hints_updlock_no_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <!--<Rule Name="SQL_locking_hints_xlock" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <!--<Rule Name="SQL_locking_hints_xlock_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+    <Rule Name="SQL_locking_hints_xlock_no_mod" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <!--<Rule Name="SQL_locking_hints_xlock_nolock" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />-->
+  </RuleSet>
+  
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+  <TableStates>
+		<TableState Name            ="TSQLCodingLockingHints" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="T-SQL Coding: Locking Hints" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName"  HeaderText = "Database Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtOwnerName"  DataPropertyName ="OwnerName"  HeaderText = "Owner/Schema Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtObjectName"  DataPropertyName ="ObjectName"  HeaderText = "Object Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtObjectType"  DataPropertyName ="ObjectType"  HeaderText = "Object Type"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtIssue"  DataPropertyName ="Issue"  HeaderText = "Issue"  Frozen = "false" Visible="true" />
+      <ColumnState Name="_txtRuleName"  DataPropertyName ="RuleName"  HeaderText = "RuleName"  Frozen = "false" Visible="false" />
+    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

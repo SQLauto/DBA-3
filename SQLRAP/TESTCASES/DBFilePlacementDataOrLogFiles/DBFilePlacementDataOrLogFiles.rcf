@@ -1,0 +1,48 @@
+<TestCase Signature="667294B6711288BF" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="15" ExecutionOrder="2">
+  <WorkItem
+    Name            =   "DBFilePlacementDataOrLogFiles"
+    Category        =   "SQL Operations"
+    DisplayName     =   "DBFile Placement DataOrLog Files"
+    Description     =   "Examines the placement of data and log files on the instance and reports two configurations that are contrary to best practices: Device holds both tempdb and user database objects, Device holds both data and log objects"
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+        <ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >					
+          <SqlScript FileName ="Testcases\DBFilePlacementDataOrLogFiles\SQL_database_file_placement_summary.sql" IssueFileRuleQuery = "SQL_database_file_placement_summary"/>
+		    </ScriptRule>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.DBFilePlacementDataOrLogFiles.DBFilePlacementDataOrLogFilesResultData, Microsoft.SqlRap.Client" />
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="DBFilePlacementDataOrLogFiles.htm" WorkItem="DBFilePlacementDataOrLogFiles" DisplayName="DBFile Placement DataOrLog Files" Description="Check if the Data and Transaction log files created on the same drive or tempdb files placed on the same drives as of user databases." Details="Examines the placement of data and log files on the instance and reports two configurations that are contrary to best practices: Device holds both tempdb and user database objects, Device holds both data and log objects"/>
+
+  <RuleSet>
+    <Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="SQL_database_file_placement_summary"/>
+  </RuleSet>
+<ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+		<TableState Name            ="DBFilePlacementDataOrLogFiles" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="DBFile Placement DataOrLog Files" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDriveLetter"  DataPropertyName ="DriveLetter"  HeaderText = "Drive Letter"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDiagnosticMessage"  DataPropertyName ="DiagnosticMessage"  HeaderText = "Diagnostic Message"  Frozen = "false" Visible="true" /> 			
+	   </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

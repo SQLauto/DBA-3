@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		elementFormDefault="qualified"
+		id="SqlTestSchema">
+
+<xs:complexType name="Row">
+
+	<xs:attribute name="RuleName" type="xs:string" use="required" />
+	<xs:attribute name="ServerName" type="xs:string" use="required" />
+	<xs:attribute name="InstanceName" type="xs:string" use="required" />
+	<xs:attribute name="ConfigurationName" type="xs:string" use="required" />
+	<xs:attribute name="TargetDefaultValue" type="xs:string" use="required" />
+	<xs:attribute name="SetValue" type="xs:string" use="required" />
+	<xs:attribute name="RunValue" type="xs:string" use="required" />
+</xs:complexType> 
+  <xs:complexType name="DataRoot">
+    <xs:sequence>
+      <xs:element ref="Row" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="Target" type="xs:string" use="required" />
+</xs:complexType>
+
+  <xs:complexType name="Collated">
+    <xs:sequence>
+      <xs:element ref="DataRoot" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Collated" type="Collated" />
+<xs:element name="DataRoot" type="DataRoot" />
+<xs:element name="Row" type="Row" />
+</xs:schema>
+

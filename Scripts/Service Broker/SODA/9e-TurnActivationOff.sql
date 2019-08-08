@@ -1,0 +1,20 @@
+
+-- turn activation off
+
+:CONNECT localhost\SQLDEV01
+
+USE TestDB
+GO
+
+ALTER QUEUE TestInitiatorQueue
+ WITH ACTIVATION (STATUS = OFF)
+GO
+
+:CONNECT localhost\SQLDEV02
+
+USE TestDB
+GO
+
+ALTER QUEUE TestTargetQueue
+ WITH ACTIVATION (STATUS = OFF)
+GO

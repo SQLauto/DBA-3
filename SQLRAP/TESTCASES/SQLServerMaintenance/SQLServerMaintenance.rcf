@@ -1,0 +1,52 @@
+<TestCase Signature="38C51AC2969BF9CA" 
+          SortOrder="50" 
+          xmlns="http://www.microsoft.com/StaticWorkItem"  
+          xmlns:help="http://www.microsoft.com/Rapid/HelpIndex">
+  <WorkItem Name="SQLServerMaintenance" 
+            Category="SQL Operations" 
+            DisplayName="SQL Server Maintenance" 
+            Description="Provides information regarding activities affecting operations management of SQL Server such as database backups, compression information and updating of statistics." 
+            Schema=""
+            Type=   "Microsoft.SqlRap.Client.TestCases.SQLServerMaintenance.SqlWorkItem,  Microsoft.SqlRap.Client">
+    <Configuration>      
+    </Configuration>
+    <State>
+      <StateBag xmlns="">
+        <Query Type="Sql" QueryName="IsClustered" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="IsClustered.sql" RuleName="IsClustered"/>
+        <Query Type="Sql" QueryName="ActiveNode" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="ActiveNode.sql" RuleName="ActiveNode"/>
+        <Query Type="Sql" QueryName="SqlVersion" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="SQLVersion.sql"/>
+        <Query Type="Sql" QueryName="FdatabaseFilesNonNTFS" InstanceName="currentInstance" DatabaseName="currentDb" SqlScriptFileName="FdatabaseFilesNonNTFS.sql"/>
+        <Query Type="Sql" QueryName="PNoBackupInOneDays" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="pNoBackupInOneDays.sql"/>
+        <Query Type="Sql" QueryName="BackupOnSameVolume" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="backupOnSameVolume.sql"/>
+        <Query Type="Sql" QueryName="DbRequiresUpdateStats" InstanceName="currentInstance" DatabaseName="currentDb" SqlScriptFileName="dbRequiresUpdateStats.sql"/>
+        <Query Type="Sql" QueryName="AffinityMaskAndAffinityIOMaskOverlap" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="cAffinityMaskAndAffinityIOMaskOverlap.sql"/>
+        <Query Type="WMI" ResultType="string" QueryName="DiskPartitionName" QueryString="select Name, Startingoffset from Win32_DiskPartition where BootPartition=False" />
+        <Query Type="WMI" ResultType="string" QueryName="LogicalDiskPartition" QueryString="select * from Win32_LogicalDiskToPartition" />
+        <Query Type="Registry" ResultType="string" Name="EnterceptEnabled" Hive="HKLM" SubKey="SOFTWARE\Network Associates\TVD\Shared Components\On Access Scanner\BehaviourBlocking" KeyName="EnterceptEnabled"/>
+        <Query Type="Sql" QueryName="fMcAfeeBufferOverflow" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="fMcAfeeBufferOverflow.sql"/>
+
+        <TargetType Type = "Cluster">
+          <Query QueryName="ClusterNodes" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Nodes">
+            <KeySwap Name="ClusterNodes" >
+              <Query QueryName="NodeName" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Nodes\%ClusterNodes%" KeyName="NodeName" />
+            </KeySwap>
+          </Query>          
+        </TargetType>
+        
+        <ResultControl Type="Microsoft.SqlRap.Client.TestCases.SQLServerMaintenance.SqlServerMaintenance, Microsoft.SqlRap.Client" />        
+      </StateBag>
+    </State>
+  </WorkItem>
+  <help:HelpItem FileName="SQLServerMaintenance.htm" WorkItem="SQLServerMaintenance" DisplayName="SQL Server Maintenance" Description="Provides information regarding activities affecting operations management of SQL Server such as database backups, compression information and updating of statistics." Details=""/>
+  <RuleSet>
+    <Rule Name="fdatabaseFilesNonNTFS" Type="Microsoft.SqlRap.Client.TestCases.SQLServerMaintenance.Rules.fdatabaseFilesNonNTFS, Microsoft.SqlRap.Client" />
+    <Rule Name="pNoBackupInOneDays" Type="Microsoft.SqlRap.Client.TestCases.SQLServerMaintenance.Rules.pNoBackupInOneDays, Microsoft.SqlRap.Client" />
+    <Rule Name="backupOnSameVolume" Type="Microsoft.SqlRap.Client.TestCases.SQLServerMaintenance.Rules.backupOnSameVolume, Microsoft.SqlRap.Client" />
+    <Rule Name="dbRequiresUpdateStats" Type="Microsoft.SqlRap.Client.TestCases.SQLServerMaintenance.Rules.dbRequiresUpdateStats, Microsoft.SqlRap.Client" />
+    <Rule Name="cAffinityMaskAndAffinityIOMaskOverlap" Type="Microsoft.SqlRap.Client.TestCases.SQLServerMaintenance.Rules.cAffinityMaskAndAffinityIOMaskOverlap, Microsoft.SqlRap.Client" />
+    <Rule Name="diskSectorAlignment" Type="Microsoft.SqlRap.Client.TestCases.SQLServerMaintenance.Rules.diskSectorAlignment, Microsoft.SqlRap.Client" />
+    <Rule Name="fMcAfeeBufferOverflow" Type="Microsoft.SqlRap.Client.TestCases.SQLServerMaintenance.Rules.fMcAfeeBufferOverflow, Microsoft.SqlRap.Client" />    
+  </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+  </ResultsViewer>  
+</TestCase>

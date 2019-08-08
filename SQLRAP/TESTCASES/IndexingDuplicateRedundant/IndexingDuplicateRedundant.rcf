@@ -1,0 +1,72 @@
+<TestCase Signature="D2B701043E90255B" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="35" ExecutionOrder="3">
+  <WorkItem
+    Name            =   "IndexingDuplicateRedundant"
+    Category        =   "Indexing"
+    DisplayName     =   "Indexing: Duplicate/Redundant Indexes"
+    Description     =   "This test case provides a list of indexes on a particular table which are exact duplicates of each other."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.IndexingDuplicateRedundant.IndexingDuplicateRedundantResultData, Microsoft.SqlRap.Client" />
+
+          <ScriptRule TargetLevel="database" IncludeSystemDatabases="false" >
+					
+<SqlScript FileName ="Testcases\IndexingDuplicateRedundant\SQL_index_duplicate_redundant.sql" IssueFileRuleQuery = ""/>
+		</ScriptRule>
+	    </StateBag>
+    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="IndexingDuplicateIndexes.htm" WorkItem="IndexingDuplicateIndexes" DisplayName="Indexing - Duplicate Indexes" Description="Provides the list of duplicate and redundant indexes." Details="This test case provides a list of indexes on a particular table which are exact duplicates of each other."/>
+
+  <RuleSet>
+	<!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	<!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+			
+    <!--<Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlDBProcessor, Microsoft.SqlRap.Client" Name="SQL_index_duplicate_indexes"/>-->
+    <Rule Name="SQL_index_duplicate_indexes" Type="Microsoft.SqlRap.Client.Core.IndexingRuleProcessor, Microsoft.SqlRap.Client">
+      <RuleArgument Name="RowName" Value="Issue" />
+      <RuleArgument Name="Field" Value="Issue" />
+      <RuleArgument Name="Value" Value="duplicate" />
+      <RuleArgument Name="Operation" Value="Equals" />
+      <RuleArgument Name="Type" Value="string" />
+    </Rule>
+    <Rule Name="SQL_index_redundant_indexes" Type="Microsoft.SqlRap.Client.Core.IndexingRuleProcessor, Microsoft.SqlRap.Client">
+      <RuleArgument Name="RowName" Value="Issue" />
+      <RuleArgument Name="Field" Value="Issue" />
+      <RuleArgument Name="Value" Value="redundant" />
+      <RuleArgument Name="Operation" Value="Equals" />
+      <RuleArgument Name="Type" Value="string" />
+    </Rule>
+    
+  </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+    <TableStates>
+		<TableState Name            ="IndexingDuplicateRedundant" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="Indexing - Duplicate / Redundant Indexes" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName"  HeaderText = "Database Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtOwnerName"  DataPropertyName ="OwnerName"  HeaderText = "Owner/Schema Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtObjectName"  DataPropertyName ="ObjectName"  HeaderText = "Object Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtMessage"  DataPropertyName ="Message"  HeaderText = "Message"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtIssue"  DataPropertyName ="Issue"  HeaderText = "Issue"  Frozen = "false" Visible="true" /> 
+
+	    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

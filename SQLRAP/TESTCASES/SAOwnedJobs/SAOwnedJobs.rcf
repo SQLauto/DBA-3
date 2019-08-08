@@ -1,0 +1,49 @@
+<TestCase Signature="C6CC27EBFA6A97F5" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="2" ExecutionOrder="2">
+  <WorkItem
+    Name            =   "SAOwnedJobs"
+    Category        =   "Security"
+    DisplayName     =   "SA Owned Jobs"
+    Description     =   "Reports all jobs or job steps running under a sysadmin credential."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.SAOwnedJobs.SAOwnedJobsResultData, Microsoft.SqlRap.Client" />
+        <ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >					
+          <SqlScript FileName ="Testcases\SAOwnedJobs\SQL_jobs_owned_by_sa.sql" IssueFileRuleQuery = "cSAOwnedJobs"/>
+		    </ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="SAOwnedJobs.htm" WorkItem="SAOwnedJobs" DisplayName="SA Owned Jobs" Description="Lists all the SQL Server Agent jobs, job steps, status and the job owners." Details="Reports all jobs or job steps running under a sysadmin credential."/>
+
+  <RuleSet>
+    <Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="cSAOwnedJobs"/>
+  </RuleSet>
+<ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+		<TableState Name            ="SAOwnedJobs" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="SA Owned Jobs" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtOwnerName"  DataPropertyName ="RunContext"  HeaderText = "Run Context"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtJobName"  DataPropertyName ="JobName"  HeaderText = "Job Name"  Frozen = "false" Visible="true" />
+      <ColumnState Name="_txtJobStep"  DataPropertyName ="JobStep"  HeaderText = "Job Step"  Frozen = "false" Visible="true" />
+	   </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

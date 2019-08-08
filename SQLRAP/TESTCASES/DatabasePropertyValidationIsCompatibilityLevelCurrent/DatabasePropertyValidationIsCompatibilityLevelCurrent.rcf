@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestCase Signature="54574C5F3956F9F5" xmlns="http://www.microsoft.com/StaticWorkItem" xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="48" ExecutionOrder="2">
+  <WorkItem Name="DatabasePropertyValidationIsCompatibilityLevelCurrent" Category="Database Properties" DisplayName="IsCompatibilityLevelCurrent" Description="This test case reports all user databases which are set to a value lower than the current value for the instance (80 for SQL Server 2000, 90 for SQL Server 2005)." Schema="" DataType="" Type="Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+    <Configuration></Configuration>
+    <State>
+      <StateBag>
+        <ResultControl Type="Microsoft.SqlRap.Client.TestCases.DatabasePropertyValidationIsCompatibilityLevelCurrent.DatabasePropertyValidationIsCompatibilityLevelCurrentResultData, Microsoft.SqlRap.Client" />
+      <ScriptRule TargetLevel="instance" IncludeSystemDatabases="false">
+        <SqlScript FileName="Testcases\DatabasePropertyValidationIsCompatibilityLevelCurrent\sql_is_compatibility_level_current.sql" IssueFileRuleQuery="sql_is_compatibility_level_current" />
+      </ScriptRule>
+      </StateBag>
+    </State>
+  </WorkItem>
+  <help:HelpItem FileName="DatabasePropertyValidationIsCompatibilityLevelCurrent.htm" WorkItem="DatabasePropertyValidationIsCompatibilityLevelCurrent" DisplayName="DatabasePropertyValidation - IsCompatibilityLevelCurrent" Description="Checks if the compatibility level is set to lower versions for one or more databases." Details="This test case reports all user databases which are set to a value lower than the current value for the instance (80 for SQL Server 2000, 90 for SQL Server 2005)." />
+  <RuleSet>
+    <!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+    <!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+    <Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="sql_is_compatibility_level_current" />
+  </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+    <TableStates>
+      <TableState Name="DatabasePropertyValidationIsCompatibilityLevelCurrent" SortColumn="_txtServerName" SortDirection="ascending" Title="DatabasePropertyValidation - IsCompatibilityLevelCurrent" ShowFilter="true" ShowTitle="true" ShowToolstrip="true" ShowTotalCount="true" ShowSelectedCount="true" UndoEdit="true">
+        <ColumnState Name="_txtServerName" DataPropertyName="ServerName" HeaderText="Server Name" Frozen="false" Visible="true" />
+        <ColumnState Name="_txtInstanceName" DataPropertyName="InstanceName" HeaderText="Instance Name" Frozen="false" Visible="true" />
+        <ColumnState Name="_txtInstanceName" DataPropertyName="DefaultCompatibilityLevel" HeaderText="Default Compatibility Level" Frozen="false" Visible="true" />
+        <ColumnState Name="_txtDatabaseName" DataPropertyName="DatabaseName" HeaderText="Database Name" Frozen="false" Visible="true" />
+        <ColumnState Name="_txtCompatibilityLevel" DataPropertyName="CompatibilityLevel" HeaderText="Compatibility Level" Frozen="false" Visible="true" />
+      </TableState>
+    </TableStates>
+  </ResultsViewer>
+</TestCase>

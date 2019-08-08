@@ -1,0 +1,83 @@
+<TestCase Signature="CC1D78F583D13C29" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex"  ExecutionOrder="4">
+  <WorkItem
+    Name            =   "TSQLCodingNotLogic"
+    Category        =   "TSQL Coding"
+    DisplayName     =   "T-SQL Coding: Not Logic"
+    Description     =   "This test case examines the uncommented codebase for the following practices
+•	Use of NOT BETWEEN syntax
+•	Use of &lt;&gt; comparisons
+•	Use of != comparisons
+•	Use of NOT EXISTS syntax
+•	Use of !&gt; comparisons
+•	Use of NOT IN syntax
+•	Use of !&lt; comparisons
+•	Use of NOT LIKE comparisons"
+    
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.TSQLCodingNotLogic.TSQLCodingNotLogicResultData, Microsoft.SqlRap.Client" />
+
+          <ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+
+            <SqlScript FileName ="Testcases\TSQLCodingNotLogic\SQLCensus_NotLogic_Issues.sql" IssueFileRuleQuery = ""/>
+          </ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="TSQLCodingNotLogic.htm" WorkItem="TSQLCodingNotLogic" DisplayName="T-SQL Coding: Not Logic" Description="Provide the list of T-SQL objects make SQL statements with NOT logic." Details="This test case examines the uncommented codebase for the following practices
+
+•	Use of NOT BETWEEN syntax
+•	Use of &lt;&gt; comparisons
+•	Use of != comparisons
+•	Use of NOT EXISTS syntax
+•	Use of !&gt; comparisons
+•	Use of NOT IN syntax
+•	Use of !&lt; comparisons
+•	Use of NOT LIKE comparisons"/>
+
+  <RuleSet>
+	  <!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	  <!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+    <Rule Name="SQL_Not_logic_not_equal_01" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_Not_logic_not_equal_02" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_Not_logic_not_greater" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_Not_logic_not_less" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_Not_logic_not_between" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />    
+    <Rule Name="SQL_Not_logic_not_exists" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_Not_logic_not_in" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_Not_logic_not_like" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+  </RuleSet>
+  
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+  <TableStates>
+		<TableState Name            ="TSQLCodingNotLogic" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="T-SQL Coding: Not Logic" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName"  HeaderText = "Database Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtOwnerName"  DataPropertyName ="OwnerName"  HeaderText = "Owner/Schema Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtObjectName"  DataPropertyName ="ObjectName"  HeaderText = "Object Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtObjectType"  DataPropertyName ="ObjectType"  HeaderText = "Object Type"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtIssue"  DataPropertyName ="Issue"  HeaderText = "Issue"  Frozen = "false" Visible="true" />
+      <ColumnState Name="_txtRuleName"  DataPropertyName ="RuleName"  HeaderText = "RuleName"  Frozen = "false" Visible="false" />
+
+    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

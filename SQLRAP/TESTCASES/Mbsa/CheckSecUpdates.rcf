@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestCase xmlns="http://www.microsoft.com/StaticWorkItem" xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" xmlns:issue="http://www.microsoft.com/RapidIssues" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.microsoft.com/StaticWorkItem  ..\..\Schema\StaticWorkItem.xsd" Signature="688A8E48042374F7" SortOrder="1" ExecutionOrder="5">
+  <WorkItem Name="Mbsa" Category="Security" DisplayName="Security Updates - Mbsa" Schema="" 
+            DataType="" 
+            Description="Queries each Server for the latest security patches."
+            Type="Microsoft.Rap.TestCases.Common.MbsaScan.MbsaScanWorkItem, Microsoft.Rap.TestCases.Common.MbsaScan">
+    <Configuration>
+      <Setting Name="MaximumExecutingChildren" Value="16" Description="Maximum number of child work items which can execute simultaneously.  This number is multiplied by the number of processors.&#xD;&#xA;&#xD;&#xA;Default: 16" Default="16" />
+      <Setting Name="SkipDownload" Value="false" Description="Determines if the test case will automatically download the latest cab files." Default="false" />
+      <Setting Name="AllowWUCUpdates" Value="false" Description="Enabling this setting will allow the target machine to download the latest version of the Windows Update Client. Make sure and articulate this to the customer before changing this setting" Default="false" />
+    </Configuration>
+    <State>
+      <StateBag>
+        <ExeState ExeLocation="mbsacli.exe" />
+        <ResultControl Type="Microsoft.Rap.TestCases.Common.MbsaScan.Results.MbsaScanResultsData, Microsoft.Rap.TestCases.Common.MbsaScan" />
+      </StateBag>
+    </State>
+  </WorkItem>
+  <help:HelpItem FileName="Security_Updates_help.htm" WorkItem="Mbsa" DisplayName="Security Updates" Description="Queries each DC for the latest security patches." Details="The Security Updates test queries each DC in the Forest to ensure they have the latest security patches installed." />
+  <RuleSet>
+    <Rule Name="MbsaScan.CollectionFailed" Type="Microsoft.SqlRap.Client.TestCases.Mbsa.Rules.MbsaScanCollectionFailed, Microsoft.SqlRap.Client"/>
+    <Rule Name="MbsaScan.Summary" Type="Microsoft.SqlRap.Client.TestCases.Mbsa.Rules.MbsaSummary, Microsoft.SqlRap.Client"/>
+    <Rule Name="MbsaScan.IncompleteScan" Type="Microsoft.SqlRap.Client.TestCases.Mbsa.Rules.MbsaIncomplete, Microsoft.SqlRap.Client"/>
+    <Rule Name="MbsaScan.CriticalUpdatesMissing" Type="Microsoft.SqlRap.Client.TestCases.Mbsa.Rules.MbsaUpdatesMissing, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Severity" Value="4" />
+    </Rule>
+    <Rule Name="MbsaScan.ImportantUpdatesMissing" Type="Microsoft.SqlRap.Client.TestCases.Mbsa.Rules.MbsaUpdatesMissing, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Severity" Value="3" />
+    </Rule>
+  </RuleSet>
+
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+    <TableStates>
+      <TableState Name="SecUpdatesMain" SortColumn="machineName" SortDirection="ascending" Title="Servers" ShowFilter="true" ShowTitle="true" ShowToolstrip="true" ShowTotalCount="true" ShowSelectedCount="true" UndoEdit="true">
+        <ColumnState Name="machineName" DataPropertyName="Name" HeaderText="Machine" Frozen="false" Visible="true" />
+        <!--ColumnState Name="domainName" DataPropertyName="DomainName" HeaderText="Domain" Frozen="false" Visible="true" />
+        <ColumnState Name="siteName" DataPropertyName="Site" HeaderText="Site" Frozen="false" Visible="true" /-->
+        <ColumnState Name="assessment" DataPropertyName="Assessment" HeaderText="Assessment" Frozen="false" Visible="true" />
+        <ColumnState Name="missingCriticalPatches" DataPropertyName="MissingCriticalPatches" HeaderText="Critical" Frozen="false" Visible="true" />
+        <ColumnState Name="missingImportantPatches" DataPropertyName="MissingImportantPatches" HeaderText="Important" Frozen="false" Visible="true" />
+        <ColumnState Name="missingOtherPatches" DataPropertyName="MissingOtherPatches" HeaderText="Other" Frozen="false" Visible="true" />
+        <ColumnState Name="missingPatches" DataPropertyName="MissingPatches" HeaderText="All" Frozen="false" Visible="true" />
+        <ColumnState Name="errorDescription" DataPropertyName="ErrorDescription" HeaderText="Error Description" Frozen="false" Visible="true" />
+        <ColoringRule Query="Assessment == 'Failed to execute mbsa.'" Color="brown" />
+        <ColoringRule Query="MissingCriticalPatches &gt; 0" Color="red" />
+        <ColoringRule Query="MissingImportantPatches &gt; 0" Color="red" />
+      </TableState>
+      <TableState Name="SecUpdatesDetail" SortColumn="_txtMachine" SortDirection="ascending" Title="Missing Patches" ShowFilter="true" ShowTitle="true" ShowToolstrip="true" ShowTotalCount="true" ShowSelectedCount="true" UndoEdit="true">
+        <ColumnState Name="_txtID" DataPropertyName="ID" HeaderText="ID" Frozen="false" Visible="true" />
+        <ColumnState Name="_txtName" DataPropertyName="Title" HeaderText="Description" Frozen="false" Visible="true" />
+        <ColumnState Name="_txtSeverity" DataPropertyName="SeverityText" HeaderText="Severity" Frozen="false" Visible="true" />
+        <ColumnState Name="_txtIsInstalled" DataPropertyName="IsInstalledText" HeaderText="Installed" Frozen="false" Visible="true" />
+        <ColoringRule Query="SeverityText == 'Critical' AND IsInstalledText == 'no'" Color="red" />
+        <ColoringRule Query="SeverityText == 'Important' AND IsInstalledText == 'no'" Color="brown" />
+      </TableState>
+    </TableStates>
+  </ResultsViewer>
+</TestCase>

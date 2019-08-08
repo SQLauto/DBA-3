@@ -1,0 +1,1266 @@
+<?XML version="1.0" standalone="yes" ?>
+<!-- ****************************************************************** -->
+<!-- **  SQLRAP                                          ** -->
+<!-- **  Copyright 2006 Microsoft Corporation, All rights reserved.  ** -->
+<!-- **  Version 4.1.0.35                                            ** -->
+<!-- **  Signature="C10DDF0E03ECDBE0"                                ** -->
+<!-- ****************************************************************** -->
+<package xmlns="Windows Scripting Host">
+    <job>
+	<?job error="true" debug="false" ?> 
+
+		<runtime>
+            <named name="Filename" helpstring="Name of the XML file" type="string" required="true" />
+            ' Cluster can even point to a node .... 
+            <named name="Cluster" helpstring="Server to target." type="string" required="true" />
+        </runtime>
+		<script language="vbscript" src="..\SharedRoutines.vbs">
+			<![CDATA[
+
+                On Error Resume Next
+                
+				Dim ADHC
+				Set ADHC = new MyADHC
+				ADHC.InitializeScriptState
+				Const HKEY_LOCAL_MACHINE = &H80000002
+				Dim blCluster				
+				dim target				
+				'''''''''''''''''''''''''''''''''''''''''''
+				'MAIN - strCluster is command line ClusterName
+				'''''''''''''''''''''''''''''''''''''''''''
+				
+				if InStr(ADHC.strCluster,"-cluster") <> 0 then
+				    blCluster = "true"
+				    target = Left(ADHC.strCluster, Len(ADHC.strCluster) - Len("-cluster"))
+				else
+				    blCluster = "false"   
+				    target = Left(ADHC.strCluster, Len(ADHC.strCluster) - Len("-node")) 
+				end if
+				
+				'#######################################
+				Dim objTest
+				Dim wmiOSs1
+				Dim blWin2000Cluster
+				Err.Clear
+				Set objTest = GetObject("winmgmts:\\" & target & "\root\CIMV2")
+					
+					If Err.number <> 0 Then
+						Wscript.Echo "Failed to instantiate object \root\CIMV2 in OSInformation - " & target
+				    end if
+                    
+                    Set wmiOSs1 = objTest.ExecQuery("SELECT * FROM Win32_OperatingSystem", "WQL", 48)
+                    
+                    If Err.number <> 0 Then
+						Wscript.Echo "Failed to query Win32_OperatingSystem in OSInformation - " & target
+				    end if
+                             
+                    For Each wmiOS In wmiOSs1
+                    
+                           Set xmlOS = ADHC.AddXMLElement(xmlServerNode, "NodeOS")                           
+                           ADHC.AddXMLAttr xmlOS, "Caption", wmiOS.Caption
+                           Wscript.Echo "OS Caption : " & wmiOS.Caption
+                           
+                           pos = InStr(wmiOS.Caption,"2000")
+                     
+                            if isnull(pos) or pos = 0 then
+                                blWin2000Cluster = "false"
+                            end if
+                             
+                            if pos > 0 then
+                                blWin2000Cluster = "true"
+                            end if
+                    Next
+                    Wscript.Echo "blWin2000Cluster : " & blWin2000Cluster
+                    
+                    If Err.number <> 0 Then
+						Wscript.Echo "Failed to iterate thru wmiOSs in GetOSInfo - " & strTarget
+				    end if	
+				'#######################################
+				
+				'DataCollection for Cluster machine other than Win2000
+				If (ADHC.strCluster <> Empty and blCluster = "true" and blWin2000Cluster="false") Then
+				    GetResourceInfo target
+				End If   
+				 
+				'DataCollection for Win2000 Cluster machine
+				If (ADHC.strCluster <> Empty and blCluster = "true" and blWin2000Cluster="true") Then
+				    GetResourceInfoForWin2000 target
+				    'GetResourceInfo target
+				End If
+				
+				If (ADHC.strCluster <> Empty and blCluster = "false") Then
+				    GetOsInfo target
+				End If   
+					
+				Wscript.Echo "Reached end..."
+                    
+
+                '***********************
+                '*** This method is called for Win2000 Cluster machines***
+                '***********************
+                Sub GetResourceInfoForWin2000 (strTarget)
+                
+                    Dim nodelist
+                    Dim objWMIService1
+                    Dim objWMIService2
+                    Dim xmlCluster
+                    Dim nodes1
+                    Dim resdata
+                    Dim colFiles
+                    Dim colItems
+                    Dim xmlResource
+                    Dim arrNodes
+                    Dim objWMIServiceDTC
+                    Dim xmlNode
+                    Dim dwValue
+                    Dim arrSubKeys1
+                    Dim colDeps
+                    Dim xmlDep
+                    Dim resItems
+                    
+                    on error resume next
+
+                    Err.Clear	
+		            
+		            If strTarget = "" then
+		                Wscript.Echo "GetResourceInfo is called with an invalid arguement..."
+		                Exit Sub
+		            End if 
+
+                    'prepare .xml using .xsd
+					ADHC.PrepareXML("ClusInfo")
+					
+					'write misc info in .xml
+					ADHC.AddXMLAttr ADHC.xmlRootNode, "ScriptVersion", "4.10.12"
+					ScriptStartTime=Now
+					ADHC.AddXMLAttr ADHC.xmlRootNode, "ScriptStartTime", ADHC.ConvertDate(ScriptStartTime)
+					
+					'create a server element in .xml and populate it
+					set xmlCluster = ADHC.AddXMLElement(ADHC.xmlRootNode, "Cluster")
+					ADHC.AddXMLAttr xmlCluster, "ClusterName", lcase(strTarget)
+									
+					Set objWMIServiceDTC = GetObject("winmgmts:\\" & strTarget & "\root\default:StdRegProv")            					            
+                    if err.Number <> 0 then
+                        Wscript.Echo "Failed to instantiate StdRegProv on " & strTarget
+                    end if
+                    	
+					nodelist = ""
+					objWMIServiceDTC.EnumKey HKEY_LOCAL_MACHINE, "Cluster\Nodes", nodeKeys
+                    For Each nodeKey In nodeKeys
+                        objWMIServiceDTC.GetStringValue HKEY_LOCAL_MACHINE, "Cluster\Nodes\" & nodeKey, "NodeName", NodeName 
+                        'Wscript.Echo "Node Name : " & NodeName         					
+					    If nodelist = "" Then
+					        nodelist = NodeName
+					    Else
+					        nodelist = NodeName & "," & nodelist  
+					    End If            
+                    Next
+					ADHC.AddXMLAttr xmlCluster, "NodeList", nodelist
+					
+					Dim size '4096 * 1024 = 4194304
+					size = -100					
+					objWMIServiceDTC.GetDwordValue HKEY_LOCAL_MACHINE, "Cluster\Quorum", "MaxQuorumLogSize", size 
+					if size <> -100 then ' indicates we've read the registry                            
+                        ADHC.AddXMLAttr xmlCluster, "QuorumLogFileSize", size
+                    else
+                        '4096 * 1024 = 4194304   
+                        size = 4194304        
+                        ADHC.AddXMLAttr xmlCluster, "QuorumLogFileSize", size
+                    end if					
+					
+					objWMIServiceDTC.GetStringValue HKEY_LOCAL_MACHINE, "Cluster\Quorum", "Path", path 
+					ADHC.AddXMLAttr xmlCluster, "MaintenanceFile", path
+					
+					'CLUSDB
+					Set objWMIService2 = GetObject("winmgmts:\\" & strTarget & "\root\cimv2")                    
+                    If Err.number <> 0 Then
+                        Wscript.Echo "Failed to instantiate \root\cimv2 object on " & strTarget
+                    End If
+                    
+                    Set colFiles = objWMIService2.ExecQuery("Select * from CIM_Datafile Where Name = '" & "c:\\WINNT\\Cluster\\CLUSDB" & "'")                    
+                    if Err.number <> 0 Then
+                        Wscript.Echo "Failed at select query on CIM_Datafile - objWMIService2"
+				    End if
+
+                    For Each objFile in colFiles
+                        ADHC.AddXMLAttr xmlCluster, "CLUSDB", objFile.FileSize
+                    Next
+                    
+                    If Err.number <> 0 Then
+                        Wscript.Echo "Failed to iterate thru colFiles collection"
+				    End if                    
+                    '*****
+                    
+					ADHC.AddXMLAttr xmlCluster, "TimeStamp", ADHC.ConvertDate(Now)
+					
+  				    'Build cluster node - input is cluster name
+					WScript.Echo "Analyzing " & strTarget & vbCrLf
+	                WScript.Echo "Running WMI " & strTarget
+	                WScript.Echo " "
+                                        
+		            
+                    objWMIServiceDTC.EnumKey HKEY_LOCAL_MACHINE, "Cluster\Resources", arrSubKeys		            
+                    if err.Number <> 0 then 
+                           Wscript.Echo "Failed to enumerate reg key Cluster\Resources on" & strTarget
+                    end if 
+
+                    For Each subkey In arrSubKeys
+                        
+                        Set xmlResource = ADHC.AddXMLElement(xmlCluster, "Resource")
+                        ADHC.AddXMLAttr xmlResource, "Description", ""
+                        
+                        'For reading GroupName
+                        objWMIServiceDTC.EnumKey HKEY_LOCAL_MACHINE, "Cluster\Groups", groupKeys
+                        For Each groupKey In groupKeys
+                            objWMIServiceDTC.GetMultiStringValue HKEY_LOCAL_MACHINE, "Cluster\Groups\" & groupKey, "Contains", groupGuids
+                            
+                            For each groupGuid in groupGuids
+                                'Wscript.Echo "Group Guid .... " & groupGuid
+                                if groupGuid = subkey then
+                                    objWMIServiceDTC.GetStringValue HKEY_LOCAL_MACHINE, "Cluster\Groups\" & groupKey, "Name", groupName
+                                    ADHC.AddXMLAttr xmlResource, "GroupName",groupName
+                                end if
+                            Next
+                        Next
+                        
+                        objWMIServiceDTC.GetStringValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & subkey, "Name", szName   
+                        ADHC.AddXMLAttr xmlResource, "Name", szName
+                        
+                        objWMIServiceDTC.GetStringValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & subkey, "Type", szValue                        
+                        ADHC.AddXMLAttr xmlResource, "Type", szValue
+                        
+                        dwValue = -100 ' Unlikely value                                
+                        objWMIServiceDTC.GetDwordValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & subkey, "RestartAction", dwValue
+                        if dwValue <> -100 then ' indicates we've read RestartAction
+                            ADHC.AddXMLAttr xmlResource, "RestartAction", dwValue
+                        end if
+                        
+                        '********** PossibleResOwners**********
+                        ownerslist = ""
+                        objWMIServiceDTC.GetMultiStringValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & subkey, "PossibleOwners", multiValues                                                
+                        For each value in multiValues                            
+                            objWMIServiceDTC.GetStringValue HKEY_LOCAL_MACHINE, "Cluster\Nodes\" & value, "NodeName", NodeName 
+                            'Wscript.Echo "Node Name : " & NodeName         					
+					        If ownerslist = "" Then
+					            ownerslist = NodeName
+				            Else
+				                ownerslist = NodeName & "," & ownerslist  
+				            End If                                        
+                        Next
+                        
+                        if not isnull(ownerslist) then ' indicates we've read PossibleOwners
+                            ADHC.AddXMLAttr xmlResource, "PossibleResOwners", ownerslist
+                        else
+                            ADHC.AddXMLAttr xmlResource, "PossibleResOwners", nodelist
+                        end if
+                        '****************************************
+                        
+                        If szValue = "Distributed Transaction Coordinator" Then
+
+                            objWMIServiceDTC.EnumKey HKEY_LOCAL_MACHINE, "Cluster\Resources\" & subkey, arrSubKeys1
+                            
+                            if err.Number <> 0 then 
+                                Wscript.Echo "Failed to enumerate reg key Cluster\Resources on" & strTarget
+                            end if 
+                          
+                            For Each key in arrSubKeys1
+
+                                dwValue = -100 ' Unlikely value
+                                
+                                objWMIServiceDTC.GetDwordValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & subkey & "\" & key & "\Security", "NetworkDtcAccess", dwValue
+                                
+                                if err.Number <> 0 then 
+                                   Wscript.Echo "Failed to read sub keys of the reg key Cluster\Resources\{subkey}\{key}\Security\NetworkDtcAccess on" & strTarget
+                                end if 
+                            
+                                if dwValue <> -100 then ' indicates we've read \Security\NetworkDtcAccess
+                                    ADHC.AddXMLAttr xmlResource, "NetworkDTC", dwValue
+                                end if 
+                            
+                                dwValue = -100 ' Unlikely value                            
+                            Next
+                            if err.Number <> 0 then 
+                                Wscript.Echo "Failed to iterate thru arrSubKeys1"
+                            end if 
+                            
+                         End If
+                         
+                         objWMIServiceDTC.GetMultiStringValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & subkey, "DependsOn", depGuids
+                         For each depGuid in depGuids
+                            'Wscript.Echo "Dependent Guid .... " & depGuid
+                            
+                            objWMIServiceDTC.EnumKey HKEY_LOCAL_MACHINE, "Cluster\Resources", arrSubKeys2		            
+                            if err.Number <> 0 then 
+                                   Wscript.Echo "Failed to enumerate reg key Cluster\Resources on" & strTarget
+                            end if 
+
+                            For Each subkey2 In arrSubKeys2
+                                if depGuid = subkey2 then
+                                    objWMIServiceDTC.GetStringValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & subkey2, "Name", resName
+                                    objWMIServiceDTC.GetStringValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & subkey2, "Type", resType
+                                    
+                                    Set xmlDep = ADHC.AddXMLElement(xmlResource, "Dependent")
+                                    ADHC.AddXMLAttr xmlDep, "ResourceDependentOn",  resName
+                                    ADHC.AddXMLAttr xmlDep, "Type", resType 
+                                end if
+                            Next
+                         Next
+                    Next
+                    
+                    '**********
+                    arrNodes = Split(nodelist, ",")
+                                            
+                    For i=0 to (UBound(arrNodes) - 1)
+                        Set xmlNode = ADHC.AddXMLElement(xmlResource, "Node")
+                        
+                        Set objWMIServiceDTC = GetObject("winmgmts:\\" & trim(arrNodes(i)) & "\root\default:StdRegProv")
+                        
+                        if err.Number <> 0 then 
+                               Wscript.Echo "Failed to instantiate StdRegProv on " & trim(arrNodes(i))
+                        end if 				
+
+                        objWMIServiceDTC.GetDwordValue HKEY_LOCAL_MACHINE, "SOFTWARE\Microsoft\MSDTC\Security", "NetworkDtcAccess", dwValue
+                        
+                        if err.Number <> 0 then 
+                               Wscript.Echo "Failed to read reg key SOFTWARE\Microsoft\MSDTC\Security - NetworkDtcAccess on" & trim(arrNodes(i))
+                        end if 
+
+                        ADHC.AddXMLAttr xmlNode, "NodeDTC", dwValue
+                    Next   
+			        
+                    Set objWMIServiceDTC = GetObject("winmgmts:\\" & strTarget & "\root\default:StdRegProv")		            
+                    if err.Number <> 0 then
+                        Wscript.Echo "Failed to instantiate StdRegProv on " & strTarget
+                    end if
+		            
+                    objWMIServiceDTC.EnumKey HKEY_LOCAL_MACHINE, "Cluster\Resources", arrSubKeys		            
+                    if err.Number <> 0 then 
+                           Wscript.Echo "Failed to enumerate reg key Cluster\Resources on" & strTarget
+                    end if 
+
+                    For Each subkey In arrSubKeys
+                        
+                        objWMIServiceDTC.GetStringValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & subkey, "Type", szValue                        
+                        if err.Number <> 0 then 
+                           Wscript.Echo "Failed to read sub keys of the reg key Cluster\Resources\{subkey}\{Type} on" & strTarget
+                        end if 
+                        
+                        If szValue = "Distributed Transaction Coordinator" Then
+
+                            objWMIServiceDTC.EnumKey HKEY_LOCAL_MACHINE, "Cluster\Resources\" & subkey, arrSubKeys1                            
+                            if err.Number <> 0 then 
+                                Wscript.Echo "Failed to enumerate reg key Cluster\Resources on" & strTarget
+                            end if 
+                          
+                            For Each key in arrSubKeys1
+
+                                dwValue = -100 ' Unlikely value
+                                
+                                objWMIServiceDTC.GetDwordValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & subkey & "\" & key & "\Security", "NetworkDtcAccess", dwValue
+                                
+                                if err.Number <> 0 then 
+                                   Wscript.Echo "Failed to read sub keys of the reg key Cluster\Resources\{subkey}\{key}\Security\NetworkDtcAccess on" & strTarget
+                                end if 
+                            
+                                if dwValue <> -100 then ' indicates we've read \Security\NetworkDtcAccess
+                                    ADHC.AddXMLAttr xmlResource, "NetworkDTC", dwValue
+                                end if 
+                            
+                                dwValue = -100 ' Unlikely value
+                            
+                            Next
+                            
+                             if err.Number <> 0 then 
+                                   Wscript.Echo "Failed to iterate thru arrSubKeys1"
+                             end if 
+                            
+                         End If
+                    Next  
+                                      
+                    '**************
+                    'DTCDependsOnQuorum
+                    Set objStdRegProv = GetObject("winmgmts:\\" & strTarget & "\root\default:StdRegProv")
+                    If Err.number <> 0 Then
+                        Wscript.Echo "Failed to instantiate StdRegProv on " & strTarget
+                    End If
+                    
+                    objStdRegProv.GetStringValue HKEY_LOCAL_MACHINE, "Cluster\Quorum", "Resource", quorumGuidValue
+                    objStdRegProv.EnumKey HKEY_LOCAL_MACHINE, "Cluster\Resources", resourceSubKeyGuids
+
+                    For each resGuid in resourceSubKeyGuids
+                        objStdRegProv.GetStringValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & resGuid, "Type", resourceTypeValue
+                        
+                        if resGuid = quorumGuidValue then
+                            if resourceTypeValue = "Majority Node Set" then
+                               ADHC.AddXMLAttr xmlCluster, "IsMnsCluster", "true"
+                               isMnsCluster = true                        
+                            end if
+                        end if
+                        
+                        if resourceTypeValue = "Distributed Transaction Coordinator" then
+                            dtcGuidVal = resGuid
+                        end if
+                    Next
+                    
+                    Wscript.Echo "DTCGuid .... " & dtcGuidVal
+                    
+                    
+                    objStdRegProv.GetStringValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & quorumGuidValue , "Type", quorumTypeValue
+                    
+                    if quorumTypeValue <> "Physical Disk" then
+                        ADHC.AddXMLAttr xmlResource, "DTCDependsOnQuorum", "false"
+                    end if
+                    
+                    dtcDependsonQuorum = false
+                    
+                    Wscript.Echo "quorumGuid .... " & quorumGuidValue
+                    Wscript.Echo "quorumTypeVal .... " & quorumTypeValue
+                    
+                    if quorumTypeValue = "Physical Disk" then
+                    
+                        objStdRegProv.GetMultiStringValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & dtcGuidVal , "DependsOn", dependencyResources
+                        
+                        if not isnull(dependencyResources) then
+                        
+                            For each dependency in dependencyResources
+                                Wscript.Echo "depends .... " & dependency
+                                 if dependency = quorumGuidValue then
+                                    ADHC.AddXMLAttr xmlResource, "DTCDependsOnQuorum", "true"
+                                    dtcDependsonQuorum = true
+                                 end if
+                            Next
+                        
+                        end if 
+                        
+                        if not dtcDependsonQuorum then
+                            ADHC.AddXMLAttr xmlResource, "DTCDependsOnQuorum", "false"
+                        end if
+                        
+                    end if
+                    
+                   
+                    ADHC.AddXMLAttr ADHC.xmlRootNode, "Status", 0
+    			    ADHC.AddXMLAttr ADHC.xmlRootNode, "ScriptEndTime", ADHC.ConvertDate(Now)
+				    ADHC.AddXMLAttr ADHC.xmlRootNode, "ElapsedTimeInSeconds", datediff("s",ScriptStartTime,Now)
+				    WScript.Echo " Saved output .xml file at " & adhc.strFilename
+				   
+				    ADHC.SaveXML(adhc.strFilename)
+				   
+				    objWMIService1 = nothing
+                    objWMIService2 = nothing
+                    objWMIServiceDTC = nothing
+					Err.Clear 
+                
+                End Sub
+                '####################################
+                
+                
+                '***********************
+                '*** Execute cluster.exe ***(Added by MK-4/3/2007)***
+                '***********************
+                Sub GetResourceInfo (strTarget)
+                
+                    Dim nodelist
+                    Dim objWMIService1
+                    Dim objWMIService2
+                    Dim xmlCluster
+                    Dim nodes1
+                    Dim resdata
+                    Dim colFiles
+                    Dim colItems
+                    Dim xmlResource
+                    Dim arrNodes
+                    Dim objWMIServiceDTC
+                    Dim xmlNode
+                    Dim dwValue
+                    Dim arrSubKeys1
+                    Dim colDeps
+                    Dim xmlDep
+                    Dim resItems
+                    
+                    on error resume next
+
+                    Err.Clear	
+		            
+		            If strTarget = "" then
+		                Wscript.Echo "GetResourceInfo is called with an invalid arguement..."
+		                Exit Sub
+		            End if 
+
+                    'prepare .xml using .xsd
+					ADHC.PrepareXML("ClusInfo")
+					
+					'write misc info in .xml
+					ADHC.AddXMLAttr ADHC.xmlRootNode, "ScriptVersion", "4.10.12"
+					ScriptStartTime=Now
+					ADHC.AddXMLAttr ADHC.xmlRootNode, "ScriptStartTime", ADHC.ConvertDate(ScriptStartTime)
+					
+					'create a server element in .xml and populate it
+					set xmlCluster = ADHC.AddXMLElement(ADHC.xmlRootNode, "Cluster")
+					ADHC.AddXMLAttr xmlCluster, "ClusterName", lcase(strTarget)
+					
+					Set objWMIService1 = GetObject("winmgmts:\\" & strTarget & "\root\MSCluster")
+					
+					if err.number <> 0 then
+					    Wscript.Echo "Failed to instantiate \root\MSCluster object on " & strTarget
+					end if
+					
+					Set nodes1 = objWMIService1.ExecQuery("SELECT * FROM MSCluster_Node", "WQL", 48)
+					
+					if err.number <> 0 then
+					    Wscript.Echo "Failed at select query on MSCluster_Node - objWMIService1"
+					end if
+					
+					nodelist = ""
+					 
+					For each nd in nodes1
+					
+					    If nodelist = "" Then
+					        nodelist = nd.Name
+					    Else
+					        nodelist = nd.Name & "," & nodelist  
+					    End If
+					
+					Next	
+					
+					if err.number <> 0 then
+					    Wscript.Echo "Failed to iterate thru nodes1 collection"
+					end if				
+					
+					ADHC.AddXMLAttr xmlCluster, "NodeList", nodelist
+					
+					Set resdata = objWMIService1.ExecQuery("SELECT * FROM MSCluster_Cluster", "WQL", 48)
+					
+					if err.number <> 0 then
+					    Wscript.Echo "Failed at select query on MSCluster_Cluster - objWMIService1"
+					end if
+					
+					For each res in resdata
+					    quorum = res.QuorumLogFileSize
+					    mf = res.MaintenanceFile       
+					Next
+					
+					if err.number <> 0 then
+					    Wscript.Echo "Failed to iterate thru resdata collection"
+					end if		
+					
+					ADHC.AddXMLAttr xmlCluster, "QuorumLogFileSize", quorum
+					ADHC.AddXMLAttr xmlCluster, "MaintenanceFile", mf
+                    
+                    Set objWMIService2 = GetObject("winmgmts:\\" & strTarget & "\root\cimv2")
+                    
+                    If Err.number <> 0 Then
+                        Wscript.Echo "Failed to instantiate \root\cimv2 object on " & strTarget
+                    End If
+                    
+                    Set colFiles = objWMIService2.ExecQuery("Select * from CIM_Datafile Where Name = '" & "c:\\Windows\\Cluster\\CLUSDB" & "'")
+                    
+                    if Err.number <> 0 Then
+                        Wscript.Echo "Failed at select query on CIM_Datafile - objWMIService2"
+				    End if
+
+                    For Each objFile in colFiles
+                        ADHC.AddXMLAttr xmlCluster, "CLUSDB", objFile.FileSize
+                    Next
+                    
+                    If Err.number <> 0 Then
+                        Wscript.Echo "Failed to iterate thru colFiles collection"
+				    End if
+					
+					ADHC.AddXMLAttr xmlCluster, "TimeStamp", ADHC.ConvertDate(Now)
+					
+  				    'Build cluster node - input is cluster name
+					WScript.Echo "Analyzing " & strTarget & vbCrLf
+	                WScript.Echo "Running WMI " & strTarget
+	                WScript.Echo " "
+                    
+                    Set groups = objWMIService1.ExecQuery("SELECT * FROM MSCluster_ResourceGroup", "WQL", 48)	
+	                If Err.number <> 0 Then                    
+	                    ErrorDetail Err.number, Err.Description, "Failed to Query WMI Namespace : MSCluster_ResourceGroup"
+	                    ADHC.bErrorsFound = True
+                    End if
+                    
+                    For Each group In groups
+                    
+                        'Group resources 
+                        Set resources = objWMIService1.ExecQuery("SELECT * FROM MSCluster_ResourceGroupToResource", "WQL", 48)
+                        If Err.number <> 0 Then                    
+	                        ErrorDetail Err.number, Err.Description, "Failed to Query WMI Namespace : MSCluster_ResourceGroupToResource"
+	                        ADHC.bErrorsFound = True
+                        End if
+                        
+                        For Each resource In resources
+                            iStartLoc=instr(resource.GroupComponent, "=") + 2
+                            iLength =len(resource.GroupComponent) - iStartLoc
+                            strGrpName= mid(resource.GroupComponent, iStartLoc, iLength)  
+                            if trim(strGrpName) = trim(group.Name) then
+                                iStartLoc=instr(resource.PartComponent, "=") + 2
+                                iLength =len(resource.PartComponent) - iStartLoc
+                                
+                                Set resItems = objWMIService1.ExecQuery("SELECT * FROM MSCluster_Resource", "WQL", 48)
+                                If Err.number <> 0 Then                    
+	                                ErrorDetail Err.number, Err.Description, "Failed at select query on MSCluster_Resource - objWMIService1"
+	                                ADHC.bErrorsFound = True
+                                End if
+                            
+                                For each objItem in resItems                                
+                                    
+                                    If objItem.Name = mid(resource.PartComponent, iStartLoc, iLength)Then
+                                        
+                                        Set xmlResource = ADHC.AddXMLElement(xmlCluster, "Resource")
+                                        
+                                        If objItem.Type = "Distributed Transaction Coordinator" Then
+                                            
+                                            arrNodes = Split(nodelist, ",")
+                                            
+                                            For i=0 to (UBound(arrNodes) - 1)
+                                                Set xmlNode = ADHC.AddXMLElement(xmlResource, "Node")
+                                                
+                                                Set objWMIServiceDTC = GetObject("winmgmts:\\" & trim(arrNodes(i)) & "\root\default:StdRegProv")
+                                                
+                                                if err.Number <> 0 then 
+                                                       Wscript.Echo "Failed to instantiate StdRegProv on " & trim(arrNodes(i))
+                                                end if 				
+
+                                                objWMIServiceDTC.GetDwordValue HKEY_LOCAL_MACHINE, "SOFTWARE\Microsoft\MSDTC\Security", "NetworkDtcAccess", dwValue
+                                                
+                                                if err.Number <> 0 then 
+                                                       Wscript.Echo "Failed to read reg key SOFTWARE\Microsoft\MSDTC\Security - NetworkDtcAccess on" & trim(arrNodes(i))
+                                                end if 
+
+			                                    ADHC.AddXMLAttr xmlNode, "NodeDTC", dwValue
+			                                Next   
+                					        
+		                                    Set objWMIServiceDTC = GetObject("winmgmts:\\" & strTarget & "\root\default:StdRegProv")
+            					            
+		                                    if err.Number <> 0 then
+		                                        Wscript.Echo "Failed to instantiate StdRegProv on " & strTarget
+		                                    end if
+            					            
+		                                    objWMIServiceDTC.EnumKey HKEY_LOCAL_MACHINE, "Cluster\Resources", arrSubKeys
+            					            
+		                                    if err.Number <> 0 then 
+                                                   Wscript.Echo "Failed to enumerate reg key Cluster\Resources on" & strTarget
+                                            end if 
+
+                                            For Each subkey In arrSubKeys
+                                                
+                                                objWMIServiceDTC.GetStringValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & subkey, "Type", szValue
+            	                                
+                                                if err.Number <> 0 then 
+                                                   Wscript.Echo "Failed to read sub keys of the reg key Cluster\Resources\{subkey}\{Type} on" & trim(arrNodes(i))
+                                                end if 
+            	                                
+                                                If szValue = "Distributed Transaction Coordinator" Then
+
+                                                    objWMIServiceDTC.EnumKey HKEY_LOCAL_MACHINE, "Cluster\Resources\" & subkey, arrSubKeys1
+            	                                    
+                                                    if err.Number <> 0 then 
+                                                        Wscript.Echo "Failed to enumerate reg key Cluster\Resources on" & strTarget
+                                                    end if 
+            	                                  
+                                                    For Each key in arrSubKeys1
+
+                                                        dwValue = -100 ' Unlikely value
+            	                                        
+                                                        objWMIServiceDTC.GetDwordValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & subkey & "\" & key & "\Security", "NetworkDtcAccess", dwValue
+            	                                        
+                                                        if err.Number <> 0 then 
+                                                           Wscript.Echo "Failed to read sub keys of the reg key Cluster\Resources\{subkey}\{key}\Security\NetworkDtcAccess on" & strTarget
+                                                        end if 
+            	                                    
+                                                        if dwValue <> -100 then ' indicates we've read \Security\NetworkDtcAccess
+                                                            ADHC.AddXMLAttr xmlResource, "NetworkDTC", dwValue
+                                                        end if 
+            	                                    
+                                                        dwValue = -100 ' Unlikely value
+            	                                    
+                                                    Next
+            		                                
+                                                     if err.Number <> 0 then 
+                                                           Wscript.Echo "Failed to iterate thru arrSubKeys1"
+                                                     end if 
+            		                                
+                                                 End If
+                                            Next
+                                            
+                                            'DTCDependsOnQuorum
+                                            Set objStdRegProv = GetObject("winmgmts:\\" & strTarget & "\root\default:StdRegProv")
+                                            If Err.number <> 0 Then
+                                                Wscript.Echo "Failed to instantiate StdRegProv on " & strTarget
+                                            End If
+                                            
+                                            objStdRegProv.GetStringValue HKEY_LOCAL_MACHINE, "Cluster\Quorum", "Resource", quorumGuidValue
+                                            objStdRegProv.EnumKey HKEY_LOCAL_MACHINE, "Cluster\Resources", resourceSubKeyGuids
+                    
+                                            For each resGuid in resourceSubKeyGuids
+                                                objStdRegProv.GetStringValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & resGuid, "Type", resourceTypeValue
+                                                
+                                                if resGuid = quorumGuidValue then
+                                                    if resourceTypeValue = "Majority Node Set" then
+                                                       ADHC.AddXMLAttr xmlCluster, "IsMnsCluster", "true"
+                                                       isMnsCluster = true                        
+                                                    end if
+                                                end if
+                                                
+                                                if resourceTypeValue = "Distributed Transaction Coordinator" then
+                                                    dtcGuidVal = resGuid
+                                                end if
+                                            Next
+                                            
+                                            Wscript.Echo "DTCGuid .... " & dtcGuidVal
+                                            
+                                            
+                                            objStdRegProv.GetStringValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & quorumGuidValue , "Type", quorumTypeValue
+                                            
+                                            if quorumTypeValue <> "Physical Disk" then
+                                                ADHC.AddXMLAttr xmlResource, "DTCDependsOnQuorum", "false"
+                                            end if
+                                            
+                                            dtcDependsonQuorum = false
+                                            
+                                            Wscript.Echo "quorumGuid .... " & quorumGuidValue
+                                            Wscript.Echo "quorumTypeVal .... " & quorumTypeValue
+                                            
+                                            if quorumTypeValue = "Physical Disk" then
+                                            
+                                                objStdRegProv.GetMultiStringValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & dtcGuidVal , "DependsOn", dependencyResources
+                                                
+                                                if not isnull(dependencyResources) then
+                                                
+                                                    For each dependency in dependencyResources
+                                                        Wscript.Echo "depends .... " & dependency
+                                                         if dependency = quorumGuidValue then
+                                                            ADHC.AddXMLAttr xmlResource, "DTCDependsOnQuorum", "true"
+                                                            dtcDependsonQuorum = true
+                                                         end if
+                                                    Next
+                                                
+                                                end if 
+                                                
+                                                if not dtcDependsonQuorum then
+                                                    ADHC.AddXMLAttr xmlResource, "DTCDependsOnQuorum", "false"
+                                                end if
+                                                
+                                            end if
+                                            '******************                                    
+                                        End If
+
+                                        ADHC.AddXMLAttr xmlResource, "Description", objItem.Description
+                                        ADHC.AddXMLAttr xmlResource, "GroupName", group.Name
+                                        ADHC.AddXMLAttr xmlResource, "Name", objItem.Name
+                                        ADHC.AddXMLAttr xmlResource, "Type", objItem.Type
+                                        ADHC.AddXMLAttr xmlResource, "RestartAction", objItem.RestartAction
+                                        
+                                        '***************************                                       
+                                        'PossibleResOwners
+                                        strPossOwnNameList = ""
+                                        strOwnName = ""
+                                        Set colPossibles = objWMIService1.ExecQuery("SELECT * FROM MSCluster_ResourceToPossibleOwner", "WQL", 48)
+                                        If Err.number <> 0 Then	                                                    
+                                            Wscript.Echo "Failed to query Failed to Query WMI Namespace : MSCluster_ResourceToPossibleOwner - objWMIService1"
+                                            'ADHC.bErrorsFound = True
+                                        End if
+                                        
+                                        For Each colPossible In colPossibles
+                                            iStartLoc=instr(colPossible.GroupComponent, "=") + 2
+                                            iLength =len(colPossible.GroupComponent) - iStartLoc
+                                            strResName= mid(colPossible.GroupComponent, iStartLoc, iLength)
+                                            if trim(strResName) = trim(objItem.Name) then
+                                                iStartLoc=instr(colPossible.PartComponent, "=") + 2
+                                                iLength =len(colPossible.PartComponent) - iStartLoc
+                                                
+                                                if strOwnName = "" then
+                                                    strOwnName= mid(colPossible.PartComponent, iStartLoc, iLength)
+                                                else
+                                                    strOwnName= mid(colPossible.PartComponent, iStartLoc, iLength) & "," & strOwnName
+                                                end if                                
+                                            end if
+                                        Next
+                                        If Err.number <> 0 Then	                                                    
+                                            Wscript.Echo "Failed to query Failed to Query WMI Namespace : Failed to Loop through colPossibles : MSCluster_ResourceToPossibleOwner - objWMIService1"
+                                            'ADHC.bErrorsFound = True
+                                        End if
+                                        
+                                        ilen=len(strOwnName)
+                                        if ilen > 0 then
+                                            strPossOwnNameList = mid(strOwnName, 1, ilen)
+                                            ADHC.AddXMLAttr xmlResource, "PossibleResOwners", strPossOwnNameList
+                                        end if
+                                        '***************************
+                                        
+                                        'Dependent Resources                                       
+                                        i = 0
+                                        strDepName=""
+                                       
+                                        Set colDeps = objWMIService1.ExecQuery("SELECT * FROM MSCluster_ResourceToDependentResource", "WQL", 48)
+                                       
+                                        if err.Number <> 0 then 
+                                            Wscript.Echo "Failed to query MSCluster_ResourceToDependentResource - objWMIService1"
+                                        end if 
+                                       
+                                        For Each colDep In colDeps
+                                            
+                                            iStartLoc=instr(colDep.Antecedent, "=") + 2
+                                            iLength =len(colDep.Antecedent) - iStartLoc
+                                            strResName= mid(colDep.Antecedent, iStartLoc, iLength)
+                                            
+                                            if trim(strResName) = trim(objItem.Name) then
+                                                iStartLoc1=instr (colDep.Dependent, "=") + 2
+                                                iLength1 =len(colDep.Dependent) - iStartLoc1
+                                            
+                                                Set resItems = objWMIService1.ExecQuery("SELECT * FROM MSCluster_Resource", "WQL", 48)
+                                                
+                                                if err.Number <> 0 then 
+                                                    Wscript.Echo "Failed to query MSCluster_Resource - objWMIService1"
+                                                end if 
+                                                        
+                                                For each res in resItems   
+                                                    If res.Name = mid(colDep.Dependent, iStartLoc1, iLength1) Then
+                                                        Set xmlDep = ADHC.AddXMLElement(xmlResource, "Dependent")
+                                                        ADHC.AddXMLAttr xmlDep, "ResourceDependentOn",  mid(colDep.Dependent, iStartLoc1, iLength1)
+                                                        ADHC.AddXMLAttr xmlDep, "Type", res.Type 
+                                                        i = i + 1
+                                                    End If                                          
+                                                Next                                                
+                                                If err.Number <> 0 then 
+                                                    Wscript.Echo "Failed to iterate thru resItems collection"
+                                                End if                                            
+                                            End if
+                                        Next                                       
+                                        If err.Number <> 0 then 
+                                            Wscript.Echo "Failed to iterate thru colDeps collection"
+                                        End if
+                                    End If
+                                Next
+                                If Err.number <> 0 Then
+	                                ErrorDetail Err.number, Err.Description, "Failed to Loop through resItems : MSCluster_Resource"
+	                                ADHC.bErrorsFound = True
+                                End if
+                            End if                            
+                        Next   
+                        If Err.number <> 0 Then
+                            ErrorDetail Err.number, Err.Description, "Failed to Loop through resources : MSCluster_ResourceGroupToResource"
+                            ADHC.bErrorsFound = True
+                        End if
+                        'WScript.Echo "Group Name : " & group.Name	                           
+                    Next                    
+                    If Err.number <> 0 Then
+	                    ErrorDetail Err.number, Err.Description, "Failed to Loop through groups : MSCluster_ResourceGroup"
+	                    ADHC.bErrorsFound = True
+                    End if
+                   
+                    ADHC.AddXMLAttr ADHC.xmlRootNode, "Status", 0
+    			    ADHC.AddXMLAttr ADHC.xmlRootNode, "ScriptEndTime", ADHC.ConvertDate(Now)
+				    ADHC.AddXMLAttr ADHC.xmlRootNode, "ElapsedTimeInSeconds", datediff("s",ScriptStartTime,Now)
+				    WScript.Echo " Saved output .xml file at " & adhc.strFilename
+				   
+				    ADHC.SaveXML(adhc.strFilename)
+				   
+				    objWMIService1 = nothing
+                    objWMIService2 = nothing
+                    objWMIServiceDTC = nothing
+					Err.Clear 
+					
+                End sub
+                
+				'''''''''''''''''''''''''''''''''''''''''''
+				'Get SvrOsInfo Configuration
+				'''''''''''''''''''''''''''''''''''''''''''
+				Sub GetOsInfo (strTarget)
+				
+				    on error resume next
+				    Err.Clear
+				    
+				    Dim objWMIService
+				    Dim OSVersion
+				    Dim OS2000
+				    Dim xmlServerNode
+				    Dim arrSubKeys
+				    Dim wmiOSs
+				    Dim wmiCSs
+				    Dim wmiPSs
+				    Dim xmlOS
+				    Dim objStdRegProv
+					
+					ADHC.PrepareXML("NodeInfo")
+					
+					'write misc info in .xml
+					ADHC.AddXMLAttr ADHC.xmlRootNode, "ScriptVersion", "4.10.12"
+					ScriptStartTime=Now
+					ADHC.AddXMLAttr ADHC.xmlRootNode, "ScriptStartTime", ADHC.ConvertDate(ScriptStartTime)
+
+					'Get nodes
+					set xmlServerNode = ADHC.AddXMLElement(ADHC.xmlRootNode, "Server")
+			        ADHC.AddXMLAttr xmlServerNode, "ServerName", strTarget
+			        ADHC.AddXMLAttr xmlServerNode, "TimeStamp", ADHC.ConvertDate(Now)
+					
+					GetClusterInfo strTarget,xmlServerNode
+					
+					WScript.Echo "Binding to WMI Provider for: " & strTarget
+					
+					Set objWMIService = GetObject("winmgmts:\\" & strTarget & "\root\CIMV2")
+					
+					Set objStdRegProv = GetObject("winmgmts:\\" & strTarget & "\root\default:StdRegProv")
+					
+					If Err.number <> 0 Then
+						Wscript.Echo "Failed to instantiate object \root\CIMV2 in GetOSInfo - " & strTarget
+				    end if
+                    
+                    Set wmiOSs = objWMIService.ExecQuery("SELECT * FROM Win32_OperatingSystem", "WQL", 48)
+                    
+                    If Err.number <> 0 Then
+						Wscript.Echo "Failed to query Win32_OperatingSystem in GetOSInfo - " & strTarget
+				    end if
+                             
+                    For Each wmiOS In wmiOSs
+                    
+                           Set xmlOS = ADHC.AddXMLElement(xmlServerNode, "NodeOS")
+                                
+                           ADHC.AddXMLAttr xmlOS, "BootDevice", wmiOS.BootDevice
+                           ADHC.AddXMLAttr xmlOS, "BuildNumber", wmiOS.BuildNumber                           
+                           ADHC.AddXMLAttr xmlOS, "BuildType", wmiOS.BuildType
+                           ADHC.AddXMLAttr xmlOS, "CSDVersion", wmiOS.CSDVersion
+                           ADHC.AddXMLAttr xmlOS, "Caption", wmiOS.Caption
+                           
+                           'OSVersion
+                           pos = InStr(wmiOS.Caption,"2000")                     
+                           if pos > 0 then
+                               OS2000 = "True"
+                           end if                            
+                           
+                           'ADHC.AddXMLAttr xmlOS, "CurrentTimeZone", wmiOS.CurrentTimeZone
+                           
+                           Dim dwValue1
+                           If OS2000 = "True" Then
+                                objStdRegProv.GetDwordValue HKEY_LOCAL_MACHINE, "SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management", "LargeSystemCache", dwValue1
+                                ADHC.AddXMLAttr xmlOS, "LargeSystemCache", dwValue1
+                                
+                                ADHC.AddXMLAttr xmlOS, "SystemDrive", mid(wmiOS.SystemDirectory,1,2)
+                           Else
+                                ADHC.AddXMLAttr xmlOS, "LargeSystemCache", wmiOS.LargeSystemCache
+                                ADHC.AddXMLAttr xmlOS, "SystemDrive", wmiOS.SystemDrive
+                           End If
+                           
+                           ADHC.AddXMLAttr xmlOS, "LocalDateTime", wmiOS.LocalDateTime
+                           ADHC.AddXMLAttr xmlOS, "MaxProcessMemorySize", wmiOS.MaxProcessMemorySize                           
+                           'ADHC.AddXMLAttr xmlOS, "ProductType", wmiOS.ProductType
+                           ADHC.AddXMLAttr xmlOS, "ServicePackMajorVersion", wmiOS.ServicePackMajorVersion
+                           ADHC.AddXMLAttr xmlOS, "ServicePackMinorVersion", wmiOS.ServicePackMinorVersion                   
+                           ADHC.AddXMLAttr xmlOS, "SystemDevice", wmiOS.SystemDevice
+                           ADHC.AddXMLAttr xmlOS, "SystemDirectory", wmiOS.SystemDirectory                           
+                           ADHC.AddXMLAttr xmlOS, "Version", wmiOS.Version
+                           ADHC.AddXMLAttr xmlOS, "WindowsDirectory", wmiOS.WindowsDirectory
+                           
+                    Next
+                    
+                    If Err.number <> 0 Then
+						Wscript.Echo "Failed to iterate thru wmiOSs in GetOSInfo - " & strTarget
+				    end if		    
+				   
+				    '**********HotFixes***
+		            Set wmiQFEs = objWMIService.ExecQuery("SELECT HotFixID, InstallDate, InstalledOn, Name, ServicePackInEffect FROM Win32_QuickFixEngineering", "WQL", 48) 
+                    For Each wmiQFE In wmiQFEs
+                        Set xmlQFE = ADHC.AddXMLElement(xmlServerNode, "QFE")
+                        if instr(wmiQFE.HotFixID, "File") > 0 then
+                            ADHC.AddXMLAttr xmlQFE, "HotFixID", wmiQFE.ServicePackInEffect
+                        else
+                            ADHC.AddXMLAttr xmlQFE, "HotFixID", wmiQFE.HotFixID
+                        end if
+                        ADHC.AddXMLAttr xmlQFE, "InstallDate", wmiQFE.InstallDate
+                        ADHC.AddXMLAttr xmlQFE, "InstalledOn", wmiQFE.InstalledOn
+                        ADHC.AddXMLAttr xmlQFE, "Name", wmiQFE.Name
+                        ADHC.AddXMLAttr xmlQFE, "ServicePackInEffect", wmiQFE.ServicePackInEffect
+                    Next   
+		            '********************     
+				    
+				    'Bootini
+				    Dim path, objFSO, objFile, text
+                    path = "\\" & strTarget & "\c$\boot.ini"                             
+
+                    Set objFSO = CreateObject("Scripting.FileSystemObject")
+
+                    Set objFile = objFSO.OpenTextFile(path)
+
+                    text = objFile.ReadAll
+                     
+                    ADHC.AddXMLAttr xmlOS, "Bootini", text
+                     
+                    objFile.Close()                    
+                    
+                    'PAEEnabled                    
+			        Dim systemStartupOptions
+			        objStdRegProv.GetStringValue HKEY_LOCAL_MACHINE, "SYSTEM\CurrentControlSet\Control", "SystemStartOptions", systemStartupOptions
+                    Dim pos
+                    pos = InStr(systemStartupOptions,"PAE")                     
+                    if isnull(pos) or pos = 0 then
+                        ADHC.AddXMLAttr xmlOS, "PAEEnabled", "0"
+                    end if
+                    
+                    if pos > 0 then
+                        ADHC.AddXMLAttr xmlOS, "PAEEnabled", "1"
+                    end if
+                    
+                    'ApplicationReponse                    
+			        Dim dwValue
+			        objStdRegProv.GetDwordValue HKEY_LOCAL_MACHINE, "SYSTEM\CurrentControlSet\Control\PriorityControl", "Win32PrioritySeparation", dwValue
+                    ADHC.AddXMLAttr xmlOS, "ApplicationReponse", dwValue
+                    
+                    'ClusterLogFilesize
+                    Dim dwClusterLogSize
+                    dwClusterLogSize = -100 ' Unlikely value
+                    If OS2000 = "True" Then                        
+                        objStdRegProv.GetStringValue HKEY_LOCAL_MACHINE, "SYSTEM\CurrentControlSet\Control\Session Manager\Environment", "ClusterLogSize", dwClusterLogSize                        
+                        if err.Number <> 0 then 
+                           Wscript.Echo "Failed to read sub keys of the reg key SYSTEM\CurrentControlSet\Control\Session Manager\Environment\ClusterLogSize on" & strTarget
+                        end if 
+                    
+                        if dwClusterLogSize <> -100 then ' indicates we've read the registry                            
+                            ADHC.AddXMLAttr xmlOS, "ClusterLogFilesize", dwClusterLogSize
+                        else
+                            dwClusterLogSize = 8                            
+                            ADHC.AddXMLAttr xmlOS, "ClusterLogFilesize", dwClusterLogSize
+                        end if
+                    Else
+                        Set wmiEnvs = objWMIService.ExecQuery("SELECT Description,Name,SystemVariable,VariableValue FROM Win32_Environment where Name='ClusterLogSize'", "WQL", 48) 
+                        For Each wmiEnv In wmiEnvs
+                            dwClusterLogSize = wmiEnv.VariableValue                    
+                            ADHC.AddXMLAttr xmlOS, "ClusterLogFilesize", wmiEnv.VariableValue
+                        Next
+                        
+                        if dwClusterLogSize = -100 then ' indicates we've not read from WMI                                                        
+                            dwClusterLogSize = 8                            
+                            ADHC.AddXMLAttr xmlOS, "ClusterLogFilesize", dwClusterLogSize
+                        end if
+                    End If
+                                        
+                    'Require DNS and Kerberos                    		            
+                    objStdRegProv.EnumKey HKEY_LOCAL_MACHINE, "Cluster\Resources", arrSubKeys		            
+                    if err.Number <> 0 then 
+                           Wscript.Echo "Failed to enumerate reg key Cluster\Resources on" & strTarget
+                    end if 
+
+                    For Each subkey In arrSubKeys
+                        
+                        objStdRegProv.GetStringValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & subkey, "Type", szValue                        
+                        if err.Number <> 0 then 
+                           Wscript.Echo "Failed to read sub keys of the reg key Cluster\Resources\{subkey}\{Type} on" & strTarget
+                        end if 
+                        
+                        If szValue = "Network Name" Then
+                                                      
+                            'RequireDNS
+                            dwValue = -100 ' Unlikely value                            
+                            objStdRegProv.GetDwordValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & subkey & "\Parameters", "RequireDNS", dwValue                            
+                            if err.Number <> 0 then 
+                               Wscript.Echo "Failed to read sub keys of the reg key Cluster\Resources\{subkey}\Parameters\RequireDNS on" & strTarget
+                            end if 
+                        
+                            if dwValue <> -100 then ' indicates we've read \Parameters\RequireDNS
+                                ADHC.AddXMLAttr xmlOS, "RequireDNS", dwValue
+                            end if 
+                        
+                            'RequireKerberos
+                            dwValue = -100 ' Unlikely value
+                            objStdRegProv.GetDwordValue HKEY_LOCAL_MACHINE, "Cluster\Resources\" & subkey & "\Parameters", "RequireKerberos", dwValue                            
+                            if err.Number <> 0 then 
+                               Wscript.Echo "Failed to read sub keys of the reg key Cluster\Resources\{subkey}\Parameters\RequireKerberos on" & strTarget
+                            end if 
+                        
+                            if dwValue <> -100 then ' indicates we've read \Parameters\RequireKerberos
+                                ADHC.AddXMLAttr xmlOS, "RequireKerberos", dwValue
+                            end if
+                            
+                         End If
+                    Next 
+                    
+                    'Computer System                                                            
+                    Set wmiCSs = objWMIService.ExecQuery("SELECT * FROM Win32_ComputerSystem", "WQL", 48)
+                    
+                    If Err.number <> 0 Then
+						Wscript.Echo "Failed to query Win32_ComputerSystem in GetOSInfo - " & strTarget
+				    end if
+                             
+                    For Each wmiCS In wmiCSs                                
+                           'ADHC.AddXMLAttr xmlOS, "AutomaticManagedPagefile", wmiCS.AutomaticManagedPagefile
+                           ADHC.AddXMLAttr xmlOS, "AutomaticResetBootOption", wmiCS.AutomaticResetBootOption                           
+                           ADHC.AddXMLAttr xmlOS, "AutomaticResetCapability", wmiCS.AutomaticResetCapability
+                           
+                           'DNSHostName
+                           Dim hostName                           
+                           if OS2000 = "True" then       
+                           
+                                'DNSHostName                 
+                                objStdRegProv.GetStringValue HKEY_LOCAL_MACHINE, "System\Currentcontrolset\Services\Tcpip\Parameters", "Hostname", hostName
+                                if err.Number <> 0 then 
+                                    Wscript.Echo "Failed to read registry key system\currentcontrolset\services\tcpip\parameters\Hostname on" & strTarget
+                                end if
+                                
+                                ADHC.AddXMLAttr xmlOS, "DNSHostName", hostName  
+                                
+                                'PartOfDomain
+				                objStdRegProv.EnumKey HKEY_LOCAL_MACHINE, "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon", arrSubKeys		            
+                                if err.Number <> 0 then 
+                                       Wscript.Echo "Failed to enumerate reg key SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon on" & strTarget
+                                end if 
+
+                                Dim keyFound
+                                For Each subkey In arrSubKeys
+                                    If subkey="DomainCache" Then
+                                        keyFound = "True"
+                                    End If
+                                Next
+                                
+                                if keyFound = "True" Then
+                                    ADHC.AddXMLAttr xmlOS, "PartOfDomain", "True"
+                                else
+                                    ADHC.AddXMLAttr xmlOS, "PartOfDomain", "False"
+                                End If         
+                                                     
+                           else
+                                ADHC.AddXMLAttr xmlOS, "DNSHostName", wmiCS.DNSHostName
+                                
+                                if wmiCS.PartOfDomain = True then
+                                    ADHC.AddXMLAttr xmlOS, "PartOfDomain", "True"
+                                Else
+                                    ADHC.AddXMLAttr xmlOS, "PartOfDomain", "False"
+                                End If
+                           End if 
+                           
+                           ADHC.AddXMLAttr xmlOS, "Domain", wmiCS.Domain
+                           ADHC.AddXMLAttr xmlOS, "DomainRole", wmiCS.DomainRole
+                           ADHC.AddXMLAttr xmlOS, "Manufacturer", wmiCS.Manufacturer
+                           ADHC.AddXMLAttr xmlOS, "Model", wmiCS.Model                           
+                           'ADHC.AddXMLAttr xmlOS, "NumberOfLogicalProcessors", wmiCS.NumberOfLogicalProcessors
+                           ADHC.AddXMLAttr xmlOS, "NumberOfProcessors", wmiCS.NumberOfProcessors                                              
+                           ADHC.AddXMLAttr xmlOS, "SystemStartupDelay", wmiCS.SystemStartupDelay
+                           
+                           'Enumerating System Startup Options
+                           Dim startupOptions
+                           startupOptions = ""
+                           For Each strOption in wmiCS.SystemStartupOptions                                
+                                If startupOptions = "" Then
+					                startupOptions = strOption
+					            Else
+					                startupOptions = strOption & "," & startupOptions  
+					            End If
+                           Next
+                           ADHC.AddXMLAttr xmlOS, "SystemStartupOptions", startupOptions
+                           
+                           ADHC.AddXMLAttr xmlOS, "TotalPhysicalMemory", wmiCS.TotalPhysicalMemory                                                                                
+                    Next
+                    
+                    If Err.number <> 0 Then
+						Wscript.Echo "Failed to iterate thru wmiCSs in GetOSInfo - " & strTarget
+				    end if
+				    
+				    'Processor                                                           
+                    Set wmiPSs = objWMIService.ExecQuery("SELECT * FROM Win32_Processor", "WQL", 48)
+                    
+                    If Err.number <> 0 Then
+						Wscript.Echo "Failed to query Win32_Processor in GetOSInfo - " & strTarget
+				    end if
+                             
+                    For Each wmiPS In wmiPSs                                
+                           ADHC.AddXMLAttr xmlOS, "ProcessorMake", wmiPS.Manufacturer                                                                
+                    Next
+                    
+                    If Err.number <> 0 Then
+						Wscript.Echo "Failed to iterate thru wmiPSs in GetOSInfo - " & strTarget
+				    end if
+				    
+				    Dim wmiPageFiles
+				    Dim xmlPageFile
+				    objStdRegProv.GetMultiStringValue HKEY_LOCAL_MACHINE, "System\CurrentControlSet\Control\Session Manager\Memory Management\", "PagingFiles", wmiPageFiles
+                    For Each wmiPageFile In wmiPageFiles
+                        dim subStr
+                        subStr = Split(wmiPageFile)                        
+                        Set xmlPageFile = ADHC.AddXMLElement(xmlServerNode, "PageFile")
+                        ADHC.AddXMLAttr xmlPageFile, "InitialSize", subStr(1)
+                        ADHC.AddXMLAttr xmlPageFile, "MaximumSize", subStr(2)
+                        ADHC.AddXMLAttr xmlPageFile, "Name", subStr(0)
+                    Next
+				    '*************
+                    
+				    ADHC.AddXMLAttr ADHC.xmlRootNode, "Status", 0
+				    
+				    ADHC.AddXMLAttr ADHC.xmlRootNode, "ScriptEndTime", ADHC.ConvertDate(Now)
+					ADHC.AddXMLAttr ADHC.xmlRootNode, "ElapsedTimeInSeconds", datediff("s",ScriptStartTime,Now)
+				    
+					ADHC.SaveXML(adhc.strFilename)
+					
+					objWMIService = nothing
+                    Err.Clear        
+				End Sub
+				
+				
+				'''''''''''''''''''''''''''''''''''''''''''
+				'Get Cluster Name attribute
+				'''''''''''''''''''''''''''''''''''''''''''
+				Sub GetClusterInfo (strTarget, xmlServerNode)
+					
+					on error resume next
+					Err.Clear 
+					
+					Dim objWMIService
+					Dim wmiClusterNames
+					Dim clusterName
+					
+					WScript.Echo "Binding to WMI Provider for: " & strTarget
+					
+					Set objWMIService = GetObject("winmgmts:\\" & strTarget & "\root\MSCluster")
+					
+					If Err.number <> 0 Then
+						Wscript.Echo "Failed to instantiate object \root\MSCluster in GetClusterInfo - " & strTarget
+						ADHC.AddXMLAttr xmlServerNode, "ClusterName", "FailedWMI"
+						clusterName = "FailedWMI"
+					Else
+					
+					    Set wmiClusterNames = objWMIService.ExecQuery("SELECT Name FROM MSCluster_Cluster","WQL",48) 
+					    
+					    if Err.number<> 0 Then
+                            Wscript.Echo "Failed to query MSCluster_Cluster in GetClusterInfo - " & strTarget
+                            ADHC.AddXMLAttr xmlServerNode, "ClusterName", "FailedWMI"
+                            clusterName = "FailedWMI"
+					    else
+							
+					         WScript.Echo "Getting Cluster Name for: " & strTarget
+					         
+					         For Each wmiClusterName In wmiClusterNames
+                                ADHC.AddXMLAttr xmlServerNode, "ClusterName", wmiClusterName.Name
+                             Next     
+                             
+                             if Err.number<> 0 Then
+                                Wscript.Echo "Failed to iterate thru wmiClusterNames...."
+                                ADHC.AddXMLAttr xmlServerNode, "ClusterName", "FailedWMI"
+                                clusterName = "FailedWMI"
+					        end if      
+						end if						
+					End If
+					
+					'Collecting ClusterName from Windows Server 2000(OS)
+					if clusterName = "FailedWMI" then
+					    Dim objStdRegProv
+					    Set objStdRegProv = GetObject("winmgmts:\\" & strTarget & "\root\default:StdRegProv")
+                        If Err.number <> 0 Then
+                            Wscript.Echo "Failed to instantiate StdRegProv on " & strTarget
+                        End If
+                        
+                        objStdRegProv.GetStringValue HKEY_LOCAL_MACHINE, "Cluster", "ClusterName", szClusterName
+                        
+                        if szClusterName <> "" then
+                            ADHC.AddXMLAttr xmlServerNode, "ClusterName", szClusterName
+                        Else
+                            ADHC.AddXMLAttr xmlServerNode, "ClusterName", clusterName
+                        End If
+                        
+                        Wscript.Echo "Windows Server 2000 : Cluster Name for node : " & strTarget & " is " & szClusterName
+					End if
+					objStdRegProv = nothing						
+					objWMIService = nothing		
+					Err.Clear 
+				End Sub              
+			]]>
+        </script>
+	</job>
+</package>

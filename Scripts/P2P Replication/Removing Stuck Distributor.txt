@@ -1,0 +1,24 @@
+use master 
+go 
+alter database distribution set offline; 
+drop database distribution;
+
+
+http://support.microsoft.com/kb/324401/en-us
+
+Re: Cannot drop the distribution database 'distribution' because it is currently in use.
+Tech-Archive recommends: Repair Windows Errors & Optimize Windows Performance
+
+
+--------------------------------------------------------------------------------
+
+•From: "Paul Ibison" <Paul.Ibison@xxxxxxxxxxxxx>
+•Date: Mon, 8 Jan 2007 13:22:29 -0000
+
+--------------------------------------------------------------------------------
+It could be the distribution cleanup agent, the log reader, the distribition 
+agent or the merge agent. For a user database you would make it single-user 
+with yourself as the only user then drop it: Alter database distribution set 
+single_user with rollback immediate; use tempdb; drop database distribution. 
+For the distributor I'd run sp_dropdistributor followed by 
+sp_dropdistributiondb rather than the "drop database".

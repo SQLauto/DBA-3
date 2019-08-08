@@ -1,0 +1,174 @@
+<TestCase Signature="BE22702B2D7D8B90" 
+          SortOrder="50" 
+          xmlns="http://www.microsoft.com/StaticWorkItem"  
+          xmlns:help="http://www.microsoft.com/Rapid/HelpIndex">
+  <WorkItem Name="SQLErrorLogs" 
+            Category="SQL Operations" 
+            DisplayName="SQL Error Logs" 
+            Description="This test case collects logs from the SQL Error log.  It looks for significant events that occurred in these logs and reports these issues." 
+            Schema=""
+            Type=   "Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.SqlErrorLogWorkItem,  Microsoft.SqlRap.Client">
+    <Configuration>      
+    </Configuration>
+    <State>
+      <StateBag>
+        <TargetType Type = "Node">
+          <Query Type="Sql" QueryName="SqlVersion" InstanceName="currentInstance" DatabaseName="" SqlScriptFileName="SQLVersion.sql"/>
+          <Query Type="Registry" ResultType="string" Name="WowSQLArg1" Hive="HKLM" SubKey="SOFTWARE\WoW6432Node\Microsoft\Microsoft SQL Server\SQLINSTANCE\MSSQLServer\Parameters" KeyName="SQLArg1"/>
+          <Query Type="Registry" ResultType="string" Name="SQLArg1" Hive="HKLM" SubKey="SOFTWARE\Microsoft\Microsoft SQL Server\SQLINSTANCE\MSSQLServer\Parameters" KeyName="SQLArg1"/>
+          
+          <Query QueryName ="InstanceSubKeysWow" Type ="Registry" ResultType ="string" Hive ="HKLM" SubKey ="SOFTWARE\WoW6432Node\Microsoft\Microsoft SQL Server" />
+          <Query QueryName ="WowSQLArg1" Type ="Registry" ResultType ="string" Hive ="HKLM" SubKey ="SOFTWARE\WoW6432Node\Microsoft\Microsoft SQL Server\SQLINSTANCE\MSSQLServer\Parameters" KeyName ="SQLArg1"/>
+          
+          <Query QueryName ="InstanceSubKeys" Type ="Registry" ResultType ="string" Hive ="HKLM" SubKey ="SOFTWARE\Microsoft\Microsoft SQL Server" />          
+          <Query QueryName ="SQLArg1" Type ="Registry" ResultType ="string" Hive ="HKLM" SubKey ="SOFTWARE\Microsoft\Microsoft SQL Server\SQLINSTANCE\MSSQLServer\Parameters" KeyName ="SQLArg1"/>
+          
+        </TargetType>
+        <ResultControl Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.SQLErrorLogsResultData, Microsoft.SqlRap.Client" />  
+        <ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+        <SqlScript FileName ="Testcases\SQLErrorLogs\SQL_Server_errorlog_evaluation.sql" IssueFileRuleQuery = "SQL_Server_errorlog"/>
+      </ScriptRule>
+      </StateBag>
+    </State>
+  </WorkItem>
+  <help:HelpItem FileName="EventCollector.Help.htm" WorkItem="EventCollector" DisplayName="Event Collector" Description="Provides a summary of event log information from each machine." Details="This test case collects all the event logs from each machine identified in this Health Check."/>
+  <RuleSet>
+  <!-- SQL Server Event Rules-->
+    <Rule Name="fhasMonitorLackof14DaysSqlEvents" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.fhasMonitorLackof14DaysSqlEvents, Microsoft.SqlRap.Client" />
+    <Rule Name="fhasMonitorSqlEvent211" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="211"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent1101" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="1101"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent605" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="605"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent608" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="608"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent701" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="701"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent802" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="802"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent824" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="824"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent825" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="825"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent828" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="828"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent833" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="833"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent844" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+     <RuleArgument Name="EventID" Value="844"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent845" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="845"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent846" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="846"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent847" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="847"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent945" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="945"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent1105" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="1105"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent1205" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="1205"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent3197" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="3197"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent3260" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="3260"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent3266" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="3266"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent3271" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="3271"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent3409" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="3409"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent3414" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="3414"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent3431" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="3431"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent3437" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="3437"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent3452" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="3452"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent3456" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="3456"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent3619" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="3619"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent5105" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="5105"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent5243" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="5243"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent8621" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="8621"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent8642" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="8642"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent8628" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="8628"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent8966" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+     <RuleArgument Name="EventID" Value="8966"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent9002" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="9002"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent17065" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="17065"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent17066" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="17066"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent17067" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="17067"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent17194" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="17194"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent17659" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="17659"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent17806" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="17806"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent17890" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="17890"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent26037" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="26037"/>
+    </Rule>
+    <Rule Name="fhasMonitorSqlEvent26038" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SQLErrorLogEventID, Microsoft.SqlRap.Client">
+      <RuleArgument Name="EventID" Value="26038"/>
+    </Rule>
+    <Rule Name="errorLogSize" Type="Microsoft.SqlRap.Client.TestCases.SQLErrorLogs.Rules.SqlErrorLogSize, Microsoft.SqlRap.Client" />
+  </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+  </ResultsViewer>  
+</TestCase>

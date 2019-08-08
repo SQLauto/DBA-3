@@ -1,0 +1,239 @@
+<TestCase Signature="F752D55363BF2056" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" ExecutionOrder="4">
+  <!-- DataType is the type which is used to communicate between Collection and Analysis stage. 
+       Type is the type which does the work of collection of the data...
+  -->
+  <WorkItem
+    Name            =   "ClusNets"
+    Category        =   "Cluster Only"
+    DisplayName     =   "Cluster and Node Network"
+    Description     =   "Cluster and Node Network testcase confirms the configuration of the network interfaces in the cluster on a node by node basis.  Furthermore it checks the heartbeat/private network configuration."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.Rap.TestCases.Common.ClusNets.ClusNetsWorkItem, Microsoft.Rap.TestCases.Common.ClusNets">
+
+    <Configuration></Configuration>
+    <State>
+      <StateBag xmlns="">
+        <TargetType Type = "Cluster">
+          <Query QueryName="MulticastDisabled" Type="Registry" ResultType="int" Hive="HKLM" SubKey="Cluster\Parameters" KeyName="MulticastDisabled" OSNotSupportedVersion="6.0,6.1"/>
+          <Query QueryName="ClusterNodes" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Nodes" OSNotSupportedVersion="">
+            <KeySwap Name="ClusterNodes" >
+              <Query QueryName="NodeName" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Nodes\%ClusterNodes%" KeyName="NodeName" OSNotSupportedVersion=""/>            
+            </KeySwap>
+          </Query>
+          <Query QueryName ="ClusterNetworks" Type ="Registry" ResultType ="string" Hive ="HKLM" SubKey ="Cluster\Networks" OSNotSupportedVersion="">
+            <KeySwap Name = "ClusterNetworks" >
+              <Query QueryName="Role" Type="Registry" ResultType="int" Hive="HKLM" SubKey="Cluster\Networks\%ClusterNetworks%" KeyName="Role" OSNotSupportedVersion=""/>
+              <Query QueryName="Priority" Type="Registry" ResultType="long" Hive="HKLM" SubKey="Cluster\Networks\%ClusterNetworks%" KeyName="Priority" OSNotSupportedVersion=""/>
+              <Query QueryName="Address" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Networks\%ClusterNetworks%" KeyName="Address" OSNotSupportedVersion=""/>
+              <Query QueryName="Name" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Networks\%ClusterNetworks%" KeyName="Name" OSNotSupportedVersion=""/>	
+            </KeySwap>
+          </Query>
+          <Query QueryName ="ClusterNetworkInterfaces" Type ="Registry" ResultType ="string" Hive ="HKLM" SubKey ="Cluster\NetworkInterfaces" OSNotSupportedVersion="">
+            <KeySwap Name="ClusterNetworkInterfaces" >
+              <Query QueryName="AdapterId" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\NetworkInterfaces\%ClusterNetworkInterfaces%" KeyName="AdapterId" OSNotSupportedVersion=""/>
+              <Query QueryName="Address" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\NetworkInterfaces\%ClusterNetworkInterfaces%" KeyName="Address" OSNotSupportedVersion=""/>
+              <Query QueryName="Network" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\NetworkInterfaces\%ClusterNetworkInterfaces%" KeyName="Network" OSNotSupportedVersion=""/>
+              <Query QueryName="Name" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\NetworkInterfaces\%ClusterNetworkInterfaces%" KeyName="Name" OSNotSupportedVersion=""/>
+              <Query QueryName="Node" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\NetworkInterfaces\%ClusterNetworkInterfaces%" KeyName="Node" OSNotSupportedVersion=""/>
+            </KeySwap>
+          </Query>
+          <Query QueryName ="ClusterDependencies" Type ="Registry" ResultType ="string" Hive ="HKLM" SubKey ="Cluster\Dependencies" OSNotSupportedVersion="">
+            <KeySwap Name="ClusterDependencies" >
+              <Query QueryName="Dependent" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Dependencies\%ClusterDependencies%" KeyName="Dependent" OSNotSupportedVersion=""/>
+              <Query QueryName="ProviderList" Type="Registry" ResultType="stringarray" Hive="HKLM" SubKey="Cluster\Dependencies\%ClusterDependencies%" KeyName="Provider List" OSNotSupportedVersion=""/>
+            </KeySwap>
+          </Query>
+          <Query QueryName="Bind" Type="Registry" ResultType="stringarray" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Linkage" KeyName="Bind" OSNotSupportedVersion=""/>
+          <Query QueryName="LanmanServerLinkageBind" Type="Registry" ResultType="stringarray" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\LanmanServer\Linkage" KeyName="Bind" OSNotSupportedVersion=""/>
+          <Query QueryName="ClusterResourceKeys" Type ="Registry" ResultType ="string" Hive ="HKLM" SubKey ="Cluster\Resources" OSNotSupportedVersion="">
+            <KeySwap Name= "ClusterResourceKeys" >
+              <Query QueryName="ResourceType" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResourceKeys%" KeyName="Type" OSNotSupportedVersion=""/>
+              <Query QueryName="ResourceFlags" Type="Registry" ResultType="int" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResourceKeys%" KeyName="Flags" OSNotSupportedVersion=""/>
+              <Query QueryName="ResourceParametersAddress" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResourceKeys%\Parameters" KeyName="Address" OSNotSupportedVersion=""/>
+              <Query QueryName="ResourceParametersNetwork" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResourceKeys%\Parameters" KeyName="Network" OSNotSupportedVersion=""/>
+              <Query QueryName="ResourceHostRecordTTL" Type="Registry" ResultType="int" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResourceKeys%\Parameters" KeyName="HostRecordTTL" OSNotSupportedVersion=""/>
+              <Query QueryName="ResourceParametersRequireKerberos" Type="Registry" ResultType="int" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResourceKeys%\Parameters" KeyName="RequireKerberos" OSNotSupportedVersion=""/>
+              <Query QueryName="ResourceName" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResourceKeys%" KeyName="Name" OSNotSupportedVersion=""/>
+              <Query QueryName="ResourceRegisterAllProvidersIP" Type="Registry" ResultType="int" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResourceKeys%\Parameters" KeyName="RegisterAllProvidersIP" OSNotSupportedVersion=""/>
+            </KeySwap>
+          </Query>
+          
+          <Query QueryName="QuorumResource" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Quorum" KeyName="Resource" OSNotSupportedVersion=""/>
+          <Query QueryName="LanmanworkstationLinkageBind" Type="Registry" ResultType="stringarray" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Lanmanworkstation\Linkage" KeyName="Bind" OSNotSupportedVersion=""/>
+          
+          <Query QueryName="TcpIpInterfaces" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces" OSNotSupportedVersion="">
+            <KeySwap Name = "TcpIpInterfaces" >
+              <Query QueryName="IPAddress" Type="Registry" ResultType="stringarray" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\%TcpIpInterfaces%" KeyName="IPAddress" OSNotSupportedVersion=""/>
+              <Query QueryName="DefaultGateway" Type="Registry" ResultType="stringarray" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\%TcpIpInterfaces%" KeyName="DefaultGateway" OSNotSupportedVersion=""/>
+            </KeySwap>
+          </Query>
+        </TargetType>
+        
+        <TargetType Type = "Node">
+          <Query QueryName="IGMPVersion" Type="Registry" ResultType="int" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" KeyName="IGMPVersion" OSNotSupportedVersion="6.0,6.1"/>
+          <Query QueryName="TcpipLinkageBind" Type="Registry" ResultType="stringarray" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Linkage" KeyName="Bind" OSNotSupportedVersion=""/>
+          <Query QueryName="DisableDHCPMediaSense" Type="Registry" ResultType="int" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" KeyName="DisableDHCPMediaSense" OSNotSupportedVersion=""/>
+          <Query QueryName="EnableRSS" Type="Registry" ResultType="int" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" KeyName="EnableRSS" OSNotSupportedVersion=""/>
+          <Query QueryName="EnableTCPA" Type="Registry" ResultType="int" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" KeyName="EnableTCPA" OSNotSupportedVersion=""/>
+          <Query QueryName="EnableTCPChimney" Type="Registry" ResultType="int" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" KeyName="EnableTCPChimney" OSNotSupportedVersion=""/>
+          <Query QueryName="EnableLMHOSTS" Type="Registry" ResultType="int" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\NetBT\Parameters" KeyName="EnableLMHOSTS" OSNotSupportedVersion=""/>
+
+          <Query QueryName="LanmanServerLinkageBind" Type="Registry" ResultType="stringarray" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\LanmanServer\Linkage" KeyName="Bind" OSNotSupportedVersion=""/>
+          <Query QueryName="LanmanworkstationLinkageBind" Type="Registry" ResultType="stringarray" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Lanmanworkstation\Linkage" KeyName="Bind" OSNotSupportedVersion=""/>
+          
+          <Query QueryName="TcpIpInterfaces" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces" OSNotSupportedVersion="">
+            <KeySwap Name = "TcpIpInterfaces" >
+              <Query QueryName="EnableDHCP" Type="Registry" ResultType="int" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\%TcpIpInterfaces%" KeyName="EnableDHCP" OSNotSupportedVersion=""/>
+              <Query QueryName="IPAddress" Type="Registry" ResultType="stringarray" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\%TcpIpInterfaces%" KeyName="IPAddress" OSNotSupportedVersion=""/>
+              <Query QueryName="DhcpIPAddress" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\%TcpIpInterfaces%" KeyName="DhcpIPAddress" OSNotSupportedVersion="5.2"/>
+              <Query QueryName="DefaultGateway" Type="Registry" ResultType="stringarray" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\%TcpIpInterfaces%" KeyName="DefaultGateway" OSNotSupportedVersion=""/>
+              <Query QueryName="RegistrationEnabled" Type="Registry" ResultType="int" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\%TcpIpInterfaces%" KeyName="RegistrationEnabled" OSNotSupportedVersion=""/>
+            </KeySwap>
+          </Query>
+
+          <Query QueryName ="TeamedNICs" Type ="Registry" ResultType ="string" Hive ="HKLM" SubKey ="SYSTEM\CurrentControlSet\Control\Class\{4D36E972-E325-11CE-BFC1-08002bE10318}" OSNotSupportedVersion="">
+            <KeySwap Name="TeamedNICs" >
+              <Query QueryName="NetCfgInstanceId" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Control\Class\{4D36E972-E325-11CE-BFC1-08002bE10318}\%TeamedNICs%" KeyName="NetCfgInstanceId" OSNotSupportedVersion=""/>
+              <Query QueryName="Characteristics" Type="Registry" ResultType="int" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Control\Class\{4D36E972-E325-11CE-BFC1-08002bE10318}\%TeamedNICs%" KeyName="Characteristics" OSNotSupportedVersion=""/>
+              <Query QueryName="NDI" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Control\Class\{4D36E972-E325-11CE-BFC1-08002bE10318}\%TeamedNICs%\NDI\Params" OSNotSupportedVersion=""/>
+            </KeySwap>
+          </Query>
+
+          <Query QueryName="NetBTInterfaces" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\NetBT\Parameters\Interfaces" OSNotSupportedVersion="" >
+            <KeySwap Name = "NetBTInterfaces" >
+              <Query QueryName="NetbiosOptions" Type="Registry" ResultType="int" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\NetBT\Parameters\Interfaces\%NetBTInterfaces%" KeyName="NetbiosOptions" OSNotSupportedVersion=""/>
+            </KeySwap>
+          </Query>
+          
+          <Query QueryName="DNSRegisteredAdapters" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\DNSRegisteredAdapters" OSNotSupportedVersion="">
+            <KeySwap Name="DNSRegisteredAdapters"></KeySwap>
+          </Query>
+
+          <Query QueryName="TcpIPAdapters" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Adapters" OSNotSupportedVersion="">
+            <KeySwap Name="TcpIPAdapters"></KeySwap>
+          </Query>
+
+          <Query QueryName="StandardProfileEnableFirewall" Type="Registry" ResultType="int" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile" KeyName="EnableFirewall" OSNotSupportedVersion=""/>
+          <Query QueryName="DomainProfileEnableFirewall" Type="Registry" ResultType="int" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile" KeyName="EnableFirewall" OSNotSupportedVersion=""/>
+          <Query QueryName="SharedAccessStart" Type="Registry" ResultType="int" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\SharedAccess" KeyName="Start" OSNotSupportedVersion=""/>
+
+          <Query QueryName="CatalogEntries" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Winsock2\Parameters\Protocol_Catalog9\Catalog_Entries" OSNotSupportedVersion="">
+            <KeySwap Name = "CatalogEntries" >
+              <Query QueryName="CatalogEntriesLibraryPath" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Winsock2\Parameters\Protocol_Catalog9\Catalog_Entries\%CatalogEntries%" KeyName="LibraryPath" OSNotSupportedVersion=""/>
+              <Query QueryName="szProtocol" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Winsock2\Parameters\Protocol_Catalog9\Catalog_Entries\%CatalogEntries%" KeyName="szProtocol" OSNotSupportedVersion=""/>
+            </KeySwap>
+          </Query>
+
+          <Query QueryName="NameSpaceCatalogEntries" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Winsock2\Parameters\NameSpace_Catalog5\Catalog_Entries" OSNotSupportedVersion="">
+            <KeySwap Name = "NameSpaceCatalogEntries" >
+              <Query QueryName="NameSpaceCatalogEntriesLibraryPath" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Winsock2\Parameters\NameSpace_Catalog5\Catalog_Entries\%NameSpaceCatalogEntries%" KeyName="LibraryPath" OSNotSupportedVersion=""/>              
+            </KeySwap>
+          </Query>
+
+          <Query Type="WMI" QueryName="IP4RouteTableMask" QueryString="Select InterfaceIndex, Mask from Win32_IP4RouteTable" OSNotSupportedVersion=""/>
+          <Query Type="WMI" QueryName="SystemDrive" QueryString="Select SystemDrive from Win32_OperatingSystem" OSNotSupportedVersion=""/>
+          <Query Type="WMI" QueryName="RemoteRegistryState" QueryString="Select State from Win32_Service where Name='RemoteRegistry'" OSNotSupportedVersion=""/>
+          <Query Type="WMI" QueryName="DHCPState" QueryString="Select State from Win32_Service where Name='DHCP'" OSNotSupportedVersion="6.0,6.1"/>
+          <Query Type="WMI" QueryName="Win32NetworkAdapter" QueryString="Select Name,PhysicalAdapter,NetConnectionStatus from Win32_NetworkAdapter" OSNotSupportedVersion="5.2"/>
+          <Query QueryName="PolicyAgentStart" Type="Registry" ResultType="int" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\PolicyAgent" KeyName="Start" OSNotSupportedVersion=""/>
+          <Query QueryName="KerberosMaxPacketSize" Type="Registry" ResultType="int" Hive="HKLM" SubKey="System\CurrentControlSet\Control\Lsa\Kerberos\Parameters" KeyName="MaxPacketSize" OSNotSupportedVersion="6.0,6.1"/>
+          <Query QueryName="ActivePolicy" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SOFTWARE\Policies\Microsoft\Windows\IPSec\Policy\Local" KeyName="ActivePolicy" OSNotSupportedVersion="6.0,6.1"/>
+          <Query Type="WMI" QueryName="PolicyAgent" QueryString="Select State from Win32_Service where Name='PolicyAgent'" OSNotSupportedVersion="6.0,6.1"/>
+          <Query Type="WMI" QueryName="SharedAccess" QueryString="Select State from Win32_Service where Name='SharedAccess'" OSNotSupportedVersion="6.0,6.1"/>          
+        </TargetType>
+  	    <ResultControl Type="Microsoft.Rap.TestCases.Common.ClusNets.ClusNetsResultData, Microsoft.Rap.TestCases.Common.ClusNets" />
+      </StateBag>
+    </State>
+    
+  </WorkItem>
+
+  <help:HelpItem FileName="ClusNets.Help.htm" WorkItem="ClusNets" DisplayName="Cluster and Node Network" Description="Cluster and Node Network testcase confirms the configuration of the network interfaces in the cluster on a node by node basis.  Furthermore it checks the heartbeat/private network configuration." Details="Cluster and Node Network testcase confirms the configuration of the network interfaces in the cluster on a node by node basis.  Furthermore it checks the heartbeat/private network configuration."/>
+
+  <RuleSet>
+	  <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetIpsecOnPublic, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetIpsecOnPublic_Rule" >
+		  <RuleArgument Name="OSNotSupported" Value="6.0,6.1" />
+	  </Rule>
+	  <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetTcpMultipleGateway, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetTcpMultipleGateway_Rule" >
+      <RuleArgument Name="OSNotSupported" Value="6.0,6.1" />
+    </Rule>    
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetTcpFirewallenabled, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetTcpFirewallenabled_Rule" >
+		  <RuleArgument Name="OSNotSupported" Value="6.0,6.1" />
+	  </Rule>
+	  <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetTcpDisableDHCPMediaSenseEnabled, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetTcpDisableDHCPMediaSenseEnabled_Rule" >
+		  <RuleArgument Name="OSNotSupported" Value="6.0,6.1" />
+	  </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.WorkflowRule, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetClusterBindingPublicPrimary_Rule" >
+		  <RuleArgument Name = "XOMLFile" Value = "TestCases\ClusNets\Rules\fhasNetClusterBindingPublicPrimary.xoml" />
+		  <RuleArgument Name="OSNotSupported" Value="6.0,6.1" />
+	  </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetClusterBindingPrivateInternal, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetClusterBindingPrivateInternal_Rule" >
+      <RuleArgument Name="OSNotSupported" Value="" />
+    </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetClusterBindingPrivatePriority, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetClusterBindingPrivatePriority_Rule" >
+      <RuleArgument Name="OSNotSupported" Value="6.0,6.1" />
+    </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetTcpIPDynamic, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetTcpIPDynamic_Rule" >
+		  <RuleArgument Name="OSNotSupported" Value="6.0,6.1" />
+	  </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetDHCPClient08, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetDHCPClient08_Rule" >
+      <RuleArgument Name="OSNotSupported" Value="" />
+    </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetOneNet08, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetOneNet08_Rule" >
+      <RuleArgument Name="OSNotSupported" Value="5.2" />
+    </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetTcpFileAndPrintNetworksPrivate, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetTcpFileAndPrintNetworksPrivate_Rule" >
+      <RuleArgument Name="OSNotSupported" Value="6.0,6.1" />   
+    </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetTcpNoClientNetworksPrivate, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetTcpNoClientNetworksPrivate_Rule" >
+      <RuleArgument Name="OSNotSupported" Value="6.0,6.1" />
+    </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetTcpClientNetworksPrivate, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetTcpClientNetworksPrivate_Rule" >
+      <RuleArgument Name="OSNotSupported" Value="6.0,6.1" />
+    </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetTcpDNSupdatesOff, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetTcpDNSupdatesOff_Rule" >
+      <RuleArgument Name="OSNotSupported" Value="" />
+      <RuleArgument Name="SameSubNet" Value="true" />
+    </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetTcpNetBTBoundPrivate, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetTcpNetBTBoundPrivate_Rule" >
+      <RuleArgument Name="OSNotSupported" Value="6.0,6.1" />
+    </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetTcpNetBTBoundPublic, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetTcpNetBTBoundPublic_Rule" >
+      <RuleArgument Name="OSNotSupported" Value="6.0,6.1" />
+    </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetTcpFileAndPrintMajorityNode, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetTcpFileAndPrintMajorityNode_Rule" >
+      <RuleArgument Name="OSNotSupported" Value="6.0,6.1" />
+    </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetInterfaceTeaming, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetInterfaceTeaming_Rule" >
+      <RuleArgument Name="OSNotSupported" Value="6.0,6.1" />
+    </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetClusterBindingPrivatePrimaryNetworkService, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetClusterBindingPrivatePrimaryNetworkService_Rule" >
+      <RuleArgument Name="OSNotSupported" Value="" />
+    </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetClusterBindingPublicClientAccess, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetClusterBindingPublicClientAccess_Rule" >
+      <RuleArgument Name="OSNotSupported" Value="6.0,6.1" />
+    </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetClusterBindingPublicSecondaryNetworkService, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetClusterBindingPublicSecondaryNetworkService_Rule" >
+      <RuleArgument Name="OSNotSupported" Value="6.0,6.1" />
+    </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetBindingOrder08, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetBindingOrder08_Rule" >
+      <RuleArgument Name="OSNotSupported" Value="5.2" />
+    </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetInterfaceTeaming08, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetInterfaceTeaming08_Rule" >
+      <RuleArgument Name="OSNotSupported" Value="5.2" />
+    </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetMultiSub08, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetMultiSub08" >
+      <RuleArgument Name="OSNotSupported" Value="5.2" />
+    </Rule>
+    <Rule Type="Microsoft.Rap.TestCases.Common.ClusNets.Rules.fhasNetTcpDNSupdatesOff, Microsoft.Rap.TestCases.Common.ClusNets" Name="fhasNetTcpDNSupdatesOff_Multi-Subnet08" >
+      <RuleArgument Name="OSNotSupported" Value="5.2" />
+      <RuleArgument Name="SameSubNet" Value="false" />
+    </Rule>
+  </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+    <TableStates />
+  </ResultsViewer>
+</TestCase>
+
+
+

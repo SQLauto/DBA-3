@@ -1,0 +1,147 @@
+<TestCase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Signature="82D17CA1857A9E13" SortOrder="3" ExecutionOrder="7" xmlns="http://www.microsoft.com/StaticWorkItem">
+  <!--<WorkItem Name="Cluster" 
+			Category="Cluster Only" 
+			DisplayName="Cluster" 
+			Schema="Cluster.xsd" 
+			DataType="Microsoft.SqlRap.Client.TestCases.Cluster.Collated, Microsoft.SqlRap.Client" 
+			Description="Provides general cluster and node information as well as evaluating rules around key cluster issues." 
+			Type="Microsoft.SqlRap.Client.Core.ClusterServerWorkItem, Microsoft.SqlRap.Client"
+			>-->
+	  <WorkItem Name="Cluster"
+			  Category="Cluster Only"
+			  DisplayName="Cluster"
+			  Schema="Cluster.xsd"
+			  DataType="Microsoft.SqlRap.Client.TestCases.Cluster.Collated, Microsoft.SqlRap.Client"
+			  Description="Provides general cluster and node information as well as evaluating rules around key cluster issues."
+			  Type="Microsoft.SqlRap.Client.Core.ClusterWorkItem, Microsoft.SqlRap.Client"
+			>  
+    <Configuration>
+    </Configuration>
+    <State>
+		<!--<ScriptState ScriptLocation="Cluster.wsf" />-->
+		<StateBag xmlns="">
+      <ResultControl Type="Microsoft.SqlRap.Client.TestCases.Cluster.ClusterResultData, Microsoft.SqlRap.Client" />
+			<TargetType Type = "Cluster">
+				<Query QueryName="ClusterNodes" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Nodes" OSNotSupportedVersion="" >
+					<KeySwap Name="ClusterNodes" >
+						<Query QueryName="NodeName" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Nodes\%ClusterNodes%" KeyName="NodeName" OSNotSupportedVersion="" />
+					</KeySwap>
+				</Query>
+				<Query QueryName="ClusterGroups" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Groups" OSNotSupportedVersion="" >
+					<KeySwap Name="ClusterGroups" >
+						<Query QueryName="Name" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Groups\%ClusterGroups%" KeyName="Name" OSNotSupportedVersion="" />
+						<Query QueryName="Contains" Type="Registry" ResultType="stringarray" Hive="HKLM" SubKey="Cluster\Groups\%ClusterGroups%" KeyName="Contains" OSNotSupportedVersion="" />
+					</KeySwap>
+				</Query>
+				<!-- Windows 2008 R2-->
+				<Query QueryName="ClusterGroupPriority" Type ="WMI" Namespace ="root\MSCluster" QueryString ="SELECT Name,GroupType,Priority  FROM MSCLuster_ResourceGroup" OSNotSupportedVersion="5.2,6.0"/>
+
+				<Query QueryName="ClusterResources" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Resources" OSNotSupportedVersion="" >
+					<KeySwap Name="ClusterResources" >
+						<Query QueryName="Name" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResources%" KeyName="Name" OSNotSupportedVersion="" />
+            <Query QueryName="ServiceName" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResources%\Parameters" KeyName="ServiceName" OSNotSupportedVersion="" />
+						<Query QueryName="Type" Type="Registry" ResultType="string" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResources%" KeyName="Type" OSNotSupportedVersion="" />
+						<!--<Query QueryName="DependsOn" Type="Registry" ResultType="stringarray" Hive="HKLM" SubKey="Cluster\Resources\%ClusterResources%" KeyName="DependsOn" OSNotSupportedVersion="" />-->
+				    <!-- For Windows 2008/2008 R2-->
+				    <Query QueryName="EnableDhcp" Type ="Registry" ResultType ="long" Hive ="HKLM" SubKey ="Cluster\Resources\%ClusterResources%\Parameters" KeyName ="EnableDhcp" OSNotSupportedVersion="5.2"/>
+						<Query QueryName="ClusterResourceSubKeys" Type ="Registry" ResultType ="string" Hive ="HKLM" SubKey ="Cluster\Resources\%ClusterResources%" OSNotSupportedVersion="6.0,6.1" >
+							<KeySwap Name="ClusterResourceSubKeys" >
+								<Query QueryName="ClusterResourceNetworkDtcAccess" Type ="Registry" ResultType ="int" Hive ="HKLM" SubKey ="Cluster\Resources\%ClusterResources%\%ClusterResourceSubKeys%\Security" KeyName="NetworkDtcAccess" OSNotSupportedVersion="6.0,6.1" />
+							</KeySwap>
+						</Query>
+            <Query QueryName="ClusterResourceNetworkDtcAccess" Type ="Registry" ResultType ="int" Hive ="HKLM" SubKey = "Cluster\Resources\%ClusterResources%\MSDTCPRIVATE\MSDTC\Security" KeyName="NetworkDtcAccess" OSNotSupportedVersion="5.2" />
+            
+					</KeySwap>
+				</Query>
+
+        <Query QueryName="RestartAction" Type ="WMI" Namespace ="root\MSCluster" QueryString ="select Name, RestartAction from MSCluster_Resource" OSNotSupportedVersion="" />
+        <Query QueryName="PossibleOwners" Type ="WMI" Namespace ="root\MSCluster" QueryString ="select GroupComponent, PartComponent from MSCluster_ResourceToPossibleOwner" OSNotSupportedVersion="" />
+        
+				<!-- For Windows 2003/2008/R2 -->
+				<Query QueryName="ClusterGroupActiveNode" Type ="WMI" Namespace ="root\MSCluster" QueryString ="SELECT  GroupComponent,PartComponent FROM MSCluster_NodeToActiveGroup" OSNotSupportedVersion="" />
+				<Query QueryName="ClusterResourcesDependentResources" Type ="WMI" Namespace ="root\MSCluster" QueryString ="SELECT  Antecedent,Dependent FROM MSCluster_ResourceToDependentResource" OSNotSupportedVersion="" />
+				<Query QueryName="ClusterQuorumResource" Type ="Registry" ResultType ="string" Hive ="HKLM" SubKey ="Cluster\Quorum" KeyName ="Resource" OSNotSupportedVersion=""/>
+				<Query QueryName="PagingFiles" Type="Registry" ResultType="stringarray" Hive="HKLM" SubKey="System\CurrentControlSet\Control\Session Manager\Memory Management\" KeyName="PagingFiles"  OSNotSupportedVersion="" />
+				<Query QueryName="MaxQuorumLogSize" Type="Registry" ResultType="long" Hive="HKLM" SubKey="Cluster\Quorum\" KeyName="MaxQuorumLogSize"  OSNotSupportedVersion="6.0,6.1" />
+				<!-- For Windows 2003-->
+				<Query QueryName="ClusDBFileSize" Type ="WMI" Namespace ="root\cimv2" QueryString ="Select FileSize from CIM_Datafile Where Name = 'c:\\Windows\\Cluster\\CLUSDB'" OSNotSupportedVersion="6.0,6.1"/>
+				<!-- For Windows 2000-->
+				<Query QueryName="ClusDBFileSize" Type ="WMI" Namespace ="root\cimv2" QueryString ="Select FileSize from CIM_Datafile Where Name = 'c:\\WINNT\\Cluster\\CLUSDB'" OSNotSupportedVersion="5.2,6.0,6.1"/>
+				<Query QueryName="OSInformation" Type ="WMI" Namespace ="root\cimv2" QueryString ="SELECT BuildNumber,Caption, ServicePackMajorVersion, ServicePackMinorVersion FROM Win32_OperatingSystem" OSNotSupportedVersion=""/>
+
+        <!-- For Windows 2008/2008 R2-->
+        <Query QueryName="ClusterLogSize" Type ="WMI" Namespace ="root\MSCluster" QueryString ="SELECT ClusterLogSize  FROM MSCluster_Cluster" OSNotSupportedVersion="5.2"/>
+        <Query QueryName="ClusterLogLevel" Type ="WMI" Namespace ="root\MSCluster" QueryString ="SELECT ClusterLogLevel  FROM MSCluster_Cluster" OSNotSupportedVersion="5.2"/>
+        
+			</TargetType>
+			<TargetType Type="Node">
+				<Query QueryName="PagingFiles" Type="Registry" ResultType="stringarray" Hive="HKLM" SubKey="System\CurrentControlSet\Control\Session Manager\Memory Management\" KeyName="PagingFiles"  OSNotSupportedVersion="" />
+				<Query QueryName="OSInformation" Type ="WMI" Namespace ="root\cimv2" QueryString ="SELECT MaxProcessMemorySize,BuildNumber,Caption, ServicePackMajorVersion, ServicePackMinorVersion  FROM Win32_OperatingSystem" OSNotSupportedVersion=""/>
+				<Query QueryName="HotfixInformation" Type ="WMI" Namespace ="root\cimv2" QueryString ="SELECT HotFixID, InstallDate, InstalledOn, Name, ServicePackInEffect FROM Win32_QuickFixEngineering" OSNotSupportedVersion=""/>
+				<!-- For Windows 2000/2003-->
+				<Query QueryName="SystemStartOptions" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Control\" KeyName="SystemStartOptions"  OSNotSupportedVersion="6.0,6.1" />
+				<!-- For Windows 2000/2003-->
+				<Query QueryName="ClusterLogSize" Type="Registry" ResultType="string" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Control\Session Manager\Environment\" KeyName="ClusterLogSize"  OSNotSupportedVersion="6.0,6.1" />
+			</TargetType>
+			<ResultControl Type="Microsoft.SqlRap.Client.TestCases.Cluster.ResultControl, Microsoft.SqlRap.Client" />
+		</StateBag>
+    </State>
+  </WorkItem>
+  <help:HelpItem FileName="Cluster.htm" WorkItem="Cluster" DisplayName="Cluster" Description="Gathers and raises issues against the cluster configuration, SQL Server groups, resources, resource dependencies and advanced properties." Details="Provides general cluster and node information as well as evaluating rules around key cluster issues." />
+  <RuleSet>  
+    <!--
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fhasClusKerberosAuthenNotEnabled, Microsoft.SqlRap.Client" Name="fhasClusKerberosAuthenNotEnabled_Rule"></Rule>-->
+	<Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.cNodeBuildNumbers, Microsoft.SqlRap.Client" Name="cNodeBuildNumbers"></Rule>
+  <Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.cNodeCSDVersions, Microsoft.SqlRap.Client" Name="cNodeCSDVersions"></Rule>
+  <Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fAnalysisServiceInSameGroupAsSqlServer, Microsoft.SqlRap.Client" Name="fAnalysisServiceInSameGroupAsSqlServer_Rule"></Rule>
+  <Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fhasAutoStartOptionNotSetForSqlServerResourceGroup, Microsoft.SqlRap.Client" Name="fhasAutoStartOptionNotSetForSqlServerResourceGroup_Rule">
+    <RuleArgument Name="OSNotSupported" Value="5.2"/>
+  </Rule>
+  <Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fhasClusSvcClusterLogLevel08, Microsoft.SqlRap.Client" Name="fhasClusSvcClusterLogLevel08_Rule">
+	  <RuleArgument Name="OSNotSupported" Value="5.2"/>
+  </Rule>
+  <Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fhasCluSvcClusterLogSize08, Microsoft.SqlRap.Client" Name="fhasCluSvcClusterLogSize08_Rule">
+	  <RuleArgument Name="OSNotSupported" Value="5.2"/>
+  </Rule>
+  <Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fhasClusSvcClusterLogSizeEnvVariable, Microsoft.SqlRap.Client" Name="fhasClusSvcClusterLogSizeEnvVariable_Rule">
+    <RuleArgument Name="OSNotSupported" Value="6.0,6.1"/>
+  </Rule>
+  <Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fhasClusSvcMSDTCDepQuorumSetToAffectGroup, Microsoft.SqlRap.Client" Name="fhasClusSvcMSDTCDepQuorumSetToAffectGroup_Rule"></Rule>
+  <Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fhasClusSvcNotAllNodesPossibleOwners, Microsoft.SqlRap.Client" Name="fhasClusSvcNotAllNodesPossibleOwners_Rule"></Rule>  
+	<Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fhasIntegrationServiceInstalled, Microsoft.SqlRap.Client" Name="fhasIntegrationServiceInstalled_Rule"></Rule>
+  <Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fhasNetworkIPSubscribedForDhcp, Microsoft.SqlRap.Client" Name="fhasNetworkIPSubscribedForDhcp_Rule">
+    <RuleArgument Name="OSNotSupported" Value="5.2"/>
+  </Rule>
+	<Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fhasNoClusSvcClusterGroupHasOtherResources, Microsoft.SqlRap.Client" Name="fhasNoClusSvcClusterGroupHasOtherResources_Rule"></Rule>
+	<Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fhasOpSys3gbEnabled, Microsoft.SqlRap.Client" Name="fhasOpSys3gbEnabled_Rule"></Rule>
+  <Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fhasOpSysLargeClusterLogSize, Microsoft.SqlRap.Client" Name="fhasOpSysLargeClusterLogSize_Rule">
+    <RuleArgument Name="OSNotSupported" Value="6.0,6.1"/>
+  </Rule>  
+	<Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fhasOpSysNotIdenticalHotFix, Microsoft.SqlRap.Client" Name="fhasOpSysNotIdenticalHotFix_Rule"></Rule>  
+	<Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fhasOpSysNotIdenticalMaxMinPageFile, Microsoft.SqlRap.Client" Name="fhasOpSysNotIdenticalMaxMinPageFile_Rule"></Rule>  
+  <Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fhasOpSysNotIdenticalOS, Microsoft.SqlRap.Client" Name="fhasOpSysNotIdenticalOS_Rule"></Rule>
+  <Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fhasOpSysPAEEnabled, Microsoft.SqlRap.Client" Name="fhasOpSysPAEEnabled_Rule">
+    <RuleArgument Name="OSNotSupported" Value="6.0,6.1"/>
+  </Rule>
+  <Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fhasSqlServerResourceGroupOtherThanDefaultResources, Microsoft.SqlRap.Client" Name="fhasSqlServerResourceGroupOtherThanDefaultResources_Rule"></Rule>
+  <Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fIsPhysicalDiskNumClusterNode, Microsoft.SqlRap.Client" Name="fIsPhysicalDiskNumClusterNode"></Rule>
+	<Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fMaxQuorumLogTooSmall, Microsoft.SqlRap.Client" Name="fMaxQuorumLogTooSmall">
+		<RuleArgument Name="OSNotSupported" Value="6.0,6.1"/>
+	</Rule>  
+  <Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fMSDTCMissing, Microsoft.SqlRap.Client" Name="fMSDTCMissing"></Rule>  
+	<Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fNetDtcAccessDisabled, Microsoft.SqlRap.Client" Name="fNetDtcAccessDisabled"></Rule>
+  
+
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fSQLAgentAffectsGroup, Microsoft.SqlRap.Client" Name="fSQLAgentAffectsGroup_2000_2003">
+		<RuleArgument Name="OSNotSupported" Value="6.0,6.1"/>
+	</Rule>
+	<Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fSQLAgentAffectsGroup, Microsoft.SqlRap.Client" Name="fSQLAgentAffectsGroup_2008_2008R2">
+		<RuleArgument Name="OSNotSupported" Value="5.2"/>
+	</Rule>  
+	<Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fSQLDoesNotAffectGroup, Microsoft.SqlRap.Client" Name="fSQLDoesNotAffectGroup"></Rule>
+	<Rule Type="Microsoft.SqlRap.Client.TestCases.Cluster.fSQLFullTextAffectsGroup, Microsoft.SqlRap.Client" Name="fSQLFullTextAffectsGroup"></Rule>
+  </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+	<TableStates />
+  </ResultsViewer>	
+</TestCase>

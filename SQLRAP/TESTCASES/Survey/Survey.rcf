@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestCase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Signature="EECE1FE4E0882D2C" SortOrder="14" ExecutionOrder="7" xmlns="http://www.microsoft.com/StaticWorkItem">
+  <WorkItem Schema="bpa.xsd" Name="Survey" DisplayName="Survey" Type="Microsoft.SqlRap.Client.Core.BpaWorkItem,Microsoft.SqlRap.Client" Category="SQL Operations" Description="The Survey test case integrates the results of the operational interview." DataType="Microsoft.SqlRap.Client.TestCases.Survey.BpaRoot,Microsoft.SqlRap.Client">
+    <Configuration>
+      <Setting Name="FilledOutSurveyFile" Value="C:\SQLRAP\Private\Survey\SQLRAP Survey.xml" Default="C:\SQLRAP\Private\Survey\SQLRAP Survey.xml" DataType="FilePath" FileMask="Survey Files|*.xml" Description="Used to specify the full path and filename to a survey XML file that has been filled and is ready to be imported into the SQLRAP Tool.  Do NOT copy the survey XML file to the Output folder.  External XML files are not supported in that folder.  Change the path and filename as necessary.&#xD;&#xA;&#xD;&#xA;Example:&#xD;&#xA;&#xD;&#xA;C:\SQLRAP\Public\SQLRAP Survey.XML" />
+    </Configuration>
+    <State />
+  </WorkItem>
+  <HelpItem FileName="Survey_help.htm" WorkItem="Survey" DisplayName="Survey" Description="The Survey test case integrates the results of the operational interview." Details="The Survey test case integrates the results of the operational interview so that issues can be generated and included in the formal SQLRAP report." xmlns="http://www.microsoft.com/Rapid/HelpIndex" />
+  <RuleSet>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoAntivirusOnSQL">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoAntivirusOnSQL']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fAntivirusMisconfigured">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fAntivirusMisconfigured']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNotKnowIncidentCreation">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNotKnowIncidentCreation']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoDedicatedDBAStaff">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoDedicatedDBAStaff']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoStaffBaselineCert">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoStaffBaselineCert']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoPerfBaselines">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoPerfBaselines']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoProcessorBaseline">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoProcessorBaseline']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNodiskIOBaseline">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNodiskIOBaseline']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoDiskLatencyBaseline">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoDiskLatencyBaseline']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoUserLoadBaseline">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoUserLoadBaseline']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoMemoryBaseline">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoMemoryBaseline']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoSQLServerCounterBaseline">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoSQLServerCounterBaseline']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoUpdateStatistics">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoUpdateStatistics']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoIndexDefragSchedule">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoIndexDefragSchedule']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoRegularDBCCCheck">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoRegularDBCCCheck']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoChangeControl">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoChangeControl']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoDedicatedNonProdEnvironment">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoDedicatedNonProdEnvironment']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoRollbackPlan">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoRollbackPlan']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fDBOpsApprovalVoice">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fDBOpsApprovalVoice']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoScheduleForSPsReleases">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoScheduleForSPsReleases']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fInfrequentWindowsUpdates">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fInfrequentWindowsUpdates']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fInfrequentSQLUpdates">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fInfrequentSQLUpdates']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fInfrequentSecurityUpdates">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fInfrequentSecurityUpdates']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fTooLongSecurityUpdates">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fTooLongSecurityUpdates']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoReviewTestUpdates">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoReviewTestUpdates']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoProdLikeEnvironment">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoProdLikeEnvironment']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fInappropriateGroupApplyUpdates">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fInappropriateGroupApplyUpdates']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoBuildDocs">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoBuildDocs']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoSQLMonitoring">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoSQLMonitoring']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fMonitoringNotComprehensive">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fMonitoringNotComprehensive']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fMonitoringNot247">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fMonitoringNot247']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoAutomatedAlerts">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoAutomatedAlerts']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoresponsibleForAlerts">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoresponsibleForAlerts']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoOpsGuideForAlerts">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoOpsGuideForAlerts']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoOLAs">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoOLAs']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoRegularMaintenanceTime">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoRegularMaintenanceTime']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoSLAReviews">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoSLAReviews']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoMeasureAvailability">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoMeasureAvailability']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fAvailMeasureNotAutomated">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fAvailMeasureNotAutomated']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fOLArestoreTime">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fOLArestoreTime']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoOLAswithSupportingTeams">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoOLAswithSupportingTeams']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoOLAReviews">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoOLAReviews']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoMeasureSatisfaction">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoMeasureSatisfaction']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fDataNotClassifiedForSecurity">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fDataNotClassifiedForSecurity']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fUnnecessaryLibraries">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fUnnecessaryLibraries']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoSecurityReview">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoSecurityReview']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoSecuriyLogging">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoSecuriyLogging']" />
+    </Rule>    
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fHBIDataNotSecured">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fHBIDataNotSecured']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fSecureDataIncreaseComplexity">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fSecureDataIncreaseComplexity']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fInsufficientDataAccessRestrictions">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fInsufficientDataAccessRestrictions']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fInsufficientAccessAuditing">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fInsufficientAccessAuditing']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoDRPlan">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoDRPlan']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fCannotFollowDRPLan">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fCannotFollowDRPLan']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoDRPlanTest">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoDRPlanTest']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoPhysicalDBServerAccess">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoPhysicalDBServerAccess']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoInstallMediaAccess">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoInstallMediaAccess']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoDRSLA">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoDRSLA']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fDoesNotMeetSLAs">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fDoesNotMeetSLAs']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoPlanForGrowth">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoPlanForGrowth']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoOffsiteBackupsUsed">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoOffsiteBackupsUsed']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fBackupsTakeTooLong">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fBackupsTakeTooLong']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fBackupsNotValidated">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fBackupsNotValidated']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fSQLServerConfigNotBackup">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fSQLServerConfigNotBackup']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoDedicatedDRServers">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoDedicatedDRServers']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoSpaceForDBRestore">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoSpaceForDBRestore']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fInadequateDRMethods">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fInadequateDRMethods']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNonSQLReplicationUsed">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNonSQLReplicationUsed']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fInadquateBackupStrategy">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fInadquateBackupStrategy']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fRestoresNotInSLA">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fRestoresNotInSLA']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoDedicatedBackupWindow">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoDedicatedBackupWindow']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fBackupsNotOptimizedforMinBizImpact">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fBackupsNotOptimizedforMinBizImpact']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fMediaBackupStrategyNotBP">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fMediaBackupStrategyNotBP']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fUnsecureBackups">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fUnsecureBackups']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fBackupsCompressed">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fBackupsCompressed']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fBackupMultipleDevices">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fBackupMultipleDevices']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fInappropriateRaidLevel">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fInappropriateRaidLevel']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fSharedDataStorage">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fSharedDataStorage']" />
+    </Rule>   
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fClusteringOptionsComplexity">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fClusteringOptionsComplexity']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fClusterOnHCL">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fClusterOnHCL']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fServersNotPhysicallySecure">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fServersNotPhysicallySecure']" />
+    </Rule>
+    <!--<Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fIncorrectXMLConnections">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fIncorrectXMLConnections']" />
+    </Rule>-->
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fCSMNotKnown">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fCSMNotKnown']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fAdHocChangesAllowed">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fAdHocChangesAllowed']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fStartupParametersUsed">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fStartupParametersUsed']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fBackupNotOccurLastDay">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fBackupNotOccurLastDay']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fHyperThreadingOnWinTwoK">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fHyperThreadingOnWinTwoK']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fSMBNotDisabled">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fSMBNotDisabled']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fServerStatePollingEnabled">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fServerStatePollingEnabled']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fMultipleIPAddressForSQLResource">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fMultipleIPAddressForSQLResource']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNonSQLServerResourceDependent">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNonSQLServerResourceDependent']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fTwokTwokFiveUsingSameSvcAccount">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fTwokTwokFiveUsingSameSvcAccount']" />
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="fNoHighAvailOptionsConfigured">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='fNoHighAvailOptionsConfigured']" />
+    </Rule>
+    <Rule Name="CategoryNotAvailable_fhasNoHighAvailabilityClusteringDeployed" Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor,Microsoft.SqlRap.Client">
+      <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='CategoryNotAvailable_fhasNoHighAvailabilityClusteringDeployed']" />
+    </Rule>
+   <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="CategoryNotAvailable_supressTSQLCursors">
+	  <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='CategoryNotAvailable_supressTSQLCursors']" />
+   </Rule>
+	  <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="CategoryNotAvailable_supressTSQLExecution">
+		  <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='CategoryNotAvailable_supressTSQLExecution']" />
+	  </Rule>
+	  <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="CategoryNotAvailable_supressTSQLHints">
+		  <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='CategoryNotAvailable_supressTSQLHints']" />
+	  </Rule>
+	  <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="CategoryNotAvailable_supressTSQLLogicalExpressions">
+		  <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='CategoryNotAvailable_supressTSQLLogicalExpressions']" />
+	  </Rule>
+	  <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="CategoryNotAvailable_supressTSQLNamingConventions">
+		  <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='CategoryNotAvailable_supressTSQLNamingConventions']" />
+	  </Rule>
+	  <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="CategoryNotAvailable_supressTSQLNotLogic">
+		  <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='CategoryNotAvailable_supressTSQLNotLogic']" />
+	  </Rule>
+	  <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="CategoryNotAvailable_supressTSQLXML">
+		  <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='CategoryNotAvailable_supressTSQLXML']" />
+	  </Rule>
+	  <Rule Type="Microsoft.SqlRap.Client.Core.BpaRuleProcessor, Microsoft.SqlRap.Client" Name="CategoryNotAvailable_supressDatabaseDesign">
+		  <RuleArgument Name="Filter" Value="/BpaIssues/BpaIssue[@Name ='CategoryNotAvailable_supressDatabaseDesign']" />
+	  </Rule>
+  </RuleSet>
+  <ResultsViewer Type="Microsoft.Rapid.Client.Framework.UI.Winform.Results.Controls.GenericWebControl,Microsoft.Rapid.Client.Framework">
+    <TableStates />
+  </ResultsViewer>
+</TestCase>

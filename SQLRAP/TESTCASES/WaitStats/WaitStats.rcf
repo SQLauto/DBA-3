@@ -1,0 +1,44 @@
+<TestCase Signature="6542B096167127D0" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="24" ExecutionOrder="2">
+  <!-- DataType is the type which is used to communicate between Collection and Analysis stage. 
+       Type is the type which does the work of collection of the data...
+  -->	
+  <WorkItem
+    Name            =   "WaitStats"
+    Category        =   "Performance"
+    DisplayName     =   "WaitStats"
+    Description     =   "Wait stats test case gathers that SQL Server resource wait times for all wait types over a period of time that the RAPID user set as the duration on the “Change Settings” screen for “Waitstats” test case."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.TestCases.WaitStats.WaitStatsWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+        <Setting Name="Interval (In Seconds)" Value="10" Description="" Default="10" />
+        <Setting Name="Duration (In Minutes)" Value="60" Description="" Default="60" />
+	    </Configuration>
+
+	    <State>
+		<ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+			<SqlScript FileName ="TestCases\WaitStats\smallwaitstats_new.sql" IssueFileRuleQuery = "WaitStats"/>
+      <SqlScript FileName ="TestCases\WaitStats\delete_temp_table.sql" IssueFileRuleQuery = "WaitStats"/>
+		</ScriptRule>
+	    </State>
+  </WorkItem>
+
+ <help:HelpItem FileName="Waitstats.htm" WorkItem="WaitStats" DisplayName="Waitstats" Description="Provides the SQL Server resource waits reports." Details="Wait stats test case gathers that SQL Server resource wait times for all wait types over a period of time that the RAPID user set as the duration on the “Change Settings” screen for “Waitstats” test case."/>
+ 
+  <RuleSet>
+	<!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	<!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+    </RuleSet>
+  <ResultsViewer Type="Microsoft.SqlRap.Client.TestCases.WaitStats.WaitStatsResultsWpf, Microsoft.SqlRap.Client">
+    <TableStates>
+      <TableState Name="ResultsByInstance" ShowToolstrip="true" ShowTotalCount="true" Title="ResultsByInstance" ShowFilter ="true" SortColumn="" SortDirection="descending" ShowTitle="true" ShowSelectedCount="true" UndoEdit="true">
+       <ColumnState Name="Timestamp" DataPropertyName="Timestamp" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  HeaderText="Timestamp" />
+        <ColumnState Name="DeltaWait" DataPropertyName="DeltaWait" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="DeltaWait" />      
+      </TableState>
+    </TableStates>
+  </ResultsViewer>
+  </TestCase>
+
+
+

@@ -1,0 +1,94 @@
+<!--Signature="65E082BB3A3F6CF4"-->
+<RuleSet>
+  <!-- Processor Rules -->
+  
+  <Rule Name="Virtualization.HostProcessor.Warning">
+    <RuleArgument Operator="and">
+      <RuleArgument CounterName="HyperVLogicalRunTime" Instance="_Total" Operator="GreaterThanOrEqualTo" Value="75" Field="Average" DataType="double" Index="1"/>
+      <RuleArgument CounterName="HyperVLogicalRunTime" Instance="_Total" Operator="LessThan" Value="85" Field="Average" DataType="double" Index="2"/>
+    </RuleArgument>
+  </Rule>
+
+  <Rule Name="Virtualization.HostProcessor.Error">
+      <RuleArgument CounterName="HyperVLogicalRunTime" Instance="_Total" Operator="GreaterThanOrEqualTo" Value="85" Field="Average" DataType="double" Index="1"/>
+  </Rule>
+
+  <Rule Name="Virtualization.GuestProcessor.Warning">
+    <RuleArgument Operator="and">
+      <RuleArgument CounterName="HyperVVirtualGuestTime" Field="Instance" Instance="*" Operator="NotContains" Value="_Total" DataType="string" />
+      <RuleArgument CounterName="HyperVVirtualGuestTime" Instance="*" Operator="GreaterThanOrEqualTo" Value="75" Field="Average" DataType="double" Index="1"/>
+      <RuleArgument CounterName="HyperVVirtualGuestTime" Instance="*" Operator="LessThan" Value="85" Field="Average" DataType="double" Index="2"/>
+    </RuleArgument>
+  </Rule>
+
+  <Rule Name="Virtualization.GuestProcessor.Error">
+    <RuleArgument Operator="and">
+      <RuleArgument CounterName="HyperVVirtualGuestTime" Field="Instance" Instance="*" Operator="NotContains" Value="_Total" DataType="string" />
+      <RuleArgument CounterName="HyperVVirtualGuestTime" Instance="*" Operator="GreaterThanOrEqualTo" Value="85" Field="Average" DataType="double" Index="1"/>
+    </RuleArgument>
+  </Rule>
+  
+  <!-- Root Partition Logical Disk rules -->
+
+  <Rule Name="Virtualization.HostDiskReadLatency.Warning">
+    <RuleArgument Operator="and">
+      <RuleArgument CounterName="LogicalAvgReadsPerSec" Field="Instance" Instance="*" Operator="NotContains" Value="_Total" DataType="string" />
+      <RuleArgument CounterName="LogicalAvgReadsPerSec" Instance="*" Operator="GreaterThan" Value=".015" Field="Average" DataType="double" Index="1"/>
+      <RuleArgument CounterName="LogicalAvgReadsPerSec" Instance="*" Operator="LessThanOrEqualTo" Value=".025" Field="Average" DataType="double" Index="2"/>
+    </RuleArgument>
+  </Rule>
+
+  <Rule Name="Virtualization.HostDiskReadLatency.Error">
+    <RuleArgument Operator="and">
+      <RuleArgument CounterName="LogicalAvgReadsPerSec" Field="Instance" Instance="*" Operator="NotContains" Value="_Total" DataType="string" />
+      <RuleArgument CounterName="LogicalAvgReadsPerSec" Instance="*" Operator="GreaterThan" Value=".025" Field="Average" DataType="double" Index="1"/>
+    </RuleArgument>
+  </Rule>
+
+  <Rule Name="Virtualization.HostDiskWriteLatency.Warning">
+    <RuleArgument Operator="and">
+      <RuleArgument CounterName="LogicalAvgWritesPerSec" Field="Instance" Instance="*" Operator="NotContains" Value="_Total" DataType="string" />
+      <RuleArgument CounterName="LogicalAvgWritesPerSec" Instance="*" Operator="GreaterThan" Value=".015" Field="Average" DataType="double" Index="1"/>
+      <RuleArgument CounterName="LogicalAvgWritesPerSec" Instance="*" Operator="LessThanOrEqualTo" Value=".025" Field="Average" DataType="double" Index="2"/>
+    </RuleArgument>
+  </Rule>
+
+  <Rule Name="Virtualization.HostDiskWriteLatency.Error">
+    <RuleArgument Operator="and">
+      <RuleArgument CounterName="LogicalAvgWritesPerSec" Field="Instance" Instance="*" Operator="NotContains" Value="_Total" DataType="string" />
+      <RuleArgument CounterName="LogicalAvgWritesPerSec" Instance="*" Operator="GreaterThan" Value=".025" Field="Average" DataType="double" Index="1"/>
+    </RuleArgument>
+  </Rule>
+
+  <!-- Host memory rules -->
+  <Rule Name="Virtualization.HostMemory.Warning">
+    <RuleArgument Operator="LessThan" >
+      <RuleArgument CounterName_1="HyperVRootAvailMem" Instance_1="" Field_1="Average" DataType_1="double"
+                    Operator="DIV"
+                    Field_2="Custom" CustomFieldName_2="TotalPhysicalMemory" DataType_2="double" Instance_2="*" Index="1"/>
+      <RuleArgument Value=".1" DataType="double" Index="2" />
+    </RuleArgument>
+  </Rule>
+
+  <Rule Name="Virtualization.HostMemory.Error">
+    <RuleArgument CounterName="HyperVRootAvailMem" Instance="" Operator="LessThan" Value="100" Field="Average" DataType="double" Index="1"/>
+  </Rule>
+
+  <!-- Network Rules-->
+  
+  <Rule Name="Virtualization.HostNetwork.Warning">
+    <RuleArgument Operator="and">
+      <RuleArgument CounterName="RootPartOutputQueueLength" Field="Instance" Instance="*" Operator="NotContains" Value="_Total" DataType="string" />
+      <RuleArgument CounterName="RootPartOutputQueueLength" Instance="*" Operator="GreaterThanOrEqualTo" Value="1" Field="Average" DataType="double" Index="1"/>
+      <RuleArgument CounterName="RootPartOutputQueueLength" Instance="*" Operator="LessThan" Value="2" Field="Average" DataType="double" Index="2"/>
+    </RuleArgument>
+  </Rule>
+
+  <Rule Name="Virtualization.HostNetwork.Error">
+    <RuleArgument Operator="and">
+      <RuleArgument CounterName="RootPartOutputQueueLength" Field="Instance" Instance="*" Operator="NotContains" Value="_Total" DataType="string" />
+      <RuleArgument CounterName="RootPartOutputQueueLength" Instance="*" Operator="GreaterThanOrEqualTo" Value="2" Field="Average" DataType="double" Index="1"/>
+    </RuleArgument>
+  </Rule>
+
+</RuleSet>

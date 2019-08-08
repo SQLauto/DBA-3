@@ -1,0 +1,57 @@
+<TestCase Signature="2BCA9B6C03F375FF" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="14" ExecutionOrder="2">
+  <!-- DataType is the type which is used to communicate between Collection and Analysis stage. 
+       Type is the type which does the work of collection of the data...
+  -->	
+  <WorkItem
+    Name            =   "Sysconfig-PendingChanges"
+    Category        =   "Configuration"
+    DisplayName     =   "PendingChanges"
+    Description     =   ""
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.Sysconfig_PendingChanges.Sysconfig_PendingChangesResultData, Microsoft.SqlRap.Client" />
+		    <ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >			
+			    <SqlScript FileName ="TestCases\Sysconfig-PendingChanges\SQL_SYS_CFNG_Pending_Changes.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_Pending_Changes"/>
+		    </ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="Sysconfig-PendingChanges.htm" WorkItem="Sysconfig-PendingChanges" DisplayName="Sys Configuration PendingChanges" Description="Lists all the SQL Server configurations for which the configured value is different from the current run value or value in use." Details="Lists all the SQL Server configurations for which the configured value is different from the current run value or value in use."/>
+
+  <RuleSet>
+	  <!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	  <!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+    <Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_Pending_Changes"/>    
+  </RuleSet>
+<ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+		<TableState Name            ="Sysconfig-PendingChanges" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   = "ascending"
+			    Title           ="Sysconfig PendingChanges" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+					<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName" HeaderText = "Server Name" Frozen = "true" Visible="true" />
+					<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName" HeaderText = "Instance Name" Frozen = "true" Visible="true" />
+					<ColumnState Name="_txtConfigurationName"  DataPropertyName ="ConfigurationName" HeaderText = "Configuration Name" Frozen = "true" Visible="true" />
+					<ColumnState Name="_txtTargetDefaultValue"  DataPropertyName ="ConfiguredValue" HeaderText = "Configured Value" Frozen = "true" Visible="true" ColumnType="int" />					
+					<ColumnState Name="_txtRunValue"  DataPropertyName ="RunValue" HeaderText = "Run Value" Frozen = "true" Visible="true" ColumnType="int" />			
+	    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>
+
+
+

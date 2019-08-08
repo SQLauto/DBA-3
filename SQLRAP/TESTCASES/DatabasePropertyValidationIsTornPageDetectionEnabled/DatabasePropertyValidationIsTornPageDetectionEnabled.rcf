@@ -1,0 +1,54 @@
+<TestCase Signature="5B5F48476C5D7779" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex"  SortOrder="43" ExecutionOrder="2">
+  <WorkItem
+    Name            =   "DatabasePropertyValidationIsTornPageDetectionEnabled"
+    Category        =   "Database Properties"
+    DisplayName     =   "IsTornPageDetectionEnabled"
+    Description     =   "This test case reports all user databases which have enabled Torn Page Detection.  This test is only run on SQL Server 2000 instances."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.DatabasePropertyValidationIsTornPageDetectionEnabled.DatabasePropertyValidationIsTornPageDetectionEnabledResultData, Microsoft.SqlRap.Client" />
+       
+		<ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+					
+<SqlScript FileName ="Testcases\DatabasePropertyValidationIsTornPageDetectionEnabled\sql_databasepropertyex_IsTornPageDetectionEnabled_validation.sql" IssueFileRuleQuery = "sql_databasepropertyex_IsTornPageDetectionEnabled_validation"/>
+		</ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="DatabasePropertyValidationIsTornPageDetectionEnabled.htm" WorkItem="DatabasePropertyValidationIsTornPageDetectionEnabled" DisplayName="DatabasePropertyValidation - IsTornPageDetectionEnabled" Description="If torn page detection is enabled on the databases." Details="This test case reports all user databases which have enabled Torn Page Detection.  This test is only run on SQL Server 2000 instances."/>
+
+  <RuleSet>
+	<!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	<!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+			
+<Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="sql_databasepropertyex_IsTornPageDetectionEnabled_validation"/>
+  </RuleSet>
+<ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+		<TableState Name            ="DatabasePropertyValidationIsTornPageDetectionEnabled" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="DatabasePropertyValidation - IsTornPageDetectionEnabled" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName"  HeaderText = "Database Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtTornPageDetectionEnabled"  DataPropertyName ="TornPageDetectionEnabled"  HeaderText = "TornPage Detection Enabled"  Frozen = "false" Visible="true" /> 
+
+	    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

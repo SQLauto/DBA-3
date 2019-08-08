@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Service Broker Core Concepts">
+  <Items>
+    <LogicalFolder Name="Connections" Type="2" Sorted="true">
+      <Items>
+        <ConnectionNode Name="GREGVISTA:GREGVISTA\Greg">
+          <Created>2008-11-03T20:14:40.3107709-08:00</Created>
+          <Type>SQL</Type>
+          <Server>GREGVISTA</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB />
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Queries" Type="0" Sorted="true">
+      <Items>
+        <FileNode Name="1 - Create Broker Objects.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:GREGVISTA:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>GREGVISTA</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>1 - Create Broker Objects.sql</FullPath>
+        </FileNode>
+        <FileNode Name="0 - Create Objects.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:GREGVISTA:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>GREGVISTA</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>0 - Create Objects.sql</FullPath>
+        </FileNode>
+        <FileNode Name="9 - Clean Up.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:GREGVISTA:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>GREGVISTA</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>9 - Clean Up.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2 - Poison Messages.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:GREGVISTA:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>GREGVISTA</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>2 - Poison Messages.sql</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
+      <Items>
+        <FileNode Name="3 - SSBDiagnose.txt">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>3 - SSBDiagnose.txt</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+  </Items>
+</SqlWorkbenchSqlProject>

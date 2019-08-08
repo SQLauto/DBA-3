@@ -1,0 +1,1698 @@
+<TestCase Signature="00775E480D4C5C31" SortOrder="21" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex">
+    <WorkItem Name="EventCollector" 
+                      Category="SQL Operations" 
+                      DisplayName="Event Collector" 
+                      Description="This test case collects events from the Server, Application and SQL Error log.  It looks for significant events that occurred in these logs and reports these issues.  The number of days of logs analyzed is configured in the Change Settings screen." 
+                      Schema="" DataType=""  
+                     Type="Microsoft.SqlRap.Client.TestCases.EventCollector.EventWorkItem, Microsoft.SqlRap.Client">
+    <Configuration>
+      <Setting Name="Days" Value="5" Description="Determines the number of past days to query.  The default value is 5 days.&#xD;&#xA;&#xD;&#xA;Default: 5&#xD;&#xA;Data Type: Number of days" Default="5" />
+      <Setting Name="EventLogs" Value="System;Application" Description="Determines which event logs to query.  The default is to query the System and Application.&#xD;&#xA;&#xD;&#xA;Default: System;Application;&#xD;&#xA;&#xD;&#xA;Possible values: System / Application / Directory Service / File Replication Service / DNS Server.  Values must be semi-colon delimeted." Default="System;Application" />
+      <Setting Name="EventTypeFilter" Value="" Description="Determines which event severities to collect.  The default is blank, however this option works in conjunction with the EventTypeExcludeFilter which has a default value of Informational.  This means, by default, only Warnings and Errors are collected.&#xD;&#xA;&#xD;&#xA;Default: &lt;nothing specified&gt;&#xD;&#xA;&#xD;&#xA;Possible values: Information / Warning / Error" Default="" />
+      <Setting Name="EventCodeFilter" Value="" Description="Determines which event ID's to collect.  The default is blank which means all events are collected.  This is used in conjunction with the other EventType options.&#xD;&#xA;&#xD;&#xA;Default: &lt;nothing specified&gt;" Default="" />
+      <Setting Name="EventTypeExcludeFilter" Value="Information" Description="Determines which event severities to exclude.  The default is to exclude Informational events.&#xD;&#xA;Note: EventTypeFilter and EventTypeExcludeFilter cannot be used simultaneously.&#xD;&#xA;&#xD;&#xA;Default: Information&#xD;&#xA;&#xD;&#xA;Possible values: Information / Warning / Error" Default="Information" />
+      <Setting Name="EventCodeExcludeFilter" Value="" Description="Determines which event ID's to exclude.  The default is blank which means all events are collected.  This is used in conjunction with the other EventType options.&#xD;&#xA;&#xD;&#xA;Default: &lt;nothing specified&gt;" Default="" />
+
+      <!--
+      <Setting Name="InvalidCharacters" Value="" Description="List of invalid characters to replace in the event message.  This needs to be a semi-colon delimeted list and the unicode value of the character, not the character itself.  This is an advanced option.  Do not use without guidance from the ADST development team.&#xD;&#xA;&#xD;&#xA;Default: &lt;nothing specified&gt;" Default=""/>
+      <Setting Name="UseWMI" Value="Windows 2003 Only" Description="Determines which type of collection method to use.  Possible values:&#xD;&#xA;&#xD;&#xA;All - Uses WMI collection method against all machines.  WARNING:  This is not a recommended setting and will cause CPU spikes on the Windows 2000 targeted machines.&#xD;&#xA;&#xD;&#xA;None - Does not use WMI collection machine against any machines.&#xD;&#xA;&#xD;&#xA;Windows 2003 Only - Only uses WMI collection method against Windows 2003 machines.&#xD;&#xA;&#xD;&#xA;Default: Windows 2003 Only" Default="Windows 2003 Only"/> 
+      -->
+
+    </Configuration>
+      <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.Rap.TestCases.Common.EventCollector.Results.EventCollectorResultsData, Microsoft.Rap.TestCases.Common.EventCollector" />
+        </StateBag>
+      </State>
+    <!--<State>
+      <ScriptRule TargetLevel="server" IncludeSystemDatabases="true" >
+        <SqlScript FileName ="Testcases\EventCollector\SQL_Server_errorlog_evalutation.sql" IssueFileRuleQuery = "SQL_Server_errorlog"/>
+      </ScriptRule>
+    </State>-->
+  </WorkItem>
+  <help:HelpItem FileName="EventCollector.Help.htm" WorkItem="EventCollector" DisplayName="Event Collector" Description="Provides a summary of event log information from each machine." Details="This test case collects all the event logs from each machine identified in this Health Check."/>
+  <RuleSet>
+    <Rule Name="fhasMonitorEventEventLog6008" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="EventLog"/>
+      <RuleArgument Name="EventId" Value="6008"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventActiveServerPages5" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Active Server Pages"/>
+      <RuleArgument Name="EventId" Value="5"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventadpu160m11" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="adpu160m"/>
+      <RuleArgument Name="EventId" Value="11"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventAlertManager257" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Alert Manager"/>
+      <RuleArgument Name="EventId" Value="257"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventApplicationPopup26" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Application Popup"/>
+      <RuleArgument Name="EventId" Value="26"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventatapi9" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="atapi"/>
+      <RuleArgument Name="EventId" Value="9"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventAutoEnrollment13" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="Application"/>
+      <RuleArgument Name="EventId" Value="13"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-CertificateServicesClient-AutoEnrollment"/>
+      <RuleArgument Name="Log2" Value="Application"/>
+      <RuleArgument Name="EventId2" Value="13"/>
+      <RuleArgument Name="Source2" Value="AutoEnrollment"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventb57w2k4" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="b57w2k"/>
+      <RuleArgument Name="EventId" Value="4"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventBROWSER8021" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="BROWSER"/>
+      <RuleArgument Name="EventId" Value="8021"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventBROWSER8022" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="BROWSER"/>
+      <RuleArgument Name="EventId" Value="8022"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1052" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1052"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1077" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1077"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1055" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1055"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1069" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1069"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1009" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1009"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1070" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1070"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1036" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1036"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1038" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1038"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1119" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1119"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1123" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1123"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1130" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1130"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1126" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1126"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1135" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1135"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1079" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1079"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1107" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1107"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1215" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1215"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1068" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1068"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1136" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1136"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1137" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1137"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1096" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1096"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1124" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1124"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1080" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1080"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1081" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1081"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventClusSvc1082" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ClusSvc"/>
+      <RuleArgument Name="EventId" Value="1082"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventCpqarray9" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Cpqarray"/>
+      <RuleArgument Name="EventId" Value="9"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventcpqasm24154" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="cpqasm2"/>
+      <RuleArgument Name="EventId" Value="4154"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventcpqasm24173" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="cpqasm2"/>
+      <RuleArgument Name="EventId" Value="4173"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventCPQTeamMP434" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="CPQTeamMP"/>
+      <RuleArgument Name="EventId" Value="434"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventCPQTeamMP449" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="CPQTeamMP"/>
+      <RuleArgument Name="EventId" Value="449"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventcqmhpw2k24" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="cqmhpw2k"/>
+      <RuleArgument Name="EventId" Value="24"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventcrypt328" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="crypt32"/>
+      <RuleArgument Name="EventId" Value="8"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventDataTransformationServices81" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="DataTransformationServices"/>
+      <RuleArgument Name="EventId" Value="81"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventDCOM10009" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="EventId" Value="10009"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-DistributedCOM"/>
+      <RuleArgument Name="Log2" Value="System"/>
+      <RuleArgument Name="EventId2" Value="10009"/>
+      <RuleArgument Name="Source2" Value="DCOM"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventDCOM10002" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="EventId" Value="10002"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-DistributedCOM"/>
+      <RuleArgument Name="Log2" Value="System"/>
+      <RuleArgument Name="EventId2" Value="10002"/>
+      <RuleArgument Name="Source2" Value="DCOM"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventDCOM10020" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="EventId" Value="10020"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-DistributedCOM"/>
+      <RuleArgument Name="Log2" Value="System"/>
+      <RuleArgument Name="EventId2" Value="10020"/>
+      <RuleArgument Name="Source2" Value="DCOM"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventDCOM10014" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="EventId" Value="10014"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-DistributedCOM"/>
+      <RuleArgument Name="Log2" Value="System"/>
+      <RuleArgument Name="EventId2" Value="10014"/>
+      <RuleArgument Name="Source2" Value="DCOM"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventDCOM10005" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="DCOM"/>
+      <RuleArgument Name="EventId" Value="10005"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventDCOM10005_2008" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-DistributedCOM"/>
+      <RuleArgument Name="EventId" Value="10005"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventDisk51" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Disk"/>
+      <RuleArgument Name="EventId" Value="51"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventDisk11" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Disk"/>
+      <RuleArgument Name="EventId" Value="11"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventdmio37" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="dmio"/>
+      <RuleArgument Name="EventId" Value="37"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventDnsApi11180" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="DnsApi"/>
+      <RuleArgument Name="EventId" Value="11180"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventDnsApi11153" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="DnsApi"/>
+      <RuleArgument Name="EventId" Value="11153"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventDnsApi11164" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="DnsApi"/>
+      <RuleArgument Name="EventId" Value="11164"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventE100013" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="E1000"/>
+      <RuleArgument Name="EventId" Value="13"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventEventLog6004" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="EventLog"/>
+      <RuleArgument Name="EventId" Value="6004"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventEventLog6000" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="EventLog"/>
+      <RuleArgument Name="EventId" Value="6000"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventFtdisk50" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Ftdisk"/>
+      <RuleArgument Name="EventId" Value="50"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventFtdisk57" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Ftdisk"/>
+      <RuleArgument Name="EventId" Value="57"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventKerberos4" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="EventId" Value="4"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-Security-Kerberos"/>
+      <RuleArgument Name="Log2" Value="System"/>
+      <RuleArgument Name="EventId2" Value="4"/>
+      <RuleArgument Name="Source2" Value="Kerberos"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventKerberos5" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="EventId" Value="5"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-Security-Kerberos"/>
+      <RuleArgument Name="Log2" Value="System"/>
+      <RuleArgument Name="EventId2" Value="5"/>
+      <RuleArgument Name="Source2" Value="Kerberos"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventLicenseService213" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="LicenseService"/>
+      <RuleArgument Name="EventId" Value="213"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventLicenseService202" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="LicenseService"/>
+      <RuleArgument Name="EventId" Value="202"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventLSASRV40968" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="LSASRV"/>
+      <RuleArgument Name="EventId" Value="40968"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventLSASRV40960" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="LSASRV"/>
+      <RuleArgument Name="EventId" Value="40960"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventLSASRV40961" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="LSASRV"/>
+      <RuleArgument Name="EventId" Value="40961"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventLsaSrv6033" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="LsaSrv"/>
+      <RuleArgument Name="EventId" Value="6033"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventMcLogEvent5011" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="McLogEvent"/>
+      <RuleArgument Name="EventId" Value="5011"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventMicrosoftOperationsManager26009" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Microsoft Operations Manager"/>
+      <RuleArgument Name="EventId" Value="26009"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventMicrosoftOperationsManager21293" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Microsoft Operations Manager"/>
+      <RuleArgument Name="EventId" Value="21293"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventMicrosoftOperationsManager21426" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Microsoft Operations Manager"/>
+      <RuleArgument Name="EventId" Value="21426"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventMicrosoftOperationsManager26020" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Microsoft Operations Manager"/>
+      <RuleArgument Name="EventId" Value="26020"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventMSDTC4147" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="Application"/>
+      <RuleArgument Name="EventId" Value="4147"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-MSDTC"/>
+      <RuleArgument Name="Log2" Value="Application"/>
+      <RuleArgument Name="EventId2" Value="4147"/>
+      <RuleArgument Name="Source2" Value="MSDTC"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventMSDTC4359" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="Application"/>
+      <RuleArgument Name="EventId" Value="4359"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-MSDTC"/>
+      <RuleArgument Name="Log2" Value="Application"/>
+      <RuleArgument Name="EventId2" Value="4359"/>
+      <RuleArgument Name="Source2" Value="MSDTC"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventMSDTCClient4148" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="MSDTC Client"/>
+      <RuleArgument Name="EventId" Value="4148"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventN1004" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="N100"/>
+      <RuleArgument Name="EventId" Value="4"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBackupAVRDaemon4102" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBackup AVR Daemon"/>
+      <RuleArgument Name="EventId" Value="4102"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBackupAVRDaemon4111" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBackup AVR Daemon"/>
+      <RuleArgument Name="EventId" Value="4111"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBackupAVRDaemon4230" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBackup AVR Daemon"/>
+      <RuleArgument Name="EventId" Value="4230"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBackupAVRDaemon4231" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBackup AVR Daemon"/>
+      <RuleArgument Name="EventId" Value="4231"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBackupAVRDaemon5122" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBackup AVR Daemon"/>
+      <RuleArgument Name="EventId" Value="5122"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBackupAVRDaemon4226" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBackup AVR Daemon"/>
+      <RuleArgument Name="EventId" Value="4226"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBackupDeviceManager2621" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBackup Device Manager"/>
+      <RuleArgument Name="EventId" Value="2621"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBackupDeviceManager5123" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBackup Device Manager"/>
+      <RuleArgument Name="EventId" Value="5123"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBackupDeviceManager2624" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBackup Device Manager"/>
+      <RuleArgument Name="EventId" Value="2624"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBackupDeviceManager2626" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBackup Device Manager"/>
+      <RuleArgument Name="EventId" Value="2626"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBackupDeviceManager2730" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBackup Device Manager"/>
+      <RuleArgument Name="EventId" Value="2730"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBackupDeviceManager2623" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBackup Device Manager"/>
+      <RuleArgument Name="EventId" Value="2623"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBackupDeviceManager2702" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBackup Device Manager"/>
+      <RuleArgument Name="EventId" Value="2702"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBackupTLDDaemon5705" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBackup TLD Daemon"/>
+      <RuleArgument Name="EventId" Value="5705"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBackupTLDDaemon7833" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBackup TLD Daemon"/>
+      <RuleArgument Name="EventId" Value="7833"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBackupTLDDaemon5704" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBackup TLD Daemon"/>
+      <RuleArgument Name="EventId" Value="5704"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBackupTLDDaemon7793" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBackup TLD Daemon"/>
+      <RuleArgument Name="EventId" Value="7793"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBackupTLDDaemon7825" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBackup TLD Daemon"/>
+      <RuleArgument Name="EventId" Value="7825"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetBT4320" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetBT"/>
+      <RuleArgument Name="EventId" Value="4320"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNetLogon5719" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NetLogon"/>
+      <RuleArgument Name="EventId" Value="5719"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNETLOGON5783" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NETLOGON"/>
+      <RuleArgument Name="EventId" Value="5783"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNETLOGON5776" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NETLOGON"/>
+      <RuleArgument Name="EventId" Value="5776"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNETLOGON5788" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NETLOGON"/>
+      <RuleArgument Name="EventId" Value="5788"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNETLOGON5789" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NETLOGON"/>
+      <RuleArgument Name="EventId" Value="5789"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventnfrd96011" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="nfrd960"/>
+      <RuleArgument Name="EventId" Value="11"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNICAgents1285" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NIC Agents"/>
+      <RuleArgument Name="EventId" Value="1285"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNortonAntiVirus22" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Norton AntiVirus"/>
+      <RuleArgument Name="EventId" Value="22"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNortonAntiVirus6" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Norton AntiVirus"/>
+      <RuleArgument Name="EventId" Value="6"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNTBackup8019" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="NTBackup"/>
+      <RuleArgument Name="EventId" Value="8019"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNtfs50" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Ntfs"/>
+      <RuleArgument Name="EventId" Value="50"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventNtfs55" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Ntfs"/>
+      <RuleArgument Name="EventId" Value="55"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventPartMgr59" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="PartMgr"/>
+      <RuleArgument Name="EventId" Value="59"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventPerfDisk2001" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="Application"/>
+      <RuleArgument Name="EventId" Value="2001"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-PerfDisk"/>
+      <RuleArgument Name="Log2" Value="Application"/>
+      <RuleArgument Name="EventId2" Value="2001"/>
+      <RuleArgument Name="Source2" Value="PerfDisk"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventPerflib2002" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="Application"/>
+      <RuleArgument Name="EventId" Value="2002"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-Perflib"/>
+      <RuleArgument Name="Log2" Value="Application"/>
+      <RuleArgument Name="EventId2" Value="2002"/>
+      <RuleArgument Name="Source2" Value="Perflib"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventPerflib1015" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="Application"/>
+      <RuleArgument Name="EventId" Value="1015"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-Perflib"/>
+      <RuleArgument Name="Log2" Value="Application"/>
+      <RuleArgument Name="EventId2" Value="1015"/>
+      <RuleArgument Name="Source2" Value="Perflib"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventPerflib1010" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="Application"/>
+      <RuleArgument Name="EventId" Value="1010"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-Perflib"/>
+      <RuleArgument Name="Log2" Value="Application"/>
+      <RuleArgument Name="EventId2" Value="1010"/>
+      <RuleArgument Name="Source2" Value="Perflib"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventPerflib2003" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="Application"/>
+      <RuleArgument Name="EventId" Value="2003"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-Perflib"/>
+      <RuleArgument Name="Log2" Value="Application"/>
+      <RuleArgument Name="EventId2" Value="2003"/>
+      <RuleArgument Name="Source2" Value="Perflib"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventPerflib1000" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="Application"/>
+      <RuleArgument Name="EventId" Value="1000"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-Perflib"/>
+      <RuleArgument Name="Log2" Value="Application"/>
+      <RuleArgument Name="EventId2" Value="1000"/>
+      <RuleArgument Name="Source2" Value="Perflib"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventPerflib1016" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="Application"/>
+      <RuleArgument Name="EventId" Value="1016"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-Perflib"/>
+      <RuleArgument Name="Log2" Value="Application"/>
+      <RuleArgument Name="EventId2" Value="1016"/>
+      <RuleArgument Name="Source2" Value="Perflib"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventq57w2k4" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="q57w2k"/>
+      <RuleArgument Name="EventId" Value="4"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventql230011" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="ql2300"/>
+      <RuleArgument Name="EventId" Value="11"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventRSVP10047" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="RSVP"/>
+      <RuleArgument Name="EventId" Value="10047"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventSceCli1202" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="SceCli"/>
+      <RuleArgument Name="EventId" Value="1202"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventServiceControlManager7031" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Service Control Manager"/>
+      <RuleArgument Name="EventId" Value="7031"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventServiceControlManager7024" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Service Control Manager"/>
+      <RuleArgument Name="EventId" Value="7024"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventServiceControlManager7001" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Service Control Manager"/>
+      <RuleArgument Name="EventId" Value="7001"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventServiceControlManager7011" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Service Control Manager"/>
+      <RuleArgument Name="EventId" Value="7011"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventServiceControlManager7041" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Service Control Manager"/>
+      <RuleArgument Name="EventId" Value="7041"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventServiceControlManager7026" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Service Control Manager"/>
+      <RuleArgument Name="EventId" Value="7026"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventServiceControlManager7022" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Service Control Manager"/>
+      <RuleArgument Name="EventId" Value="7022"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventSMagent1" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="SMagent"/>
+      <RuleArgument Name="EventId" Value="1"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventSmsClient10702" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="SmsClient"/>
+      <RuleArgument Name="EventId" Value="10702"/>
+    </Rule>
+
+    <Rule Name="fhasMonitorEventSQLAgent301" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="SQL*Agent*"/>
+      <RuleArgument Name="EventId" Value="301"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventSQLAgent208" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="SQL*Agent*"/>
+      <RuleArgument Name="EventId" Value="208"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventSQLAgent210" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="SQL*Agent*"/>
+      <RuleArgument Name="EventId" Value="210"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventSQLAgent312" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="SQL*Agent*"/>
+      <RuleArgument Name="EventId" Value="312"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventSQLAgent322" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="SQL*Agent*"/>
+      <RuleArgument Name="EventId" Value="322"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventSQLAgent318" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="SQL*Agent*"/>
+      <RuleArgument Name="EventId" Value="318"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventSQLsafeBackupService28000" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="SQLsafe Backup Service"/>
+      <RuleArgument Name="EventId" Value="28000"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    
+    <Rule Name="fhasMonitorEventSrv2013" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Srv"/>
+      <RuleArgument Name="EventId" Value="2013"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventSrv2019" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Srv"/>
+      <RuleArgument Name="EventId" Value="2019"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventStorageAgents267" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Storage Agents"/>
+      <RuleArgument Name="EventId" Value="267"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventStorageAgents270" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Storage Agents"/>
+      <RuleArgument Name="EventId" Value="270"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventStorageAgents1204" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Storage Agents"/>
+      <RuleArgument Name="EventId" Value="1204"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventStorageAgents1206" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Storage Agents"/>
+      <RuleArgument Name="EventId" Value="1206"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventSymantecAntiVirus6" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Symantec AntiVirus"/>
+      <RuleArgument Name="EventId" Value="6"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventSymantecAntiVirus64" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Symantec AntiVirus"/>
+      <RuleArgument Name="EventId" Value="64"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventUltraBac71493" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="UltraBac7"/>
+      <RuleArgument Name="EventId" Value="1493"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventUltraBac71411" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="UltraBac7"/>
+      <RuleArgument Name="EventId" Value="1411"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventUltraBac71451" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="UltraBac7"/>
+      <RuleArgument Name="EventId" Value="1451"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventUltraBac7852" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="UltraBac7"/>
+      <RuleArgument Name="EventId" Value="852"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventUltraBac71084" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="UltraBac7"/>
+      <RuleArgument Name="EventId" Value="1084"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventUltraBac7450" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="UltraBac7"/>
+      <RuleArgument Name="EventId" Value="450"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventUserenv1517" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="Application"/>
+      <RuleArgument Name="EventId" Value="1517"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-User Profiles General"/>
+      <RuleArgument Name="Log2" Value="Application"/>
+      <RuleArgument Name="EventId2" Value="1517"/>
+      <RuleArgument Name="Source2" Value="Userenv"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventUserenv1053" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="Application"/>
+      <RuleArgument Name="EventId" Value="1053"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-User Profiles General"/>
+      <RuleArgument Name="Log2" Value="Application"/>
+      <RuleArgument Name="EventId2" Value="1053"/>
+      <RuleArgument Name="Source2" Value="Userenv"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventUserenv1030" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="Application"/>
+      <RuleArgument Name="EventId" Value="1030"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-User Profiles General"/>
+      <RuleArgument Name="Log2" Value="Application"/>
+      <RuleArgument Name="EventId2" Value="1030"/>
+      <RuleArgument Name="Source2" Value="Userenv"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventUserenv1097" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Userenv"/>
+      <RuleArgument Name="EventId" Value="1097"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventUserenv1097_2008" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-User Profiles General"/>
+      <RuleArgument Name="EventId" Value="1097"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventUserenv1006" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Userenv"/>
+      <RuleArgument Name="EventId" Value="1006"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventUserenv1006_2008" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-User Profiles General"/>
+      <RuleArgument Name="EventId" Value="1006"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventUserenv1524" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="Application"/>
+      <RuleArgument Name="EventId" Value="1524"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-User Profiles General"/>
+      <RuleArgument Name="Log2" Value="Application"/>
+      <RuleArgument Name="EventId2" Value="1524"/>
+      <RuleArgument Name="Source2" Value="Userenv"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventVirtualDiskService6" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Virtual Disk Service"/>
+      <RuleArgument Name="EventId" Value="6"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventVxSvc_cluster1006" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="VxSvc_cluster"/>
+      <RuleArgument Name="EventId" Value="1006"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventW32Time29" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="EventId" Value="29"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-Time-Service"/>
+      <RuleArgument Name="Log2" Value="System"/>
+      <RuleArgument Name="EventId2" Value="29"/>
+      <RuleArgument Name="Source2" Value="W32Time"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventW32Time50" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="EventId" Value="50"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-Time-Service"/>
+      <RuleArgument Name="Log2" Value="System"/>
+      <RuleArgument Name="EventId2" Value="50"/>
+      <RuleArgument Name="Source2" Value="W32Time"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventW32Time36" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="EventId" Value="36"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-Time-Service"/>
+      <RuleArgument Name="Log2" Value="System"/>
+      <RuleArgument Name="EventId2" Value="36"/>
+      <RuleArgument Name="Source2" Value="W32Time"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventW32Time14" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="EventId" Value="14"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-Time-Service"/>
+      <RuleArgument Name="Log2" Value="System"/>
+      <RuleArgument Name="EventId2" Value="14"/>
+      <RuleArgument Name="Source2" Value="W32Time"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventW32Time52" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="EventId" Value="52"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-Time-Service"/>
+      <RuleArgument Name="Log2" Value="System"/>
+      <RuleArgument Name="EventId2" Value="52"/>
+      <RuleArgument Name="Source2" Value="W32Time"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventWindowsProductActivation1005" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Windows Product Activation"/>
+      <RuleArgument Name="EventId" Value="1005"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventWindowsUpdateAgent16" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Windows Update Agent"/>
+      <RuleArgument Name="EventId" Value="16"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventWinlogon1012" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="Winlogon"/>
+      <RuleArgument Name="EventId" Value="1012"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventWinMgmt47" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="WinMgmt"/>
+      <RuleArgument Name="EventId" Value="47"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventWinMgmt61" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="WinMgmt"/>
+      <RuleArgument Name="EventId" Value="61"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventWinMgmt41" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="WinMgmt"/>
+      <RuleArgument Name="EventId" Value="41"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventWinMgmt5603" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="WinMgmt"/>
+      <RuleArgument Name="EventId" Value="5603"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventWinMgmt25" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="Application"/>
+      <RuleArgument Name="EventId" Value="25"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-WMI"/>
+      <RuleArgument Name="Log2" Value="Application"/>
+      <RuleArgument Name="EventId2" Value="25"/>
+      <RuleArgument Name="Source2" Value="WinMgmt"/>
+      <RuleArgument Name="BitwiseOperation" Value="OR"/>
+    </Rule>
+    <Rule Name="fhasMonitorEventWinMgmt62" Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client">
+      <RuleArgument Name="Log" Value="System;Application"/>
+      <RuleArgument Name="Source" Value="WinMgmt"/>
+      <RuleArgument Name="EventId" Value="62"/>
+      <RuleArgument Name="OSSupport" Value="2000, 2003"/>
+    </Rule>
+        
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1000-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1000"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1006-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1006"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1011-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1011"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1034-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1034"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1035-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1035"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1037-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1037"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1038-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1038"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1044-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1044"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1044-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1044"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1046-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1046"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1047-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1047"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1048-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1048"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1049-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1049"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1050-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1050"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1051-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1051"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1053-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1053"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1054-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1054"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1055-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1055"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1057-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1057"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1066-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1066"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1068-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1068"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1069-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1069"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1070-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1070"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1073-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1073"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1077-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1077"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1078-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1078"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1080-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1080"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1090-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1090"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+     <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1092-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1092"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1093-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1093"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1096-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1096"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1105-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1105"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1116-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1116"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1119-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1119"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1135-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1135"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1146-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1146"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1177-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1177"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1181-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1181"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1182-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1182"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1183-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1183"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1191-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1191"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1192-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1192"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1193-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1193"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1194-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1194"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1195-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1195"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1196-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1196"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1205-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1205"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1206-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1206"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1207-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1207"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1208-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1208"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1211-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1211"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1212-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1212"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1213-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1213"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1214-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1214"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1215-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1215"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1216-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1216"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1218-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1218"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1219-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1219"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1220-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1220"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1221-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1221"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1223-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1223"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1226-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1226"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1227-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1227"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1234-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1234"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1240-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1240"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1242-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1242"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1243-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1243"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1245-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1245"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1289-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1289"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1361-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1361"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1362-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1362"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1541-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1541"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1542-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1542"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1543-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1543"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1545-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1545"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1546-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1546"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1547-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1547"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1548-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1548"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1550-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1550"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1551-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1551"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1553-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1553"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1554-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1554"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1555-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1555"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1556-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1556"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1557-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1557"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1558-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1558"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1561-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1561"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1562-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1562"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1563-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1563"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1564-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1564"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1566-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1566"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1570-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1570"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1571-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1571"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1572-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1572"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent1573-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="1573"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent4609-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="4609"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.EventCollector.Rules.CommonRuleEventId, Microsoft.SqlRap.Client" Name="fhasMonitorEvent4868-08_Rule">
+      <RuleArgument Name="Log" Value="System"/>
+      <RuleArgument Name="EventId" Value="4868"/>
+      <RuleArgument Name="Source" Value="Microsoft-Windows-FailoverClustering"/>
+      <RuleArgument Name="OSSupport" Value="2008"/>
+    </Rule>
+  
+    
+  </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+    <TableStates>
+      <TableState Name="Details" ShowToolstrip="true" ShowTotalCount="true" Title="Details" ShowFilter ="true" SortColumn="Count" SortDirection="descending" ShowTitle="true" ShowSelectedCount="true" UndoEdit="true">
+        <ColumnState Name="Server" DataPropertyName="" Frozen="true" Sortable="true" Visible="true" Alignment="MiddleLeft" HeaderText="Server" />
+        <ColumnState Name="Log" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Log" />
+        <ColumnState Name="EntryType" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Level" />
+        <ColumnState Name="EventCode" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Event ID\Error Id" Format="########"/>
+        <ColumnState Name="Count" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  HeaderText="Occurences" />
+        <ColumnState Name="Source" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Source" />
+        <ColumnState Name="Category" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Category" />
+        <ColumnState Name="User" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="User" />
+        <ColumnState Name="FirstGenerated" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="First Occurence" />
+        <ColumnState Name="LastGenerated" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Last Occurence" />
+        <ColumnState Name="Message" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Message" />
+      </TableState>
+      <TableState Name="Servers" ShowToolstrip="true" ShowTotalCount="true" Title="Servers" ShowFilter ="true" SortColumn="" SortDirection="descending" ShowTitle="true" ShowSelectedCount="true" UndoEdit="true">
+        <ColumnState Name="Name" DataPropertyName="" Frozen="true" Sortable="true" Visible="true" Alignment="MiddleLeft" HeaderText="Server" />
+        <ColumnState Name="Errors" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  HeaderText="Errors" />
+        <ColumnState Name="Warnings" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  HeaderText="Warnings" />
+        <ColumnState Name="Others" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  HeaderText="Others" />
+        <ColumnState Name="All" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  HeaderText="All" />
+        <ColumnState Name="Error" DataPropertyName="" Frozen="false" Sortable="true" Visible="false" Alignment="MiddleLeft"  HeaderText="Error" />
+      </TableState>
+      <TableState Name="ServerDetails" ShowToolstrip="true" ShowTotalCount="true" Title="Servers" ShowFilter ="true" SortColumn="Count" SortDirection="descending" ShowTitle="true" ShowSelectedCount="true" UndoEdit="true">
+        <ColumnState Name="Log" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Log" />
+        <ColumnState Name="EntryType" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Level" />
+        <ColumnState Name="EventCode" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Event ID\Error Id" Format="########"/>
+        <ColumnState Name="Count" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  HeaderText="Occurences" />
+        <ColumnState Name="Source" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Source" />
+        <ColumnState Name="Category" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Category" />
+        <ColumnState Name="User" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="User" />
+        <ColumnState Name="FirstGenerated" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="First Occurence" />
+        <ColumnState Name="LastGenerated" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Last Occurence" />
+        <ColumnState Name="Message" DataPropertyName="" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft"  HeaderText="Message" />
+      </TableState>
+    </TableStates>
+  </ResultsViewer>
+</TestCase>

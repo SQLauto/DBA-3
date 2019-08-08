@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestCase Signature="2F3008E063F1D13E" SortOrder="6" xmlns="http://www.microsoft.com/StaticWorkItem" xmlns:help="http://www.microsoft.com/Rapid/HelpIndex">
+  <WorkItem Name="OsInformation" Category="Environment" DisplayName="OS Info" Description="Returns summary information for the Operating System as well as potential issues with OS configuration." Schema="" DataType="" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.OsInformationClientWorkItem, Microsoft.SqlRap.Client">
+    <Configuration />
+    <State>
+      <OsInformationStateBag xmlns="">
+        <ResultControl Type="Microsoft.SqlRap.Client.TestCases.OSInformation.OSInformationResultData, Microsoft.SqlRap.Client" />
+		    <Query Type="Microsoft.SqlRap.Client.TestCases.OSInformation.CustomQuery, Microsoft.SqlRap.Client" ResultType="bool" Name="AutomaticManagedPagefile" Object="Win32_ComputerSystem" Field="AutomaticManagedPagefile" />		    
+        <Query Type="Registry" ResultType="int" Name="ApplicationResponse" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Control\PriorityControl" KeyName="Win32PrioritySeparation"/>
+        <Query Type="Microsoft.SqlRap.Client.TestCases.OSInformation.CustomQuery, Microsoft.SqlRap.Client" ResultType="string" Name="PageFile" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" KeyName="PagingFiles"/>
+        <Query Type="Registry" ResultType="int" Name="CrashDumpEnabled" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Control\CrashControl" KeyName="CrashDumpEnabled"/>
+        <Query Type="Registry" ResultType="int" Name="DumpFileSize" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Control\CrashControl" KeyName="DumpFileSize"/>
+        <Query Type="Registry" ResultType="string" Name="DedicatedDumpFile" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Control\CrashControl" KeyName="DedicatedDumpFile"/>
+        <Query Type="WMI" ResultType="string" Name="AutomaticResetBootOption" Object="Win32_ComputerSystem" Field="AutomaticResetBootOption" />
+		    <Query Type="WMI" ResultType="string" Name="AutomaticResetCapability" Object="Win32_ComputerSystem" Field="AutomaticResetCapability" />
+		    <Query Type="Microsoft.SqlRap.Client.TestCases.OSInformation.CustomQuery, Microsoft.SqlRap.Client" ResultType="string" Name="WmiDNSHostName" Object="Win32_ComputerSystem" Field="DNSHostName" />
+        <Query Type="Registry" ResultType="string" Name="RegDNSHostName" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" KeyName="Hostname"/>        
+		    <Query Type="WMI" ResultType="string" Name="Domain" Object="Win32_ComputerSystem" Field="Domain" />
+		    <Query Type="WMI" ResultType="string" Name="DomainRole" Object="Win32_ComputerSystem" Field="DomainRole" />
+		    <Query Type="WMI" ResultType="string" Name="Manufacturer" Object="Win32_ComputerSystem" Field="Manufacturer" />
+		    <Query Type="WMI" ResultType="string" Name="Model" Object="Win32_ComputerSystem" Field="Model" />
+		    <Query Type="WMI" ResultType="string" Name="WmiPartOfDomain" Object="Win32_ComputerSystem" Field="PartOfDomain" />       
+        <Query Type="WMI" ResultType="string" Name="SystemStartupDelay" Object="Win32_ComputerSystem" Field="SystemStartupDelay" />
+		    <Query Type="Registry" ResultType="string" Name="SystemStartupOptions" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Control" KeyName="SystemStartOptions"/>
+		    <Query Type="WMI" ResultType="string" Name="TotalPhysicalMemory" Object="Win32_ComputerSystem" Field="TotalPhysicalMemory" />		    
+        <Query Type="Microsoft.SqlRap.Client.TestCases.OSInformation.CustomQuery, Microsoft.SqlRap.Client" ResultType="string" Name="LogicalHDDrives" Object="Win32_LogicalDisk" Field="DeviceId" Where="DriveType=3" />
+        <Query Type="WMI" ResultType="int" Name="NumberOfProcessors" Object="Win32_ComputerSystem" Field="NumberOfProcessors" />
+		    <Query Type="WMI" ResultType="string" Name="SystemType" Object="Win32_ComputerSystem" Field="SystemType" />
+        <Query Type="WMI" ResultType="long" Name="CDriveFreeSpace" Object="Win32_LogicalDisk" Field="Freespace" Where="DriveType=3 and Name='C:'"/>
+        <Query Type="WMI" ResultType="long" Name="CDriveCapacity" Object="Win32_LogicalDisk" Field="Size" Where="DriveType=3 and Name='C:'"/>        
+  		  <Query Type="WMI" ResultType="string" Name="BootDevice" Object="Win32_OperatingSystem" Field="BootDevice" />
+		    <Query Type="WMI" ResultType="string" Name="BuildNumber" Object="Win32_OperatingSystem" Field="BuildNumber" />
+		    <Query Type="WMI" ResultType="string" Name="BuildType" Object="Win32_OperatingSystem" Field="BuildType" />
+		    <Query Type="WMI" ResultType="string" Name="Caption" Object="Win32_OperatingSystem" Field="Caption" />
+		    <Query Type="WMI" ResultType="string" Name="CSDVersion" Object="Win32_OperatingSystem" Field="CSDVersion" />
+		    <Query Type="WMI" ResultType="string" Name="CSName" Object="Win32_OperatingSystem" Field="CSName" />
+		    <Query Type="WMI" ResultType="string" Name="WmiLargeSystemCache" Object="Win32_OperatingSystem" Field="LargeSystemCache" />
+        <Query Type="Registry" ResultType="int" Name="RegLargeSystemCache" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" KeyName="LargeSystemCache"/>
+        <Query Type="Registry" ResultType="int" Name="SizeValue" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" KeyName="Size"/>
+		    <Query Type="WMI" ResultType="string" Name="LocalDateTime" Object="Win32_OperatingSystem" Field="LocalDateTime" />
+		    <Query Type="WMI" ResultType="string" Name="MaxProcessMemorySize" Object="Win32_OperatingSystem" Field="MaxProcessMemorySize" />		            
+        <Query Type="WMI" ResultType="string" Name="ServicePackMajorVersion" Object="Win32_OperatingSystem" Field="ServicePackMajorVersion" />
+		    <Query Type="WMI" ResultType="string" Name="ServicePackMinorVersion" Object="Win32_OperatingSystem" Field="ServicePackMinorVersion" />
+		    <Query Type="WMI" ResultType="string" Name="SystemDevice" Object="Win32_OperatingSystem" Field="SystemDevice" />
+		    <Query Type="WMI" ResultType="string" Name="SystemDirectory" Object="Win32_OperatingSystem" Field="SystemDirectory" />
+		    <Query Type="WMI" ResultType="string" Name="SystemDrive" Object="Win32_OperatingSystem" Field="SystemDrive" />
+		    <Query Type="WMI" ResultType="string" Name="Version" Object="Win32_OperatingSystem" Field="Version" />
+		    <Query Type="WMI" ResultType="string" Name="WindowsDirectory" Object="Win32_OperatingSystem" Field="WindowsDirectory" />
+        <Query Type="WMI" ResultType="string" Name="ProcessorMake" Object="Win32_processor" Field="Manufacturer" />
+
+        <Query Type="WMI" ResultType="string" QueryName="LogicalDisk" QueryString="select DeviceID, FreeSpace from Win32_LogicalDisk"/>
+
+        <Query Type="Registry" ResultType="string" Name="SystemProductName" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Control\SystemInformation" KeyName="SystemProductName"/>
+        <Query Type="Registry" ResultType="string" Name="VMSRVCDisplayName" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\1-vmsrvc" KeyName="DisplayName"/>
+        <Query Type="Registry" ResultType="string" Name="VMICTimeSyncDisplayName" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\vmictimesync" KeyName="DisplayName"/>
+
+        <Query Type="Registry" ResultType="int" Name="EnableTCPA" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" KeyName="EnableTCPA"/>
+        <Query Type="Registry" ResultType="int" Name="EnableRSS" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" KeyName="EnableRSS"/>
+        <Query Type="Registry" ResultType="int" Name="EnableTCPChimney" Hive="HKLM" SubKey="SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" KeyName="EnableTCPChimney"/>        
+      </OsInformationStateBag>
+    </State>
+  </WorkItem>
+  <help:HelpItem FileName="OsInformation.Help.htm" WorkItem="OsInformation" DisplayName="OsInformation" Description="Gathers all comprehensive information around Operating System." Details="Returns summary information for the Operating System as well as potential issues with OS configuration." />
+  <RuleSet>
+    <!--<Rule Name="fhasSQLServerHyperVOSVirtualization" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.OsInformationCommonRule, Microsoft.SqlRap.Client">
+      <RuleArgument Name="InformationName" Value="VMICTimeSyncDisplayName" />
+      <RuleArgument Name="Value" Value="Hyper-V" />
+      <RuleArgument Name="Operation" Value="contains" />
+      <RuleArgument Name="Type" Value="String" />
+    </Rule>-->
+    <!--<Rule Name="fhasSQLServerThirdPartyOSVirtualization" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.fhasSQLServerThirdPartyOSVirtualization, Microsoft.SqlRap.Client" />-->
+    <Rule Name="fPowerOptions" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.fPowerOptions, Microsoft.SqlRap.Client" />
+    <Rule Name="f3GB" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.OsInformationCommonRule, Microsoft.SqlRap.Client">
+      <RuleArgument Name="InformationName" Value="SystemStartupOptions" />
+      <RuleArgument Name="Value" Value="3GB" />
+      <RuleArgument Name="Operation" Value="contains" />
+      <RuleArgument Name="Type" Value="String" />
+    </Rule>
+    <Rule Name="fPAEEnabled" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.fPAEEnabled, Microsoft.SqlRap.Client" />
+    <Rule Name="fNodeWin32PriorityForeground" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.OsInformationCommonRule, Microsoft.SqlRap.Client">
+      <RuleArgument Name="InformationName" Value="ApplicationResponse" />
+      <RuleArgument Name="Value" Value="24" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+      <RuleArgument Name="Type" Value="int" />
+    </Rule>    
+    <Rule Name="fhasSysDriveLessThan100MBFreeSpace" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.OsInformationCommonRule, Microsoft.SqlRap.Client">
+      <RuleArgument Name="InformationName" Value="CDriveFreeSpace" />
+      <RuleArgument Name="Value" Value="104857600" />
+      <RuleArgument Name="Operation" Value="lessthen" />
+      <RuleArgument Name="Type" Value="long" />
+    </Rule>
+    <Rule Name="fMemoryNotConfigforBestPerfProg" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.OsInformationCommonRule, Microsoft.SqlRap.Client">
+      <RuleArgument Name="InformationName2" Value="WmiLargeSystemCache" />
+      <RuleArgument Name="Value2" Value="0" />
+      <RuleArgument Name="Operation2" Value="NotEquals" />
+      <RuleArgument Name="Type2" Value="string" />
+      <RuleArgument Name="InformationName1" Value="Caption" />
+      <RuleArgument Name="Value1" Value="2003" />
+      <RuleArgument Name="Operation1" Value="Contains" />
+      <RuleArgument Name="Type1" Value="string" />
+      <RuleArgument Name="BitwiseOperation" Value="And" />
+    </Rule>
+    <Rule Name="fMaxThroughputNotOptimizedNetApp" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.fMaxThroughputNotOptimizedNetApp, Microsoft.SqlRap.Client" />     
+    <Rule Name="fPageFileSystemManagedSize" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.OsInformationCommonRule, Microsoft.SqlRap.Client">
+      <RuleArgument Name="InformationName" Value="SystemManaged" />
+      <RuleArgument Name="Value" Value="True" />
+      <RuleArgument Name="Operation" Value="Equals" />
+      <RuleArgument Name="Type" Value="string" />
+    </Rule>
+    <Rule Name="fNoPageFileConfigured" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.OsInformationCommonRule, Microsoft.SqlRap.Client">
+      <RuleArgument Name="InformationName" Value="NoPageFile" />
+      <RuleArgument Name="Value" Value="True" />
+      <RuleArgument Name="Operation" Value="Equals" />
+      <RuleArgument Name="Type" Value="string" />
+    </Rule>
+    <Rule Name="fPagefileSizeSetToAutomaticallyManage" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.OsInformationCommonRule, Microsoft.SqlRap.Client">
+      <RuleArgument Name="InformationName2" Value="Caption" />
+      <RuleArgument Name="Value2" Value="2008" />
+      <RuleArgument Name="Operation2" Value="Contains" />
+      <RuleArgument Name="Type2" Value="string" />
+      <RuleArgument Name="InformationName1" Value="PageFile" />
+      <RuleArgument Name="Value1" Value="?:\pagefile.sys" />
+      <RuleArgument Name="Operation1" Value="Equals" />
+      <RuleArgument Name="Type1" Value="string" />
+      <RuleArgument Name="BitwiseOperation" Value="And" />
+    </Rule>
+    <Rule Name="fSupportWinSvr2003SP1" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.OsInformationCommonRule, Microsoft.SqlRap.Client">
+      <RuleArgument Name="InformationName2" Value="Caption" />
+      <RuleArgument Name="Value2" Value="2003" />
+      <RuleArgument Name="Operation2" Value="Contains" />
+      <RuleArgument Name="Type2" Value="string" />
+      <RuleArgument Name="InformationName1" Value="CSDVersion" />
+      <RuleArgument Name="Value1" Value="Service Pack 1" />
+      <RuleArgument Name="Operation1" Value="Equals" />
+      <RuleArgument Name="Type1" Value="string" />
+      <RuleArgument Name="BitwiseOperation" Value="And" />
+    </Rule>
+    <Rule Name="fSupportWinSvr2003RTM" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.OsInformationCommonRule, Microsoft.SqlRap.Client">
+      <RuleArgument Name="InformationName2" Value="Caption" />
+      <RuleArgument Name="Value2" Value="2003" />
+      <RuleArgument Name="Operation2" Value="Contains" />
+      <RuleArgument Name="Type2" Value="string" />
+      <RuleArgument Name="InformationName1" Value="ServicePackMajorVersion" />
+      <RuleArgument Name="Value1" Value="0" />
+      <RuleArgument Name="Operation1" Value="Equals" />
+      <RuleArgument Name="Type1" Value="string" />
+      <RuleArgument Name="BitwiseOperation" Value="And" />
+    </Rule>
+    <Rule Name="fSupportWinSvr2000SP4" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.OsInformationCommonRule, Microsoft.SqlRap.Client">
+      <RuleArgument Name="InformationName2" Value="Caption" />
+      <RuleArgument Name="Value2" Value="2000" />
+      <RuleArgument Name="Operation2" Value="Contains" />
+      <RuleArgument Name="Type2" Value="string" />
+      <RuleArgument Name="InformationName1" Value="CSDVersion" />
+      <RuleArgument Name="Value1" Value="Service Pack 4" />
+      <RuleArgument Name="Operation1" Value="NotEquals" />
+      <RuleArgument Name="Type1" Value="string" />
+      <RuleArgument Name="BitwiseOperation" Value="And" />
+    </Rule>
+    <Rule Name="fOptimizePerfSetApp2K" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.OsInformationCommonRule, Microsoft.SqlRap.Client">
+      <RuleArgument Name="InformationName2" Value="Caption" />
+      <RuleArgument Name="Value2" Value="2000" />
+      <RuleArgument Name="Operation2" Value="Contains" />
+      <RuleArgument Name="Type2" Value="string" />
+      <RuleArgument Name="InformationName1" Value="ApplicationResponse" />
+      <RuleArgument Name="Value1" Value="24" />
+      <RuleArgument Name="Operation1" Value="GreaterThan" />
+      <RuleArgument Name="Type1" Value="int" />
+      <RuleArgument Name="BitwiseOperation" Value="And" />
+    </Rule>
+    <Rule Name="cSqlServerOnBackupDomainController" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.OsInformationCommonRule, Microsoft.SqlRap.Client">
+      <RuleArgument Name="InformationName2" Value="DomainRole" />
+      <RuleArgument Name="Value2" Value="4" />
+      <RuleArgument Name="Operation2" Value="Equals" />
+      <RuleArgument Name="Type2" Value="string" />
+      <RuleArgument Name="InformationName1" Value="DomainRole" />
+      <RuleArgument Name="Value1" Value="5" />
+      <RuleArgument Name="Operation1" Value="Equals" />
+      <RuleArgument Name="Type1" Value="string" />
+      <RuleArgument Name="BitwiseOperation" Value="Or" />
+    </Rule>
+    <Rule Name="fOsInfoSummaryRule" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.SummaryRule, Microsoft.SqlRap.Client" />
+    <Rule Name="fPageFileSizeLocDoesNotAllowKernelDump" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.PageFileSizeLocDoesNotAllowKernelDumpRule, Microsoft.SqlRap.Client" />
+    <Rule Name="fPageFileSizeDoesNotAllowKernelDumpRule2008" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.PageFileSizeDoesNotAllowKernelDumpRule2008, Microsoft.SqlRap.Client" />
+    <Rule Name="fPageFileLocSizeDoesNotAllowKernelDumpRule2008" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.PageFileLocSizeDoesNotAllowKernelDumpRule2008, Microsoft.SqlRap.Client" />
+    <Rule Name="PageFileLocSizeDoesNotAllowKernelDumpRuleX64" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.PageFileLocSizeDoesNotAllowKernelDumpRuleX64, Microsoft.SqlRap.Client" />
+    <Rule Name="fhasNetTcpSNPEnabled_Rule" Type="Microsoft.SqlRap.Client.TestCases.OSInformation.Rules.fhasNetTcpSNPEnabled, Microsoft.SqlRap.Client" />    
+  </RuleSet> 
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+    <TableStates>      
+      <TableState Name="ServerNodeInfoDetail" SortColumn="" SortDirection="descending" Title="Server Information" ShowFilter="true" ShowTitle="true" ShowToolstrip="true" ShowTotalCount="true" ShowSelectedCount="true" UndoEdit="true">
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="ServerName" HeaderText="Server Name" Frozen="true" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="AutomaticManagedPagefile" HeaderText="Automatic Managed Pagefile" Frozen="false" Visible="false" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="AutomaticResetBootOption" HeaderText="Automatic Reset Boot Option" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainReleaseDate" DataPropertyName="AutomaticResetCapability" HeaderText="Automatic Reset Capability" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="DNSHostName" HeaderText="DNS Host Name" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="Domain" HeaderText="Domain" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainReleaseDate" DataPropertyName="DomainRole" HeaderText="Domain Role" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="Manufacturer" HeaderText="Manufacturer" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainReleaseDate" DataPropertyName="Model" HeaderText="Model" Frozen="false" Visible="true" />        
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="NumberOfProcessors" HeaderText="Number Of Processors" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="PartOfDomain" HeaderText="Part Of Domain" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainReleaseDate" DataPropertyName="SystemStartupDelay" HeaderText="System Startup Delay" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="SystemStartupOptions" HeaderText="System Startup Options" Frozen="false" Visible="false" />
+        <ColumnState Name="_textBoxColumnMainReleaseDate" DataPropertyName="SystemStartupSetting" HeaderText="System Startup Setting" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="TotalPhysicalMemory" HeaderText="Total Physical Memory" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="SystemType" HeaderText="System Type" Frozen="false" Visible="true" />
+      </TableState>
+      <TableState Name="ServerOsInfoDetail" SortColumn="" SortDirection="descending" Title="Operating System Detail" ShowFilter="true" ShowTitle="true" ShowToolstrip="true" ShowTotalCount="true" ShowSelectedCount="true" UndoEdit="true">
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="ServerName" HeaderText="Server Name" Frozen="true" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="BootDevice" HeaderText="Boot Device" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="BuildNumber" HeaderText="Build Number" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainReleaseDate" DataPropertyName="BuildType" HeaderText="Build Type" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="Caption" HeaderText="Caption" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="CSDVersion" HeaderText="CSD Version" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainReleaseDate" DataPropertyName="CurrentTimeZone" HeaderText="Current Time Zone" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="CSName" HeaderText="CS Name" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainReleaseDate" DataPropertyName="DataExecutionPrevention_Available" HeaderText="Data Execution Prevention Available" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainReleaseDate" DataPropertyName="DataExecutionPrevention_32BitApplications" HeaderText="Data Execution Prevention_32BitApplications" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="DataExecutionPrevention_Drivers" HeaderText="Data Execution Prevention_Drivers" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="DataExecutionPrevention_SupportPolicy" HeaderText="Data Execution Prevention_SupportPolicy" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainReleaseDate" DataPropertyName="Debug" HeaderText="Debug" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="Description" HeaderText="Description" Frozen="false" Visible="true" />        
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="LocalDateTime" HeaderText="Local DateTime" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="MaxProcessMemorySize" HeaderText="Max Process Memory Size" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="OtherTypeDescription" HeaderText="Other Type Description" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainReleaseDate" DataPropertyName="PAEEnabled" HeaderText="PAE Enabled" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="ProductType" HeaderText="Product Type" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainReleaseDate" DataPropertyName="ServicePackMajorVersion" HeaderText="Service Pack Major Version" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainReleaseDate" DataPropertyName="ServicePackMinorVersion" HeaderText="Service Pack Minor Version" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="SystemDevice" HeaderText="System Device" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="SystemDirectory" HeaderText="System Directory" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainReleaseDate" DataPropertyName="SystemDrive" HeaderText="System Drive" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="Version" HeaderText="Version" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainReleaseDate" DataPropertyName="WindowsDirectory" HeaderText="Windows Directory" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainReleaseDate" DataPropertyName="ApplicationResponse" HeaderText="Application Response" Frozen="false" Visible="true" />
+      </TableState>
+      <TableState Name="ServerPageFileInfoDetail" SortColumn="" SortDirection="descending" Title="Server Page File Detail" ShowFilter="true" ShowTitle="true" ShowToolstrip="true" ShowTotalCount="true" ShowSelectedCount="true" UndoEdit="true">
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="ServerName" HeaderText="Server Name" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="Name" HeaderText="Page File Name" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="InitialSize" HeaderText="Initial Size" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainBIOSName" DataPropertyName="MaximumSize" HeaderText="Maximum Size" Frozen="false" Visible="true" />        
+      </TableState>
+      <TableState Name="ServerMain" SortColumn="" SortDirection="descending" Title="Server Name" ShowFilter="true" ShowTitle="true" ShowToolstrip="true" ShowTotalCount="true" ShowSelectedCount="true" UndoEdit="true">
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="ServerName" HeaderText="Server Name" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainTimestamp" DataPropertyName="StartTime" HeaderText="StartTime" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainTimestamp" DataPropertyName="Version" HeaderText="Version" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainTimestamp" DataPropertyName="Status" HeaderText="Status" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainTimestamp" DataPropertyName="ErrorDescription" HeaderText="ErrorDescription" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainTimestamp" DataPropertyName="EndTime" HeaderText="EndTime" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainTimestamp" DataPropertyName="ElapsedTimeInSeconds" HeaderText="ElapsedTimeInSeconds" Frozen="false" Visible="true" />
+      </TableState>
+    </TableStates>
+  </ResultsViewer>
+  <!--
+  NOTE: IF THIS IS THE FIRST TEST CASE IN YOUR PROJECT YOU MUST SETUP THE NOTARY.
+  TO NOTARIZE ALL TEST CASE FILES ADD THE FOLLOWING TO YOUR PRE-BUILD EVENT COMMAND LINE:
+  =======================================================================================
+  
+  ..\..\Build\Notary.exe /s /t /f $(ProjectDir)TestCases *.rcf
+  ..\..\Build\Notary.exe /s /t /f $(ProjectDir)TestCases *.js
+  ..\..\Build\Notary.exe /s /t /f $(ProjectDir)TestCases *.vbs
+  
+  
+  NOTE: ASSUMES THE FOLLOWING DIRECTORY STRUCTURE
+  ===============================================
+  Solution
+    \Project
+      \TestCases
+        \TestCase1
+        \TestCase2
+        ...
+    \Build
+    \Target
+    
+  -->
+</TestCase>

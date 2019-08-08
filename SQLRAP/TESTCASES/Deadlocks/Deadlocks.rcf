@@ -1,0 +1,52 @@
+<TestCase Signature="B599FFB1978D68AB" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="27" ExecutionOrder="2">
+  <WorkItem
+    Name            =   "Deadlocks"
+    Category        =   "Performance"
+    DisplayName     =   "Deadlocks"
+    Description     =   "The Deadlocks test case reports the number of deadlocks that have occurred on the instance since it was last restarted."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.Deadlocks.DeadlocksResultData, Microsoft.SqlRap.Client" />
+       
+		<ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+					
+<SqlScript FileName ="Testcases\Deadlocks\sql_status_deadlocks.sql" IssueFileRuleQuery = "sql_status_deadlocks"/>
+		</ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="Deadlocks.htm" WorkItem="Deadlocks" DisplayName="Deadlocks" Description="Populates the number of deadlocks happened since the SQL Server service is last restarted." Details="The Deadlocks test case reports the number of deadlocks that have occurred on the instance since it was last restarted."/>
+
+  <RuleSet>
+	<!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	<!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+			
+<Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="sql_status_deadlocks"/>
+  </RuleSet>
+<ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+		<TableState Name            ="Deadlocks" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="Deadlocks" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 			
+			<ColumnState Name="_txtTotalDeadlocks"  DataPropertyName ="TotalDeadlocks"  HeaderText = "Total Deadlocks"  Frozen = "false" Visible="true" ColumnType="int" />
+    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

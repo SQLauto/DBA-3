@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Spatial">
+  <Items>
+    <LogicalFolder Name="Connections" Type="2" Sorted="true">
+      <Items>
+        <ConnectionNode Name="GREGWIN7:GREGWIN7\Greg">
+          <Created>2009-08-25T07:18:00.6017642-07:00</Created>
+          <Type>SQL</Type>
+          <Server>GREGWIN7</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB />
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName />
+        </ConnectionNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Queries" Type="0" Sorted="true">
+      <Items>
+        <FileNode Name="0 - Create Objects.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:GREGWIN7:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>GREGWIN7</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>0 - Create Objects.sql</FullPath>
+        </FileNode>
+        <FileNode Name="1 - Spatial Data Types.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:GREGWIN7:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>GREGWIN7</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>1 - Spatial Data Types.sql</FullPath>
+        </FileNode>
+        <FileNode Name="6 - Spatial Indexing.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:GREGWIN7:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>GREGWIN7</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>6 - Spatial Indexing.sql</FullPath>
+        </FileNode>
+        <FileNode Name="3 - Database Columns.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:GREGWIN7:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>GREGWIN7</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>3 - Database Columns.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2 - Basic Methods.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:GREGWIN7:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>GREGWIN7</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>2 - Basic Methods.sql</FullPath>
+        </FileNode>
+        <FileNode Name="7 - GeoRSS.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:GREGWIN7:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>GREGWIN7</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>7 - GeoRSS.sql</FullPath>
+        </FileNode>
+        <FileNode Name="5 - NearbyAirports.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:GREGWIN7:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>GREGWIN7</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>5 - NearbyAirports.sql</FullPath>
+        </FileNode>
+        <FileNode Name="9 - Clean Up Objects.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:GREGWIN7:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>GREGWIN7</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>9 - Clean Up Objects.sql</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
+      <Items>
+        <FileNode Name="4 - GeocodingExample.cs">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>4 - GeocodingExample.cs</FullPath>
+        </FileNode>
+        <FileNode Name="8 - Builder VB Classes.vb">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>8 - Builder VB Classes.vb</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+  </Items>
+</SqlWorkbenchSqlProject>

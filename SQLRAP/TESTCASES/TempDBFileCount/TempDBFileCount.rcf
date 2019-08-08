@@ -1,0 +1,55 @@
+<TestCase Signature="3F198BE6472B1670" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="19" ExecutionOrder="2">
+  <WorkItem
+    Name            =   "TempDBFileCount"
+    Category        =   "SQL Operations"
+    DisplayName     =   "TempDBFileCount"
+    Description     =   "Examines the instance and generates a report if the number of tempdb data device files is unequal to the number of processors on the server."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.TempDBFileCount.TempDBFileCountResultData, Microsoft.SqlRap.Client" />
+		<ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+					
+<SqlScript FileName ="Testcases\TempDBFileCount\SQL_tempdb_file_count.sql" IssueFileRuleQuery = "SQL_tempdb_file_count"/>
+		</ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="TempDBFileCount.htm" WorkItem="TempDBFileCount" DisplayName="TempDBFileCount" Description="Gets the count of tempdb data files and size of those files." Details="Examines the instance and generates a report if the number of tempdb data device files is unequal to the number of processors on the server."/>
+
+  <RuleSet>
+	<!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	<!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+			
+<Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlDBProcessor, Microsoft.SqlRap.Client" Name="SQL_tempdb_file_count"/>
+  </RuleSet>
+<ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+		<TableState Name            ="TempDBFileCount" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="TempDBFileCount" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName"  HeaderText = "Database Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseID"  DataPropertyName ="DatabaseID"  HeaderText = "Database ID"  Frozen = "false" Visible="true" ColumnType="int" /> 
+			<ColumnState Name="_txtProcessorCount"  DataPropertyName ="ProcessorCount"  HeaderText = "Processor Count"  Frozen = "false" Visible="true" ColumnType="int"/> 
+			<ColumnState Name="_txtFileCount"  DataPropertyName ="FileCount"  HeaderText = "File Count"  Frozen = "false" Visible="true" ColumnType="int"/>
+      <ColumnState Name="_txtTempdbDataDeviceFilecountSizeMessage"  DataPropertyName ="TempdbDataDeviceFilecountSizeMessage"  HeaderText = "Tempdb Data Device Filecount/Size Message"  Frozen = "false" Visible="true" />
+	    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

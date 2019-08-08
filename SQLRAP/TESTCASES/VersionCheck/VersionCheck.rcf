@@ -1,0 +1,53 @@
+<TestCase Signature="D59BBC32371419EF" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="7" ExecutionOrder="2" >
+  <WorkItem
+    Name            =   "VersionCheck"
+    Category        =   "Environment"
+    DisplayName     =   "Version Check"
+    Description     =   "Evaluates if the SQL installation is the latest recommended version."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.VersionCheck.VersionCheckResultData, Microsoft.SqlRap.Client" />
+		<ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+					
+<SqlScript FileName ="Testcases\VersionCheck\sql_verify_sql_version.sql" IssueFileRuleQuery = "sql_verify_sql_version"/>
+		</ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="VersionCheck.htm" WorkItem="VersionCheck" DisplayName="Version Check" Description="Checks for the latest SQL Server service pack, GDR builds or Cumulative updates and provide the appropriate version recommendation." Details="Evaluates if the SQL installation is the latest recommended version."/>
+
+  <RuleSet>
+	<!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	<!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+			
+<Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="sql_verify_sql_version"/>
+  </RuleSet>
+<ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+		<TableState Name            ="VersionCheck" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="Version Check" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtRecommendedBuild"  DataPropertyName ="RecommendedBuild"  HeaderText = "Recommended Build"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtCurrentBuild"  DataPropertyName ="CurrentBuild"  HeaderText = "Current Build"  Frozen = "false" Visible="true" /> 
+
+	    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

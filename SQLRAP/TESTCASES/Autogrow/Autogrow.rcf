@@ -1,0 +1,66 @@
+<TestCase Signature="A9B1A90DB3AEBC9B" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="17" ExecutionOrder="2">
+  <!-- DataType is the type which is used to communicate between Collection and Analysis stage. 
+       Type is the type which does the work of collection of the data...
+  -->	
+  <WorkItem
+    Name            =   "Autogrow"
+    Category        =   "SQL Operations"
+    DisplayName     =   "Autogrow"
+    Description     =   "Reports Autogrow configuration issues:
+•	User databases configured to autogrow whose next autogrowth increment will be &gt; 1GB;
+•	User databases configured to autogrow via a percentage increment;
+•	Tempdb created smaller than or equal to the default size of 8MB
+"
+    Schema          =   ""
+  DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+      <State>
+        <StateBag>
+		<ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+			<SqlScript FileName ="TestCases\Autogrow\Autogrow_1024MB.sql" IssueFileRuleQuery = "Autogrow_1024MB"/>
+			<SqlScript FileName ="TestCases\Autogrow\Autogrow_Percent.sql" IssueFileRuleQuery = "Autogrow_Percent"/>
+		</ScriptRule>
+         <ResultControl Type="Microsoft.SqlRap.Client.TestCases.Autogrow.AutogrowResultData, Microsoft.SqlRap.Client" />
+        </StateBag>
+        </State>
+      </WorkItem>
+
+ <help:HelpItem FileName="Autogrow.htm" WorkItem="Autogrow" DisplayName="Autogrow" Description="Checks if the user database files are set to auto grow by % size growth and if the enxt growth increment is above 1GB." Details="Reports Autogrow configuration issues:
+•	User databases configured to autogrow whose next autogrowth increment will be &gt; 1GB;
+•	User databases configured to autogrow via a percentage increment;
+•	Tempdb created smaller than or equal to the default size of 8MB
+"/>
+
+  <RuleSet>
+	<!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+    <Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="Autogrow_1024MB"/>
+    <Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="Autogrow_Percent"/>
+	</RuleSet>
+	<ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+	<TableState Name            ="Autogrow"
+			SortColumn      ="_txtInstanceName"
+			SortDirection   = "ascending"
+			Title           ="Autogrow"
+			ShowFilter      ="true"
+			ShowTitle       ="true"
+			ShowToolstrip   ="true"
+			ShowTotalCount  ="true"
+			ShowSelectedCount="true"
+			UndoEdit         ="true">
+		<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName" HeaderText = "Server Name" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName" HeaderText = "Instance Name" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName" HeaderText = "Database Name" Frozen = "false" Visible="true" />
+    <ColumnState Name="_txtLogicalName"  DataPropertyName ="LogicalName" HeaderText = "Logical Name" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtNextGrowthMB"  DataPropertyName ="NextGrowthMB" HeaderText = "NextGrowth MB" Frozen = "false" Visible="true" ColumnType="double" />
+		<ColumnState Name="_txtReadonly"  DataPropertyName ="ReadOnly" HeaderText = "Read Only" Frozen = "false" Visible="true" />
+	</TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>
+
+
+

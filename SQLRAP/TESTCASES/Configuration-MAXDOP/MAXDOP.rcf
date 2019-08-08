@@ -1,0 +1,49 @@
+<TestCase Signature="31074A34B7920D94" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="12" ExecutionOrder="2">
+  <WorkItem
+    Name            =   "Maxdop"
+    Category        =   "Configuration"
+    DisplayName     =   "MaxDOP"
+    Description     =   "Evaluates the MaxDOP settings for optimal values."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+    <Configuration>
+    </Configuration>
+
+    <State>
+      <StateBag>
+      <ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+        <SqlScript FileName ="Testcases\Configuration-MAXDOP\MAXDOP.sql" IssueFileRuleQuery = "MAXDOP"/>        
+      </ScriptRule>
+        <ResultControl Type="Microsoft.SqlRap.Client.TestCases.Configuration_MAXDOP.MAXDOResultData, Microsoft.SqlRap.Client" />
+      </StateBag>
+    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="Configuration-MAXDOP.htm" WorkItem="Maxdop" DisplayName="Maxdop" Description="Checks weather the Max degree of parallelism SQL Server configuration is set to an appropriate value for a give SQL Server instance." Details="Evaluates the MaxDOP settings for optimal values."/>
+
+  <RuleSet>
+    <!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->    
+    <Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="MAXDOP"/>
+  </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+    <TableStates>
+      <TableState Name            ="Maxdop"
+            SortColumn      ="_txtServerName"
+            SortDirection   ="ascending"
+            Title           ="Error Log"
+            ShowFilter      ="true"
+            ShowTitle       ="true"
+            ShowToolstrip   ="true"
+            ShowTotalCount  ="true"
+            ShowSelectedCount="true"
+            UndoEdit         ="true">
+        <ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" />
+        <ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" />
+        <ColumnState Name="_txtMAXDOPConfiguredValue"  DataPropertyName ="MAXDOPConfiguredValue"  HeaderText = "MAXDOP Configured Value"  Frozen = "false" Visible="true" ColumnType="int" />
+        <ColumnState Name="_txtMAXDOPOptimalValue"  DataPropertyName ="MAXDOPOptimalValue"  HeaderText = "MAXDOP Optimal Value"  Frozen = "false" Visible="true" ColumnType="int" />
+      </TableState>
+    </TableStates>
+  </ResultsViewer>
+</TestCase>

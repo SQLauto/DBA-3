@@ -1,0 +1,38 @@
+<ns0:BaseSequentialActivity InputData="{p1:Null}" x:Name="fhasNetClusterBindingPublicPrimary" RuleArgumentCollection="{x:Null}" RuleName="{x:Null}" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:p1="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ns0="clr-namespace:CustomActivities;Assembly=CustomActivities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd9a101221c1e0ff">
+	<ns0:FilterActivity OutputNodes="{x:Null}" x:Name="getCollated" InputNode="{ActivityBind fhasNetClusterBindingPublicPrimary,Path=InputData}" Filter="Collated" GetDescendants="True" />
+	<ns0:FilterActivity OutputNodes="{x:Null}" x:Name="getTargets" InputNode="{ActivityBind getCollated,Path=OutputNodes[0]}" Filter="Target" GetDescendants="False" />
+	<ns0:Foreach x:Name="foreachTarget" Items="{ActivityBind getTargets,Path=OutputNodes}" CurrentIteration="0">
+		<SequenceActivity x:Name="sequenceTarget">
+			<ns0:GetNodeValueActivity x:Name="GetOperatingSystem" InputNode="{ActivityBind foreachTarget,Path=CurrentItem}" NodeValue="{x:Null}" AttributeName="OperatingSystem" />
+			<ns0:OSCheckActivity CurrentOS="{ActivityBind GetOperatingSystem,Path=NodeValue}" Supported="False" x:Name="OSCheck" RuleArgumentCollection="{ActivityBind fhasNetClusterBindingPublicPrimary,Path=RuleArgumentCollection}" />
+			<ns0:IfActivity x:Name="OSCheckSupported" Condition="{ActivityBind OSCheck,Path=Supported}">
+				<ns0:FilterActivity OutputNodes="{x:Null}" x:Name="getClusterNetworks" InputNode="{ActivityBind foreachTarget,Path=CurrentItem}" Filter="Information;Name=ClusterNetworks" GetDescendants="False" />
+				<ns0:Foreach x:Name="foreachClusterNetwork" Items="{ActivityBind getClusterNetworks,Path=OutputNodes}" CurrentIteration="0">
+					<SequenceActivity x:Name="sequenceClusterNetwork">
+						<ns0:FilterActivity OutputNodes="{x:Null}" x:Name="PriorityFilter" InputNode="{ActivityBind foreachClusterNetwork,Path=CurrentItem}" Filter="Information;QueryName=Priority" GetDescendants="False" />
+						<ns0:GetNodeValueActivity x:Name="GetPriorityValue" InputNode="{ActivityBind PriorityFilter,Path=OutputNodes[0]}" NodeValue="{x:Null}" AttributeName="Value" />
+						<ns0:StringEquals NegativeResult="False" x:Name="comparePriorityNodeValueWithOne" String1="{ActivityBind GetPriorityValue,Path=NodeValue}" Result="False" String2="1" />
+						<ns0:IfActivity x:Name="IfPriorityNodeValueIsOne" Condition="{ActivityBind comparePriorityNodeValueWithOne,Path=Result}">
+							<ns0:FilterActivity OutputNodes="{x:Null}" x:Name="getRoles" InputNode="{ActivityBind foreachClusterNetwork,Path=CurrentItem}" Filter="Information;QueryName=Role" GetDescendants="False" />
+							<ns0:GetNodeValueActivity x:Name="getRoleValue" InputNode="{ActivityBind getRoles,Path=OutputNodes[0]}" NodeValue="{x:Null}" AttributeName="Value" />
+							<ns0:ContainsActivity SubString="{ActivityBind getRoleValue,Path=NodeValue}" x:Name="NetworkRoleContainsActivity" OuterString="1, 3" Contains="False" DoesNotContain="False" />
+							<ns0:IfActivity x:Name="NetworkRoleCheck" Condition="{ActivityBind NetworkRoleContainsActivity,Path=DoesNotContain}">
+								<ns0:GetNodeValueActivity x:Name="getTargetName" InputNode="{ActivityBind foreachTarget,Path=CurrentItem}" NodeValue="{x:Null}" AttributeName="Name" />
+								<ns0:CreateAffectedObject x:Name="createRoleAffectedObject" AO="{x:Null}" AOName="{ActivityBind getTargetName,Path=NodeValue}" AOType="Cluster" />
+								<CallExternalMethodActivity x:Name="callExternalMethodActivity1" InterfaceType="{x:Type ns0:IAffectedObjectCreator}" MethodName="AddAffectedObject">
+									<CallExternalMethodActivity.ParameterBindings>
+										<WorkflowParameterBinding ParameterName="ao">
+											<WorkflowParameterBinding.Value>
+												<ActivityBind Name="createRoleAffectedObject" Path="AO" />
+											</WorkflowParameterBinding.Value>
+										</WorkflowParameterBinding>
+									</CallExternalMethodActivity.ParameterBindings>
+								</CallExternalMethodActivity>
+							</ns0:IfActivity>
+						</ns0:IfActivity>
+					</SequenceActivity>
+				</ns0:Foreach>
+			</ns0:IfActivity>
+		</SequenceActivity>
+	</ns0:Foreach>
+</ns0:BaseSequentialActivity>

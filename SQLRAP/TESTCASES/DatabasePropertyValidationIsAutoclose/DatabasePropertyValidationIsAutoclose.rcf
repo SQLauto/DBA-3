@@ -1,0 +1,53 @@
+<TestCase Signature="EF2682FF8E479E54" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex"  SortOrder="40" ExecutionOrder="2">
+  <WorkItem
+    Name            =   "DatabasePropertyValidationIsAutoclose"
+    Category        =   "Database Properties"
+    DisplayName     =   "Is Autoclose"
+    Description     =   "This test case reports all user databases which have enabled the AUTO_CLOSE database property."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.DatabasePropertyValidationIsAutoclose.DatabasePropertyValidationIsAutocloseResultData, Microsoft.SqlRap.Client" />
+		<ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+					
+<SqlScript FileName ="Testcases\DatabasePropertyValidationIsAutoclose\sql_databasepropertyex_IsAutoClose_validation.sql" IssueFileRuleQuery = "sql_databasepropertyex_IsAutoClose_validation"/>
+		</ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="DatabasePropertyValidationIsAutoclose.htm" WorkItem="DatabasePropertyValidationIsAutoclose" DisplayName="DatabasePropertyValidation - Is Autoclose" Description="Checks if the Auto close database option is set true for one or more databases." Details="This test case reports all user databases which have enabled the AUTO_CLOSE database property."/>
+
+  <RuleSet>
+	<!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	<!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+			
+<Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="sql_databasepropertyex_IsAutoClose_validation"/>
+  </RuleSet>
+<ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+		<TableState Name            ="DatabasePropertyValidationIsAutoclose" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="DatabasePropertyValidation - Is Autoclose" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName"  HeaderText = "Database Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtIsAutoCloseSettingIsOn"  DataPropertyName ="IsAutoCloseSettingIsOn"  HeaderText = "Is The Auto Close Setting On?"  Frozen = "false" Visible="true" /> 
+
+	    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

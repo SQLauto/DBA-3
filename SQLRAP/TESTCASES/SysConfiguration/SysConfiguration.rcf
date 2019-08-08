@@ -1,0 +1,169 @@
+<TestCase Signature="D3F9A9DB0BECD015" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="9" ExecutionOrder="2">
+  <!-- DataType is the type which is used to communicate between Collection and Analysis stage. 
+       Type is the type which does the work of collection of the data...
+  -->	
+  <WorkItem
+    Name            =   "SysConfiguration"
+    Category        =   "Configuration"
+    DisplayName     =   "Sys Configuration"
+    Description     =   "Examines key SQL Server configuration settings."
+    Schema          =   "SysConfiguration.xsd"
+    DataType        =   "Microsoft.SqlRap.Client.TestCases.SysConfiguration.Collated, Microsoft.SqlRap.Client"
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+	    <State>
+      <StateBag>
+		<ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_00101.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_00101"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_00102.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_00102"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_00103.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_00103"/>
+      <SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_00106.sql" IssueFileRuleQuery = "cLocksNotDynamic"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_00107.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_00107"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_00109.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_00109"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_00114.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_00114"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_00115.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_00115"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_00116.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_00116"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_00117.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_00117"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_00124.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_00124"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_00400.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_00400"/>      
+      <SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_00503.sql" IssueFileRuleQuery = "maxWorkerThreads"/>
+      <SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_00505.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_00505"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_00518.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_00518"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_00542.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_00542"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_00544.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_00544"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01126.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01126"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01127.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01127"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01505.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01505"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01517.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01517"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01519.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01519"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01520.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01520"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01531.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01531"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01532.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01532"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01534.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01534"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01536.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01536"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01537.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01537"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01538.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01538"/>			
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01540.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01540"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01541.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01541"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01543.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01543"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01544.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01544"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01545.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01545"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01546.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01546"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01547.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01547"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01548.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01548"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01555.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01555"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01556.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01556"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01557.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01557"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01562.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01562"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01563.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01563"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01564.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01564"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01565.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01565"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01566.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01566"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01567.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01567"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01568.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01568"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01569.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01569"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01570.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01570"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_01576.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_01576"/>			
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_16385.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_16385"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_16386.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_16386"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_16387.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_16387"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_16388.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_16388"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_16389.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_16389"/>			
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_16391.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_16391"/>
+			<SqlScript FileName ="TestCases\SysConfiguration\SQL_SYS_CFNG_16392.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_16392"/>
+		</ScriptRule>
+           <ResultControl Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationResultData, Microsoft.SqlRap.Client" />
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="SysConfiguration.htm" WorkItem="SysConfiguration" DisplayName="SysConfiguration" Description="Test case for evaluating the SQL Server configurations." Details="Examines key SQL Server configuration settings."/>
+
+  <RuleSet>
+	<!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	<!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_00101"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_00102"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_00103"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="cLocksNotDynamic"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_00107"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_00109"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_00114"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_00115"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_00116"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_00117"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_00124"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_00400"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="maxWorkerThreads"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_00505"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_00518"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_00542"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_00544"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01126"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01127"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01505"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01517"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01519"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01520"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01531"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01532"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01534"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01536"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01537"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01538"/>    
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01540"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01541"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01543"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01544"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01545"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01546"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01547"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01548"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01555"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01556"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01557"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01562"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01563"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01564"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01565"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01566"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01567"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01568"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01569"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01570"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_01576"/>    
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_16385"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_16386"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_16387"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_16388"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_16389"/>    
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_16391"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SysConfiguration.SysConfigurationRuleProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_16392"/>
+  </RuleSet>
+<ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+		<TableState Name            ="SysConfiguration" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   = "ascending"
+			    Title           ="Sys Configuration" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+					<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName" HeaderText = "Server Name" Frozen = "true" Visible="true" />
+					<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName" HeaderText = "Instance Name" Frozen = "true" Visible="true" />
+					<ColumnState Name="_txtConfigurationName"  DataPropertyName ="ConfigurationName" HeaderText = "Configuration Name" Frozen = "true" Visible="true" />
+					<ColumnState Name="_txtTargetDefaultValue"  DataPropertyName ="TargetDefaultValue" HeaderText = "Target/Default Value" Frozen = "true" Visible="true" ColumnType="int" />
+					<ColumnState Name="_txtSetValue"  DataPropertyName ="SetValue" HeaderText = "Set Value" Frozen = "true" Visible="true" ColumnType="int" />
+					<ColumnState Name="_txtRunValue"  DataPropertyName ="RunValue" HeaderText = "Run Value" Frozen = "true" Visible="true" ColumnType="int" />
+	    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>
+
+
+

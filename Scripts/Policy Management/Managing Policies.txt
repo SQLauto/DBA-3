@@ -1,0 +1,33 @@
+Policy Management:
+==================
+
+Initial Setup
+-------------
+
+o - Select a server to act as the central management server - CMS
+o - Import best practice policies (only available with EE) - .../policies/... (disable)
+o - When importing to target servers would choose preserve state on import
+o - Enable any required policies (cannot enable on demand, have to schedule...)
+o - Right click, evaluate to check a policy on local server
+o - For on demand evaluation against target servers, setup a management (configuration) server
+    then evaluate against target servers from CMS using right/click, evaluate.  For automated checks
+    e.g. on demand, you need to export the policy to disk, then run import policies from CMS which will
+    push the policy down to all target servers, at this point it can be scheduled or checked on demand
+o - Right clicking server node marked with icon and selecting view will show any failed policy checks for target
+o - Custom policies can be created by creating new conditions for existing facet components, this release
+    does not allow end user facet creation
+o - Enforcement modes are on demand, on schedule, on changes - log only and on changes prevent, not all modes
+    are available for all conditions
+
+o - You can create and run dynamic code as a condition e.g. check vlf count
+o - You can create alerts based on policy failure error codes - onchange prevent(auto) - 34050, onchange prevent
+    (on demand) 34051, On Schedule 34052, On Change 34053
+o - On change log goes to application event log
+o - Creating new conditions - can use LIKE with wildcards e.g. 'tbl_%' and also CODE with ExecuteSql!
+
+      
+
+
+
+
+

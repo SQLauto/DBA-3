@@ -1,0 +1,353 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>ClusNets</title>
+</head>
+<body style="font-size: 12pt; font-family: Times New Roman">
+
+<div class=Section1>
+
+<p class=pagetitle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Cluster and Node
+    Network
+- General</span></b></p>
+
+<u1:p></u1:p>
+
+<div class=MsoNormal align=center style='text-align:center'><span
+style='mso-fareast-font-family:"Times New Roman"'>
+
+<hr size=2 width="100%" align=center>
+
+</span></div>
+
+<p class=helpheader><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>DESCRIPTION:</span></b></p>
+
+<u1:p></u1:p>
+
+<p class=helptext><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>This
+check confirms the configuration of the network interfaces in the cluster on a
+node by node basis. Furthermore it checks the heartbeat/private network
+configuration.</span></p>
+
+<u1:p></u1:p>
+
+<div class=MsoNormal align=center style='text-align:center'><span
+style='mso-fareast-font-family:"Times New Roman"'>
+
+<hr size=2 width="100%" align=center>
+
+</span></div>
+
+<p class=helpheader><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>DETAILS:</span></b></p>
+
+<u1:p></u1:p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Cluster
+node uses NIC teaming on the Private network (network designated to be
+&#8220;Internal Cluster Communications only (private network)&#8221;)<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+has Networks that are not defined for cluster use<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)'s
+fixed setting for NIC Speed, NIC Duplex, and network switch are not the same<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server
+does not have dynamic updates enabled for all necessary DNS record types on
+Public Interface<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server
+has a misconfigured Default Gateway on the Public Interface<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server
+has multiple Default Gateways defined<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>DNS
+name resolution failed for Cluster Name {1}. Check your DNS configuration.<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>DNS
+name resolution failed for Node Name %NODES%. Check your DNS configuration.<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+has &quot;Client For Microsoft Networks&quot; enabled on the Private Network
+Interface while it is a shared quorum model<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+does not have &quot;Client For Microsoft Networks&quot; enabled on the Private
+Network Interface while it is a majority node set quorum model <o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+has &quot;File and Print Sharing&quot; enabled on the Private Network Interface
+while it is a shared quorum model<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+does not &quot;File and Print Sharing&quot; enabled on the Private Network
+Interface while it is a majority node set<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+has &quot;Client For Microsoft Networks&quot; disabled on the Public Network
+Interface<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+has &quot;File and Print Sharing&quot; disabled on the Public Network Interface<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+has NetBT Bound enabled on the Private Interface<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+does not have NetBT Bound enabled on the Public Interface<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+has LMHOSTS enabled when it is not the only method of name resolution<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+has DisableDHCPMediaSense value in the registry <o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server
+has IP Addresses dynamically assigned on the network interfaces<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+has server configured as either RAS client or server<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+has 3rd Party Service Winsock providers installed<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+has IPSec enabled with Filters defined for the Public Interface<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+has IPSec enabled with Filters defined for the Private Interface<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+has the Firewall Service enabled on Public or Private Networks<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+has multicast enabled in a cluster with than 3 or more nodes<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Cluster
+node has no physical redundancy on the Public Network (networks designed to be
+&#8220;All communications (mixed mode)&#8221; or &#8220;Client access only
+(public network)&#8221;)<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+has NIC teaming installed on those interfaces designated as Private Networks
+(heartbeat)<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server
+has Public Network not bound as Primary Network Service Interface<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server
+has Private Network bound as Primary Network Service Interface<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Cluster
+does not have a network whose role is configured as Internal cluster
+communications only (private network)<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Cluster
+node has no physical redundancy on the Public Network (networks designed to be
+&#8220;All communications (mixed mode)&#8221; or &#8220;Client access only
+(public network)&#8221;)<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+does not have the Private Network used for Internal Communications Only set as
+the highest priority network in the cluster<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>IGMPVersion
+has been set on the Cluster Node and configured to a value lower than the
+Default of 4. This is necessary on a Cluster Node using Heartbeat communication<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server
+does not have the Public NIC bound as Secondary Priority<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server
+does not have the Private NIC Bound as Primary Priority<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server
+has 3rd Party Name Service Winsock installed<o:p></o:p></span></p>
+
+<p class=helptext style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2'><![if !supportLists]><span
+style='font-size:10.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>&middot;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Server(s)
+does not have a valid DNS Server defined for Name Resolution on the Public
+Interface</span></p>
+
+<div class=MsoNormal align=center style='text-align:center'><span
+style='mso-fareast-font-family:"Times New Roman"'>
+
+<hr size=2 width="100%" align=center>
+
+</span></div>
+
+<div class=MsoNormal align=center style='text-align:center'><span
+style='mso-fareast-font-family:"Times New Roman"'>
+
+</span></div>
+
+<p class=helpheader><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>DATA
+COLLECTION METHODS:</span></b></p>
+
+<u1:p></u1:p>
+
+<p class=helptext><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Primary
+data collection methods:</span></p>
+
+<u1:p></u1:p>
+
+<ul type=square>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo1;tab-stops:list .5in'><span style='font-size:10.0pt;
+     font-family:"Arial","sans-serif";mso-fareast-font-family:"Times New Roman"'>All
+     - Bpa </span><span style='mso-fareast-font-family:"Times New Roman"'><u1:p></u1:p><o:p></o:p></span></li>
+</ul>
+
+</div>
+
+</body>
+
+</html>

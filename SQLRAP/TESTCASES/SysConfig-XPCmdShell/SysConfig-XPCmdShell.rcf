@@ -1,0 +1,59 @@
+<TestCase Signature="2C3882EA9B5BD759" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="11" ExecutionOrder="2">
+  <WorkItem
+    Name            =   "SysConfig-XPCmdShell"
+    Category        =   "Configuration"
+    DisplayName     =   "SysConfig - XPCmdShell"
+    Description     =   "Evaluates the proper settings for the XP_cmdshell."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.SysConfig_XPCmdShell.SysConfig_XPCmdShellResultData, Microsoft.SqlRap.Client" />
+          <ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+          <SqlScript FileName ="Testcases\SysConfig-XPCmdShell\SQL_SYS_CFNG_XP_cmdshell_norestrict_2000.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_XP_cmdshell_norestrict_2000"/>
+          <SqlScript FileName ="Testcases\SysConfig-XPCmdShell\SQL_SYS_CFNG_XP_cmdshell_norestrict_2005.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_XP_cmdshell_norestrict_2005"/>
+          <SqlScript FileName ="Testcases\SysConfig-XPCmdShell\SQL_SYS_CFNG_xp_cmdshell_Status_2000.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_xp_cmdshell_Status_2000"/>
+          <SqlScript FileName ="Testcases\SysConfig-XPCmdShell\SQL_SYS_CFNG_xp_cmdshell_Status_2005.sql" IssueFileRuleQuery = "SQL_SYS_CFNG_xp_cmdshell_Status_2005"/>
+		    </ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="SysConfig-XPCmdShell.htm" WorkItem="SysConfig-XPCmdShell" DisplayName="SysConfig - XPCmdShell" Description="Report all the xp_cmdshell violations." Details="Evaluates the proper settings for the XP_cmdshell."/>
+
+  <RuleSet>
+	  <!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	  <!--Rule Type is the .net type to which the collected data will be handed over to for processing -->			
+    <Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_XP_cmdshell_norestrict_2000"/>
+    <Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_XP_cmdshell_norestrict_2005"/>
+    <Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_xp_cmdshell_Status_2000"/>
+    <Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="SQL_SYS_CFNG_xp_cmdshell_Status_2005"/>
+  </RuleSet>
+<ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+		<TableState Name            ="SysConfig-XPCmdShell" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="SysConfig - XPCmdShell" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtConfigurationName"  DataPropertyName ="ConfigurationName"  HeaderText = "Configuration Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtTargetDefaultValue"  DataPropertyName ="TargetDefaultValue"  HeaderText = "Target/Default Value"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtSetValue"  DataPropertyName ="SetValue"  HeaderText = "Set Value"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtRunValue"  DataPropertyName ="RunValue"  HeaderText = "Run Value"  Frozen = "false" Visible="true" />
+      <ColumnState Name="_txtOtherAccessGranted"  DataPropertyName ="OtherAccessGranted"  HeaderText = "OtherAccessGranted"  Frozen = "false" Visible="true" />
+    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

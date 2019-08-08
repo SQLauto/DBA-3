@@ -1,0 +1,29 @@
+Handling Conflicts
+
+When a conflict occurs in peer-to-peer replication, the Peer-to-peer conflict detection alert is raised. We recommend that you configure this alert so that you are notified when a conflict occurs. For more information about alerts, see Using Alerts for Replication Agent Events. 
+
+After the Distribution Agent stops and the alert is raised, use one of the following approaches to handle the conflicts that occurred:
+
+Reinitialize the node where the conflict was detected from the backup of a node that contains the required data (the recommended approach). This method ensures that data is in a consistent state. For more information, see the procedure to add a node to a topology in How to: Configure Peer-to-Peer Transactional Replication (Replication Transact-SQL Programming).
+
+
+Try to synchronize the node again by enabling the Distribution Agent to continue to apply changes:
+
+
+Execute sp_changepublication: specify 'p2p_continue_onconflict' for the @property parameter and true for the @value parameter.
+
+
+Restart the Distribution Agent.
+
+
+Verify the conflicts that were detected by using the conflict viewer and determine the rows that were involved, the type of conflict, and the winner. The conflict is resolved based on the originator ID value that you specified during configuration: the row that originated at the node with the highest ID wins the conflict. For more information, see How to: View Data Conflicts for Transactional Publications (SQL Server Management Studio).
+
+
+Run validation to ensure that the conflicting rows converged correctly. For more information, see Validating Replicated Data.
+
+Note:  
+If data is inconsistent after this step, you must manually update rows on the node that has the highest priority, and then let the changes propagate from this node. If there are no further conflicting changes in the topology, all nodes will be brought to a consistent state.
+ 
+
+
+Execute sp_changepublication: specify 'p2p_continue_onconflict' for the @property parameter and false for the @value parameter.

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestCase Signature="6F479C6DBE923B36" xmlns="http://www.microsoft.com/StaticWorkItem" xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="47" ExecutionOrder="2">
+  <WorkItem Name="DatabasePropertyValidationIsAutoUpdateStatisticsAsyncDisabled" Category="Database Properties" DisplayName="IsAutoUpdateStatisticsAsync" Description="This test case reports all user databases which have enabled the AUTO_UPDATE_STATISTICS_ASYNC database property.  This test case only generates results for SQL Server 2005 and greater instances." Schema="" DataType="" Type="Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+    <Configuration></Configuration>
+    <State>
+      <StateBag>
+        <ResultControl Type="Microsoft.SqlRap.Client.TestCases.DatabasePropertyValidationIsAutoUpdateStatisticsAsyncDisabled.DatabasePropertyValidationIsAutoUpdateStatisticsAsyncDisabledResultData, Microsoft.SqlRap.Client" />
+      <ScriptRule TargetLevel="instance" IncludeSystemDatabases="false">
+        <SqlScript FileName="Testcases\DatabasePropertyValidationIsAutoUpdateStatisticsAsyncDisabled\sql_is_auto_update_statistics_async_disabled.sql" IssueFileRuleQuery="sql_is_auto_update_statistics_async_disabled" />
+      </ScriptRule>
+      </StateBag>
+    </State>
+  </WorkItem>
+  <help:HelpItem FileName="DatabasePropertyValidationIsAutoUpdateStatisticsAsyncDisabled.htm" WorkItem="DatabasePropertyValidationIsAutoUpdateStatisticsAsyncDisabled" DisplayName="DatabasePropertyValidation - IsAutoUpdateStatisticsAsyncDisabled" Description="Checks if the Auto update statistics async database option is set to true for one or more databases" Details="This test case reports all user databases which have enabled the AUTO_UPDATE_STATISTICS_ASYNC database property.  This test case only generates results for SQL Server 2005 and greater instances." />
+  <RuleSet>
+    <!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+    <!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+    <Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="sql_is_auto_update_statistics_async_disabled" />
+  </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+    <TableStates>
+      <TableState Name="DatabasePropertyValidationIsAutoUpdateStatisticsAsyncDisabled" SortColumn="_txtServerName" SortDirection="ascending" Title="DatabasePropertyValidation - IsAutoUpdateStatisticsAsyncDisabled" ShowFilter="true" ShowTitle="true" ShowToolstrip="true" ShowTotalCount="true" ShowSelectedCount="true" UndoEdit="true">
+        <ColumnState Name="_txtServerName" DataPropertyName="ServerName" HeaderText="Server Name" Frozen="false" Visible="true" />
+        <ColumnState Name="_txtInstanceName" DataPropertyName="InstanceName" HeaderText="Instance Name" Frozen="false" Visible="true" />
+        <ColumnState Name="_txtDatabaseName" DataPropertyName="DatabaseName" HeaderText="Database Name" Frozen="false" Visible="true" />
+        <ColumnState Name="_txtAsyncAutoUpdateStatsEnabled" DataPropertyName="AsyncAutoUpdateStatsEnabled" HeaderText="Async Auto Update Stats Enabled?" Frozen="false" Visible="true" />
+      </TableState>
+    </TableStates>
+  </ResultsViewer>
+</TestCase>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2006 rel. 3 sp1 (http://www.altova.com) by Hugh Wade (MICROSOFT CORPORATION) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:issue="http://www.microsoft.com/RapidIssues" elementFormDefault="qualified" id="BPA">
+	<xs:complexType name="BpaExternal">
+		<xs:annotation>
+			<xs:documentation>A Bpa document. Config, Output, etc...</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:any namespace="##any" processContents="skip">
+				<xs:annotation>
+					<xs:documentation>Document contents</xs:documentation>
+				</xs:annotation>
+			</xs:any>
+		</xs:sequence>
+		<xs:attribute name="Name" use="required">
+			<xs:annotation>
+				<xs:documentation>External Bpa document's filename</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="BpaIssue">
+		<xs:sequence>
+			<xs:element ref="AffectedObject" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="Name" type="xs:string" use="required"/>
+		<xs:attribute name="HitCount" type="xs:int" use="required"/>
+		<xs:attribute name="Error" type="xs:string"/>
+		<xs:attribute name="Severity" type="xs:string"/>
+		<xs:attribute name="BpTextGuid" type="xs:string"/>
+		<xs:attribute name="Source" type="xs:string"/>
+		<xs:attribute name="ObjectType" type="xs:string"/>
+		<xs:attribute name="OrganizationName" type="xs:string"/>
+		<xs:attribute name="Text" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="BpaExternals">
+		<xs:sequence>
+			<xs:element ref="BpaExternal" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BpaIssues">
+		<xs:sequence>
+			<xs:element ref="BpaIssue" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BpaRoot">
+		<xs:sequence>
+			<xs:element ref="BpaIssues"/>
+			<xs:element ref="BpaExternals"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AffectedObject">
+		<xs:annotation>
+			<xs:documentation>Name of an object an issue applies to</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="Name" type="xs:string" use="required"/>
+		<xs:attribute name="Type" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="AffectedObjects">
+		<xs:annotation>
+			<xs:documentation>Affected object container</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="AffectedObject" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="AffectedObjects" type="AffectedObjects"/>
+	<xs:element name="AffectedObject" type="AffectedObject" nillable="true"/>
+	<xs:element name="BpaRoot" type="BpaRoot"/>
+	<xs:element name="BpaIssue" type="BpaIssue"/>
+	<xs:element name="BpaIssues" type="BpaIssues"/>
+	<xs:element name="BpaExternal" type="BpaExternal"/>
+	<xs:element name="BpaExternals" type="BpaExternals"/>
+</xs:schema>

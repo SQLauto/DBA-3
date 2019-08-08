@@ -1,0 +1,1392 @@
+﻿<!-- ** Input file for the Microsoft Exchange Server Best Practices Analyzer Tool (ExBPA) - Errors/Additions/Comments, please e-mail EXBPAFB@MICROSOFT.COM ** -->
+<!-- *********************************************************************  -->
+<!--  Copyright (C) 2004-2005 Microsoft Corporation. All Rights Reserved.   -->
+<!-- *********************************************************************  -->
+<!-- EXBPA DEPENDENCIES:
+	+ .NET Framework 1.1 installed on workstation/server where ExBPA is being run
+	+ IIS Common component installed on workstation to allow remote metabase access
+	+ Active Directory (Windows 2000 or Windows 2003)
+	+ At least one Exchange 2000/2003 server within the Active Directory
+	+ Machine Administrator permissions for enumerating Active Directory information and calling the WMI providers on DC/GC servers
+	+ Member of Local Administrators group on each Exchange server for calling the WMI providers and accessing the registry and metabase
+	+ Delegated at least Exchange View Only Permissions on the Exchange Organization
+	+ "Remote Registry" (RemoteRegistry) service must be running on both DC/GC and Exchange servers
+	+ "Windows Management Instrumentation" (winmgmt) service must be running on both DC/GC and Exchange servers
+	+ "Exchange Management" (MSExchangeMGMT) service must be running on all Exchange 200x servers
+	+ Tool must be run from a folder where the logged on user has read/write access
+	+ To collect HBA information, an HBA API-compliant driver and remoting service (such as Emulex's HBAnywhere service) is required on the server
+	+  - Additionally, the HBA API MOF installer must be run on both the ExBPA workstation and target server where the HBA is installed
+
+	SUPPORTED ENVIRONMENTS:
+
+		Exchange 5.5 on Windows 2000 SP3 and later
+			NOTE: The Exchange 5.5 server must be part of a mixed-mode Exchange organization, represented in the Active Directory
+
+		Exchange 2000 (all SPs) on Windows 2000 SP3 and later
+			NOTE: Neither Windows 2000 nor Exchange 2000 support extensive WMI providers. Data collection and analysis may be limited
+
+		Exchange 2003 (all SPs) on Windows 2000 SP3 and later
+			NOTE: Windows 2000 does not support extensive WMI providers. Data collection and analysis may be limited
+
+		Exchange 2003 (all SPs) on Windows 2003
+-->
+<ObjectCollector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <_locDefinition>
+    <_locDefault _loc="locNone" />
+    <_locTag _loc="locNone" _locAttrData="Class,LogText">Object</_locTag>
+    <_locTag _loc="locNone" _locAttrData="Text,Title">Rule</_locTag>
+    <_locTag _loc="locNone" _locAttrData="Text,Title">Template</_locTag>
+    <_locTag _loc="locNone" _locAttrData="Name">Baseline</_locTag>
+    <_locTag _loc="locNone" _locAttrData="Display,Description">RestrictionType</_locTag>
+    <_locTag _loc="locNone" _locAttrData="Display,Description">Option</_locTag>
+  </_locDefinition>
+  <Configuration ConfigVersion="9992.10.0.1" ConfigName="ExRAP Master Input File" DownloadURL="http://www.microsoft.com/exchange/code/ExRAP" ArticleURL="http://go.microsoft.com/fwlink/?linkid=30939&amp;l={0}&amp;v=ExBPA.{1}&amp;id={2}" HelpFile="ExBPA.chm" ChangeDescription="Various enhancements and fixes. Added support for new versions of Exchange-aware antivirus products. New configuration version is 2.10.0.1" SQMUploadURL="https://sqm.microsoft.com/sqm/exchange/sqmserver.dll">
+    <ConfigPreprocessor Name="0 Type Preprocessor" Assembly="BPA.Common.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.TypeConfigPreprocessor" />
+    <ConfigPreprocessor Name="1 Baseline Preprocessor" Assembly="ExBPA.Shared.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Exchange.BaselineConfigPreprocessor" />
+    <ObjectProcessor ObjectType="Operations" Assembly="BPA.ECOE.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.ECOEOperationsObjectProcessor" />
+    <ObjectProcessor Name="Group" Assembly="BPA.Common.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.GroupObjectProcessor" />
+    <ObjectProcessor Name="Cache" Assembly="BPA.Common.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.CacheObjectProcessor" />
+    <ExtFunction Name="list-average" Assembly="BPA.ConfigCollector.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.PdhObjectProcessor" Function="Average" Returns="Number" Parameters="String" />
+    <ExtFunction Name="list-sigma" Assembly="BPA.ConfigCollector.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.PdhObjectProcessor" Function="Sigma" Returns="Number" Parameters="String" />
+    <ExtFunction Name="list-median" Assembly="BPA.ConfigCollector.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.PdhObjectProcessor" Function="Median" Returns="Number" Parameters="String" />
+    <ExtFunction Name="list-min" Assembly="BPA.ConfigCollector.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.PdhObjectProcessor" Function="ListMin" Returns="Number" Parameters="String" />
+    <ExtFunction Name="list-max" Assembly="BPA.ConfigCollector.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.PdhObjectProcessor" Function="ListMax" Returns="Number" Parameters="String" />
+    <ExtFunction Name="list-percentile" Assembly="BPA.ConfigCollector.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.PdhObjectProcessor" Function="ListPercentile" Returns="Number" Parameters="String,Number" />
+    <RuleProcessor Name="1" Assembly="BPA.Common.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.MainRuleProcessor" />
+    <IssueProcessor Name="Events" Assembly="BPA.Common.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.EventProcessor" />
+    <ExtFormat Name="LowerCase" Assembly="BPA.Common.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.CacheObjectProcessor" Convert="ToLower" />
+    <RestrictionType Name="Category" Display="Category" Description="" Collapse="False">
+      <Option Name="General" Display="General" Description="Check basic information." />
+      <Option Name="Performance" Display="Performance" Description="Sample key performance monitor counters." />
+      <Option Name="Connectivity" Display="Connectivity" Description="Check server connectivity." />
+      <Option Name="Baseline" Display="Baseline" Description="Compare settings between servers." />
+      <Option Name="CustomBaseline" Display="CustomBaseline" Description="Compare settings between servers." />
+      <Option Name="ECOE" Display="ECOE" Description="Used for ECOE data collection" />
+    </RestrictionType>
+    <IssueProcessor Name="ExRapEventProcessor" Assembly="BPA.ECOE.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.ExRapEventProcessor" />
+  </Configuration>
+  <Object Type="Group" Name="EXRAP Customer Branding" Category="General" Level="1" Key1="$(M.MSName)" Key2="$(M.MCID)" Key3="$(M.SDOID)" Key4="$(M.HASH)" Key5="$(M.SITEName)" />
+  <Object Type="Group" Name="Full Run" Level="1" />
+  <Object Type="Group" Name="Exchange Risk Assessment" GroupingClass="True" Class="ECOE">
+    <Object Type="Operations" Name="Operational Interview" Key1="$(OperationsInterview)" Key2="svy" Key3="http://www.microsoft.com/surveys" GroupingClass="True" Class="Survey">
+      <Object Type="Operations" Name="Company Information" Class="Section" GroupingClass="True">
+        <Object Type="Operations" Name="Have you provided this customer with a privacy statement?" Class="Question" GroupingClass="True">
+          <Setting Key1="f7add90b-9040-46ad-b42e-00b33883bc5c" />
+        </Object>
+        <Object Type="Operations" Name="What version or versions of Microsoft® Exchange Server are you running?" Class="Question" GroupingClass="True">
+          <Setting Key1="8b2f430a-2dc7-4022-8261-161b8b6ef581" />
+          <Setting Key1="bf4a2785-01f2-4589-833f-ff4f18f60f76" />
+          <Setting Key1="5701e50e-f19d-41ce-9d67-d22ca6105fbc" />
+        </Object>
+        <Object Type="Operations" Name="What Microsoft operating systems are you running on the servers that support your messaging infrastructure?" Class="Question" GroupingClass="True">
+          <Setting Key1="0cac00c2-7753-4f5f-97a4-c0f9bffa4469" />
+          <Setting Key1="41902b31-915a-4c2e-9aea-10d52ddd68db" />
+          <Setting Key1="8b412287-86d6-4bbd-aa78-1bf4062e92ae" />
+        </Object>
+        <Object Type="Operations" Name="What Microsoft operating systems are you running on your clients?" Class="Question" GroupingClass="True">
+          <Setting Key1="315fa49a-4753-4d0e-8a74-c8650323d140" />
+          <Setting Key1="a793e9ef-cce4-461f-b180-e0a367a22fba" />
+          <Setting Key1="f0eee2c4-f481-49b0-87e4-d7cee60e6b45" />
+          <Setting Key1="0bccec62-9c5d-49f7-b3dd-1bfbe5283662" />
+        </Object>
+        <Object Type="Operations" Name="What messaging clients are used in your environment?" Class="Question" GroupingClass="True">
+          <Setting Key1="d571b04e-ed16-4313-a594-913e6e8d4a79" />
+          <Setting Key1="bc2bc51c-dd1c-4790-852b-60f2c5a733dd" />
+          <Setting Key1="9f4c8144-9c88-49aa-b882-a32b5a15a08a" />
+          <Setting Key1="b8a72c13-bb54-4d73-816e-e60533fac4b1" />
+          <Setting Key1="171ac062-8f25-493e-a41d-2a5e0dcc14b7" />
+          <Setting Key1="5b78d75d-19e9-4094-bdf1-a6ec5e253c2b" />
+          <Setting Key1="c0549885-faa7-48fa-9cd9-61c7e9597658" />
+        </Object>
+        <Object Type="Operations" Name="How many different Exchange organizations are in the environment?" Class="Question" GroupingClass="True">
+          <Setting Key1="d0119687-47ad-4dd3-8615-457c1386d162" />
+          <Setting Key1="42a648b3-c29d-4582-a748-73d6ce5627e2" />
+          <Setting Key1="adf6c106-3bde-4bb2-b93a-c03b3a7ab8aa" />
+          <Setting Key1="e13eda43-5932-4aa9-9652-e2029e43b441" />
+        </Object>
+        <Object Type="Operations" Name="Do you have Certificate Authority or KMS in your environment?" Class="Question" GroupingClass="True">
+          <Setting Key1="8e0cf966-7bf9-4356-ba75-f4f487128bc0" />
+        </Object>
+        <Object Type="Operations" Name="Do you have any third-party add-ons in your environment (for example, a fax server)?" Class="Question" GroupingClass="True">
+          <Setting Key1="27bce548-1369-4b72-a600-3db21933ebbf" />
+        </Object>
+        <Object Type="Operations" Name="Customer Information" Class="Question" GroupingClass="True">
+          <Setting Key1="464de2c8-f0b3-492a-af4e-14185b59bd32" />
+          <Setting Key1="51779b2b-66d5-4dbd-a525-3496842a1b39" />
+          <Setting Key1="dd66e0ff-37fb-4315-b467-7c4a12a644d9" />
+          <Setting Key1="2c437ac0-a543-4ec1-9fab-edf9070390f5" />
+          <Setting Key1="12e29224-5946-42e9-8089-43e54b986d88" />
+          <Setting Key1="203781a7-768f-43cb-9628-5e77cd4d8283" />
+          <Setting Key1="823b49d7-dbb0-4e1a-b192-cdfcbcb4c9bb" />
+          <Setting Key1="4ecde968-3dc2-49b6-bc60-ec9052a0bd76" />
+        </Object>
+        <Object Type="Operations" Name="Does your operations staff know who their Premier Technical Account Manager (TAM) is and how to escalate issues to that person?" Class="Question" GroupingClass="True">
+          <Setting Key1="05c72366-1621-460d-bb0a-0369ef41b4bd" />
+        </Object>
+        <Object Type="Operations" Name="Is your staff familiar with your Premier support contract or how to find it? " Class="Question" GroupingClass="True">
+          <Setting Key1="156b420b-a583-42ab-8b00-69bf3e967e84" />
+        </Object>
+        <Object Type="Operations" Name="Have all your operations staff had an Orientation and Planning session with your TAM in the last year?" Class="Question" GroupingClass="True">
+          <Setting Key1="c04a53cf-56c6-4763-8fc4-c83297efd865" />
+        </Object>
+        <Object Type="Operations" Name="Has your Technical Account Manager contacted you in the last month?" Class="Question" GroupingClass="True">
+          <Setting Key1="fdb3cd89-41a3-4939-a29c-05a37fc826ed" />
+        </Object>
+      </Object>
+      <Object Type="Operations" Name="Operational Excellence" Class="Section" GroupingClass="True">
+        <Object Type="Operations" Name="People" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Do you have a dedicated Exchange engineering function? " Class="Question" GroupingClass="True">
+            <Setting Key1="98870993-87a8-4332-8cd7-119f621f2f9f">
+              <Rule Name="fOperationalExcellencePeopleDedicatedEngineeringFunction" Query="($.)!='Yes'" Error="Error" Text="No dedicated Exchange engineering responsibility is assigned" GUID="60fa31db-9105-41f0-a8c6-3704dab03ddc" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you require base-level certification for your operations staff?" Class="Question" GroupingClass="True">
+            <Setting Key1="eb5a23a4-fa64-4838-aadc-c136c1db9701">
+              <Rule Name="fOperationalExcellencePeopleBaseLevelCertification" Query="($.)!='Yes'" Error="Error" Text="No requirement for base level certification exists for operational staff" GUID="00a81117-1463-4ba6-8ac2-3ff26736a9d6" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Where do you go for Microsoft Exchange Server help or to view Exchange documentation?" Class="Question" GroupingClass="True">
+            <Setting Key1="503d0748-15fc-4d39-9f1f-de50632cd897" />
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="General" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Does your IT organization utilize and adhere to an established operations framework such as Microsoft Operations Framework (MOF) or Information Technology Infrastructure Library (ITIL) principles?" Class="Question" GroupingClass="True">
+            <Setting Key1="724ea5ff-7995-470f-8b87-6b7cde3f4eeb">
+              <Rule Name="fOperationalExcellenceGeneralMOFITLPractices" Query="($.)!='Yes'" Error="Error" Text="No adherence to established operational processes" GUID="8f66b39c-5515-457e-8d93-fb38523d1d8d" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="In your environment, how often is load balancing of mailboxes across Exchange servers evaluated?" Class="Question" GroupingClass="True">
+            <Setting Key1="43aab800-7112-426d-8d6c-2a2123e5421b" />
+            <Setting Key1="3a0a2873-6bb6-4773-9c4f-5fca82f03f78">
+              <Rule Name="fOperationalExcellenceGeneralMbxLoadBalancingQuarterly" Query="($.)='Yes'" Error="Error" Text="Less than quarterly load balancing occurs across Mailbox servers" GUID="be7635f0-b859-4306-9582-32e58a58a76b" />
+            </Setting>
+            <Setting Key1="e9ab40a9-5c2a-45d6-816c-6773af275462">
+              <Rule Name="fOperationalExcellenceGeneralMbxLoadBalancingNever" Query="($.)='Yes'" Error="Error" Text="No load balancing occurs across Mailbox servers" GUID="be7635f0-b859-4306-9582-32e58a58a76b" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have formal plans in place for non-routine failures, such as a natural disaster?" Class="Question" GroupingClass="True">
+            <Setting Key1="2b8bd3ed-871b-4520-865e-32092e5daba7">
+              <Rule Name="fNoITSCMPlans" Query="($.)!='Yes'" Error="Error" Text="No formal service continuity plans for non-routine failures exist" GUID="436ebb07-d03a-4e17-98de-8b27c381df8a" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you track the per-mailbox cost of delivering the Messaging/Email service? " Class="Question" GroupingClass="True">
+            <Setting Key1="a56765ff-e9cc-4b7a-9dec-0042bef78686">
+              <Rule Name="fOperationalExcellenceGeneralCostAccounting" Query="($.)!='Yes'" Error="Error" Text="No tracking of the per-mailbox cost of the Messaging service" GUID="662ee920-2d80-4116-b811-c4886bbfa34e" />
+            </Setting>
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Change, Configuration, and Release Management" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Does every production Messaging/Email change get logged, no matter how small?" Class="Question" GroupingClass="True">
+            <Setting Key1="7377011a-6b08-4882-b15e-98d957de4a31">
+              <Rule Name="fOperationalExcellenceCcrmLoggingAllChanges" Query="($.)!='Yes'" Error="Error" Text="Process of logging and approving all Exchange production environment changes does not exist" GUID="6ebb24c2-a7b8-4a10-9815-f2fbcf26ab85" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Does the Messaging/Email team have an approval voice for other IT changes that might impact the Messaging/Email service?" Class="Question" GroupingClass="True">
+            <Setting Key1="ad2b4598-50b5-4056-a675-e2a1a6e5a5e8">
+              <Rule Name="fOperationalExcellenceCcrmApprovalVoiceforChanges" Query="($.)!='Yes'" Error="Error" Text="Messaging support staff do not have approval input into changes to the supporting services that affect Exchange" GUID="f3bc080d-425f-4cbc-9f1d-349d41830806" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have scheduled releases to keep the hardware, operating system, Microsoft Exchange Server application, and antivirus software on the Exchange servers up-to-date (for example, service packs)?" Class="Question" GroupingClass="True">
+            <Setting Key1="558131e2-e816-4469-a454-8e3a119d73da">
+              <Rule Name="fOperationalExcellenceCcrmScheduledReleases" Query="($.)!='Yes'" Error="Error" Text="No scheduled releases to maintain the Exchange infrastructure occur" GUID="caf37643-b699-473f-8918-44595a6b2bab" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you apply Microsoft Windows and Microsoft Exchange Server updates (patches) to your servers more than once a year? " Class="Question" GroupingClass="True">
+            <Setting Key1="8703c2a3-4a8a-4da4-bafd-38047c64c1ab">
+              <Rule Name="fOperationalExcellenceCcrmPolicyToApplyPatchesMoreThanOnceAYear" Query="($.)!='Yes'" Error="Error" Text="Windows and Exchange patches are not installed on a routine basis" GUID="3aa290e2-6b15-499e-8286-bba652b84ca6" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you review and proactively apply security updates (patches) for both Microsoft Windows and Microsoft Exchange Server as they become available?" Class="Question" GroupingClass="True">
+            <Setting Key1="6b1ae847-ba02-4e91-9eb6-e525448706b1">
+              <Rule Name="fOperationalExcellenceCcrmReviewSecurityPatches" Query="($.)!='Yes'" Error="Error" Text="Security patches not reviewed as they become available" GUID="3205e15a-028f-468b-a4f5-8de16cd1a2af" />
+            </Setting>
+            <Object Type="Operations" Name="Does it take more than a week to apply a critical security update to all servers?" Class="Question" GroupingClass="True">
+              <Setting Key1="ceb1747b-85c7-406e-9568-314f8e1206b7">
+                <Rule Name="fOperationalExcellenceCcrmPolicyDurationToApplyPatches" Query="($.)!='No' and not ($fOperationalExcellenceCcrmReviewSecurityPatches)" Error="Error" Text="It takes more than a week to apply a critical security patch to all servers" GUID="a136fb5d-aa89-4b82-b094-929b4ea4a06b" />
+              </Setting>
+            </Object>
+          </Object>
+          <Object Type="Operations" Name="Do you review and test updates before deployment?" Class="Question" GroupingClass="True">
+            <Setting Key1="41f89f33-d82b-4834-afc1-77db56e35a6d">
+              <Rule Name="fOperationalExcellenceCcrmPolicyToTestPatches" Query="($.)!='Yes'" Error="Error" Text="Patches are not tested before deployment to production" GUID="573fb482-162d-45c8-86b1-64bf4a4c518d" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have a lab that contains the same roles, code, and services you run in the production environment where you can test changes in the code and configuration?" Class="Question" GroupingClass="True">
+            <Setting Key1="1ad323e0-1204-43f1-8cef-8ca030c4a752">
+              <Rule Name="fOperationalExcellenceCcrmLabAndMatchesProduction" Query="($.)!='Yes'" Error="Error" Text="A test lab that mimics the Exchange production environment does not exist" GUID="d074ccf2-ca41-42c3-ac97-a5adfb21e04b" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="If one server is changed, are all other servers of the same type of role also changed?" Class="Question" GroupingClass="True">
+            <Setting Key1="9e246e35-58bc-47ae-b0b3-0c733f9fbe4a">
+              <Rule Name="fOperationalExcellenceCcrmAllServersChangedIfOneChanges" Query="($.)!='Yes'" Error="Error" Text="Changes are not applied to all servers of identical roles/types" GUID="2eb2cde7-ccfc-4a1b-bb66-03844456a296" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have detailed Microsoft Windows and Exchange build documents for your Exchange servers? " Class="Question" GroupingClass="True">
+            <Setting Key1="a3deba99-51aa-446f-acba-3404e090fdce">
+              <Rule Name="fOperationalExcellenceCcrmDetailedWindowsAndExchangeBuildDocument" Query="($.)!='Yes'" Error="Error" Text="Detailed Windows and Exchange Server build documents do not exist" GUID="94535874-0d16-4025-954f-2922dbb29fe0" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you rely on MBSA versions 1.X or earlier for security patch management and scanning?" Class="Question" GroupingClass="True">
+            <Setting Key1="ecda55b8-77a7-4dd0-b72c-fa323d8e63ab">
+              <Rule Name="fOperationalExcellenceCcrmUsesOldVersionsOfMbsa" Query="($.)!='No'" Error="Error" Text="MBSA versions 1x or lower are insufficient for security patch management" GUID="c8bbf8c7-0fb4-4066-b81c-37c5a71a11e5" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you routinely run Microsoft Exchange Best Practice Analyzer against your environment and take action on the ExBPA results?" Class="Question" GroupingClass="True">
+            <Setting Key1="569dff2e-6992-486e-a48c-9b7b4bc1b904">
+              <Rule Name="fOperationalExcellenceCcrmUsesExbpa" Query="($.)!='Yes'" Error="Error" Text="The Exchange Best Practice Analyzer is not routinely used" GUID="57055c76-0a96-4815-ab86-e0ec7a6986c3" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Are you alerted if an unapproved change is made to an Exchange server?" Class="Question" GroupingClass="True">
+            <Setting Key1="17b744ed-cbd5-420f-a442-78030a6da6b5">
+              <Rule Name="fOperationalExcellenceCcrmChangeAudit" Query="($.)!='Yes'" Error="Error" Text="No alerts for unapproved changes to Exchange servers occur" GUID="5ef07407-76eb-48b1-8df5-c5d0c5d735ec" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have up-to-date asset information for your Exchange servers?" Class="Question" GroupingClass="True">
+            <Setting Key1="60067eee-782b-4381-be59-4a6937c9aed7">
+              <Rule Name="fOperationalExcellenceCcrmAssetInfo" Query="($.)!='Yes'" Error="Error" Text="Exchange Server asset information is not compiled" GUID="f78b927f-9249-48ff-a22d-89c833bdae5b" />
+            </Setting>
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Incident and Problem Management" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Do you have documented and communicated escalation matrices for Microsoft Exchange Server outages?" Class="Question" GroupingClass="True">
+            <Setting Key1="a6aa2a67-0cd0-4cea-8c14-dfb9ef5ff47f">
+              <Rule Name="fOperationalExcellenceImpEscalationMatricesForExchange" Query="($.)!='Yes'" Error="Error" Text="No documented and communicated escalation matrices for Exchange outages exist" GUID="505e4aa3-cf70-4c78-99a1-bdaccc30157d" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have documented and communicated escalation matrices for services that Exchange is dependent upon?" Class="Question" GroupingClass="True">
+            <Setting Key1="4c0e6096-b5b0-4411-a91a-82b4b28e9819">
+              <Rule Name="fOperationalExcellenceIpmEscalationMatricesforSupportingServices" Query="($.)!='Yes'" Error="Error" Text="No documented and communicated escalation matrices for services that support Messaging/Email exist" GUID="3e40f5ca-c85c-406d-b8f3-d57d9c0ec9ea" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you track Key Performance Indicators (KPIs) for reactive support, including Number of Incidents per period, Mean Time to Resolution, and Mean Time Between Failure? Do you also trend Microsoft Exchange Server outages?" Class="Question" GroupingClass="True">
+            <Setting Key1="ede1ee0a-1eae-4f76-9eed-6b16be6ce136">
+              <Rule Name="fOperationalExcellenceIpmSupportKPIs" Query="($.)!='Yes'" Error="Error" Text="No tracking of Key Performance Indicators for reactive support occurs" GUID="e502cc5d-dd04-4516-bf53-59b5d6304a23" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you review each unplanned outage to look for improvement opportunities?" Class="Question" GroupingClass="True">
+            <Setting Key1="ec2bfe11-ccef-47b3-a681-dedeb001dcee">
+              <Rule Name="fOperationalExcellenceIpmReviewUnplannedOutages" Query="($.)!='Yes'" Error="Error" Text="Unplanned Exchange server outages are not reviewed for learning opportunities" GUID="3febd3f8-e9a3-4be1-99ba-f0cfe4b8536e" />
+            </Setting>
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Monitoring" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Do you monitor your Microsoft Exchange Server environment?" Class="Question" GroupingClass="True">
+            <Setting Key1="d4719c5f-b567-435d-b57a-4b4dd31c20f0">
+              <Rule Name="fOperationalExcellenceMonitoringNone" Query="($.)!='Yes'" Error="Error" Text="Exchange server environment is not monitored" GUID="d0b1ea8a-a383-4ebf-bae2-060a3d338053" />
+              <Rule Name="fhasOperationalExcellenceMonitoring" Query="($.)='Yes'" Error="None" Text="Customer does monitor their Exchange environment" />
+            </Setting>
+            <Object Type="Operations" Name="What do you use to monitor Microsoft Exchange Server?" Class="Question" GroupingClass="True">
+              <Setting Key1="73d00390-4024-415b-8cd2-9268a633565a" />
+              <Setting Key1="c8990b3c-d185-41ad-8ac3-2dae0edabb20" />
+              <Setting Key1="0866e9ee-36b0-4bf1-949e-cc9177626c8a" />
+              <Setting Key1="5f399892-6c48-479a-8343-4dac5614cdb2" />
+              <Setting Key1="06942e40-3b1e-4a83-b86f-6458c0174474" />
+              <Setting Key1="93d74cf1-9398-470b-9897-814d9d06285e" />
+              <Setting Key1="4d950e7a-cb1c-41b0-86f3-73fe404c519d" />
+              <Setting Key1="0f499b1c-6fc7-48c0-b7f9-8fc5bd04c461" />
+              <Setting Key1="85824048-9b23-4bb8-a554-5640fe10d698" />
+              <Object Type="Operations" Name="Do you run the Exchange MOM Management Pack?" Class="Question" GroupingClass="True">
+                <Setting Key1="3b475623-efd9-4ea1-9b66-d36bfb7115ab" />
+              </Object>
+            </Object>
+            <Object Type="Operations" Name="Which of the following do you monitor?" Class="Question" GroupingClass="True">
+              <Rule Name="fOperationalExcellenceMonitoringInsufficient" Query="..//Setting/Value[text()!='Yes'] and ($fhasOperationalExcellenceMonitoring)" Error="Error" Text="All required Exchange environment counters are not monitored" GUID="86a2971a-2067-4a88-886e-23283e4a1837" />
+              <Setting Key1="874bdba0-3338-46d0-8665-7be2cb049e82" />
+              <Setting Key1="17bd5309-cc4a-4df5-811d-8dc766eb4fc4" />
+              <Setting Key1="988d41bb-e851-4a88-a046-77a80df34585" />
+              <Setting Key1="2021a609-7b27-4e67-97af-ee23bde15e0e" />
+              <Setting Key1="ac35b79a-feaa-45c4-adaf-3477c2d95e92" />
+              <Setting Key1="53739372-8038-4311-b614-37310e0e14d2" />
+              <Setting Key1="52bfe256-a33f-4814-a769-cc079177fd68" />
+              <Setting Key1="a8a32438-4454-4ba8-8158-f9d1dce3da52" />
+              <Setting Key1="1ce2e06b-f5b5-44fd-aed3-082ab4fae700" />
+              <Setting Key1="8949cd9f-3301-40a8-8daf-49cf4730f514" />
+              <Setting Key1="305e0af8-dd73-4fdc-b1d4-cdee2af39c28" />
+              <Setting Key1="1bce083d-3291-408d-b1ef-7eaea8f2bd42" />
+            </Object>
+            <Object Type="Operations" Name="Is your Microsoft Exchange Server environment monitored 24 hours a day, 7 days a week?" Class="Question" GroupingClass="True">
+              <Setting Key1="4fc657ec-c535-46c5-beee-8f428a2fd505">
+                <Rule Name="fOperationalExcellenceMonitoringTwentyFourBySeven" Query="($.)!='Yes' and ($fhasOperationalExcellenceMonitoring)" Error="Error" Text="Exchange environment is not monitored 24x7" GUID="3fd8b529-f12c-4354-bd4e-6bfe82d43a9f" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name="Do you have automated notifications for monitored alerts?" Class="Question" GroupingClass="True">
+              <Setting Key1="634984cc-4d27-4b02-97e3-ddbf754385b7">
+                <Rule Name="fOperationalExcellenceMonitoringAutomatedNotifications" Query="($.)!='Yes' and ($fhasOperationalExcellenceMonitoring)" Error="Error" Text="Automated alerts for monitored counters not implemented" GUID="34a63cc7-20a7-4cb9-b229-beed5cb05eef" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name="Is there someone who is held accountable for responding to each alert?" Class="Question" GroupingClass="True">
+              <Setting Key1="6d00f296-e98a-4326-8864-d8d72c1685c3">
+                <Rule Name="fOperationalExcellenceMonitoringSomeoneAccountableForAlerts" Query="($.)!='Yes' and ($fhasOperationalExcellenceMonitoring)" Error="Error" Text="No one is assigned accountability for responding to monitored alerts" GUID="e4da2d6c-f654-4546-b023-ca0d7a33a296" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name="Is there an action plan or operations guide for each alert, such as a troubleshooting guide?" Class="Question" GroupingClass="True">
+              <Setting Key1="5fb54626-22d3-4e48-a8ed-1975f252e325">
+                <Rule Name="fOperationalExcellenceMonitoringfhasActionPlanForAlerts" Query="($.)!='Yes' and ($fhasOperationalExcellenceMonitoring)" Error="Error" Text="No action plan for responding to monitored alerts is in place" GUID="2761e586-8e82-4d1c-9d1e-cdf8dd7ef672" />
+              </Setting>
+            </Object>
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Service Level Management" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Have you completed a Business Impact Analysis to determine the importance of the Messaging/Email service to your business and its relative importance versus other IT services in your organization?" Class="Question" GroupingClass="True">
+            <Setting Key1="dbf7e83b-e9cb-42cd-9f49-b6fb339f5d62">
+              <Rule Name="fOperationalExcellenceSlaBusinessImpactAnalysis" Query="($.)!='Yes'" Error="Error" Text="No Business Impact Analysis of the Messaging/Email service has been performed" GUID="bb3cd16d-9281-47b5-ac8f-24d31fc43456" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have defined service level agreements (SLAs) for the Messaging/Email service?" Class="Question" GroupingClass="True">
+            <Setting Key1="106777c1-9c20-4f40-bacb-83404b5bdf7e">
+              <Rule Name="fOperationalExcellenceSlaDefined" Query="($.)!='Yes'" Error="Error" Text="No defined Service Level Agreements (SLAs) exist for the Messaging/Email service" GUID="e18e950d-0880-4561-8305-2e3cccf60d72" />
+            </Setting>
+            <Object Type="Operations" Name="Do you have routine maintenance windows that do not count against your service levels?" Class="Question" GroupingClass="True">
+              <Setting Key1="8c6ba391-ba2f-494c-9d81-fd27ea96a52d" />
+            </Object>
+            <Object Type="Operations" Name="Do you regularly review service level targets and your team's performance against those targets with the business units?" Class="Question" GroupingClass="True">
+              <Setting Key1="a5d6277e-cd7f-4ac3-89e6-9021aa76b1c4" />
+            </Object>
+          </Object>
+          <Object Type="Operations" Name="Do you measure availability of the Messaging/Email service?" Class="Question" GroupingClass="True">
+            <Setting Key1="c2a409ee-c1cf-4abe-8c1c-8e83535a1cb0">
+              <Rule Name="fOperationalExcellenceSlaMeasureEmailServiceAvailability" Query="($.)!='Yes'and not($fOperationalExcellenceSlaDefined)" Error="Error" Text="Service Level Availability of the Messaging/Email service is not measured" GUID="4996e298-da85-4938-a929-5f619251cfef" />
+            </Setting>
+            <Object Type="Operations" Name="Is the measurement system automated? " Class="Question" GroupingClass="True">
+              <Setting Key1="cb78e09a-87d6-4cc7-b3ca-acb4405e3371">
+                <Rule Name="fOperationalExcellenceSlaAutomatedMeasurmentSystem" Query="($.)!='Yes'and not($fOperationalExcellenceSlaMeasureEmailServiceAvailability)" Error="Error" Text="No automated method for measuring Messaging/Email availability exists" GUID="4996e298-da85-4938-a929-5f619251cfef" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name="Do you publish the reports to Senior IT management? " Class="Question" GroupingClass="True">
+              <Setting Key1="15fc6122-c312-4669-a3d6-cb8c30476365" />
+            </Object>
+            <Object Type="Operations" Name="Do you publish the reports to the customers and the business units?" Class="Question" GroupingClass="True">
+              <Setting Key1="ac17f5ef-e452-4fd2-87e2-c371537b45b2">
+                <Rule Name="fOperationalExcellenceSlaPublishToBuisnessUnits" Query="($.)!='Yes'and not($fOperationalExcellenceSlaMeasureEmailServiceAvailability)" Error="Error" Text="Messaging/Email availability reports are not published to business units" GUID="4996e298-da85-4938-a929-5f619251cfef" />
+              </Setting>
+            </Object>
+          </Object>
+          <Object Type="Operations" Name="Do you have defined operating level agreements (OLAs) with the teams who own the services that support the Messaging/Email service?" Class="Question" GroupingClass="True">
+            <Setting Key1="137eb4e8-6b7d-4163-9d3c-d67a5e698569">
+              <Rule Name="fOperationalExcellenceSlaEmailServiceOla" Query="($.)!='Yes'" Error="Error" Text="No defined Operating Level Agreements (OLAs) exist between IT groups who own the services that support the Messaging/Email service" GUID="576bddc0-344e-49e9-a816-3f3e49cf9d94" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you meet regularly as a team to review performance against SLAs and to define target action?" Class="Question" GroupingClass="True">
+            <Setting Key1="4a5dedb2-f529-42d7-bd6f-18f135b2217a">
+              <Rule Name="fOperationalExcellenceSlaTeamPerformanceReview" Query="($.)!='Yes'" Error="Error" Text="Messaging team does not meet regularly to review and action performance against Sevice Level Agreements" GUID="6c8fa372-0357-4433-b0cb-66babae3d157" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you measure user, customer, and business unit satisfaction with the Messaging/Email service?" Class="Question" GroupingClass="True">
+            <Setting Key1="a6a43a94-9ee9-4698-91d8-6bbd02a761de">
+              <Rule Name="fOperationalExcellenceSlaMeasureCustomerSatisfaction" Query="($.)!='Yes'" Error="Error" Text="User satisfaction with the Messaging/Email service is not measured" GUID="cd157f29-3ae5-4cc6-b1b1-bc7f0b0bf391" />
+            </Setting>
+          </Object>
+        </Object>
+      </Object>
+      <Object Type="Operations" Name="Security" Class="Section" GroupingClass="True">
+        <Object Type="Operations" Name="Exchange Platform" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Do the new designs or core changes to the Exchange infrastructure go through a formal security review process (internal or external)?" Class="Question" GroupingClass="True">
+            <Setting Key1="2c6c8f9c-cdda-495b-b97f-147be5c94f4a">
+              <Rule Name="fSecurityExchangePlatformDesignReviewNone" Query="($.)='Yes'" Error="Error" Text="Changes to the Exchange infrastructure do not undergo formal security reviews" GUID="b7cccb61-76ce-490b-b3b1-aab6fa58d44f" />
+            </Setting>
+            <Setting Key1="27353574-a18e-4561-9185-cbd19d8369ef">
+              <Rule Name="fSecurityExchangePlatformDesignReviewAdHoc" Query="($.)='Yes'" Error="Error" Text="Changes to the Exchange infrastructure undergo Ad-hoc security reviews" GUID="b7cccb61-76ce-490b-b3b1-aab6fa58d44f" />
+            </Setting>
+            <Setting Key1="557ed1a5-0c85-436e-8098-3e1dba8f6620">
+              <Rule Name="fSecurityExchangePlatformDesignReviewDefined" Query="($.)='Yes'" Error="Error" Text="Changes to the Exchange infrastructure undergo defined security reviews, but the results are not consistently enforced" GUID="b7cccb61-76ce-490b-b3b1-aab6fa58d44f" />
+            </Setting>
+            <Setting Key1="79426c7a-3ec2-4d54-9fab-222f6236b373" />
+          </Object>
+          <Object Type="Operations" Name="What level of security and application logging, security auditing procedures, and processes does your organization have in the Microsoft Exchange Server environment?" Class="Question" GroupingClass="True">
+            <Setting Key1="68bdf7be-474b-47ca-8c91-7dd1c23c7011">
+              <Rule Name="fSecurityExchangePlatformSecurityAuditingNone" Query="($.)='Yes'" Error="Error" Text="No process exists for security and application logging and auditing" GUID="4d900120-3748-4b00-b5b9-dbfeffb609a7" />
+            </Setting>
+            <Setting Key1="7203a986-ad01-4455-b3a9-32d6c07f8639">
+              <Rule Name="fSecurityExchangePlatformSecurityAuditingAdHoc" Query="($.)='Yes'" Error="Error" Text="The process for security and application logging and auditing is Ad-hoc" GUID="4d900120-3748-4b00-b5b9-dbfeffb609a7" />
+            </Setting>
+            <Setting Key1="5123be97-2724-4eec-bb8b-b474aececd27" />
+            <Setting Key1="a3f46ff5-61e9-40a4-924e-38e7752e7c59" />
+          </Object>
+          <Object Type="Operations" Name="Are custom, Microsoft Windows group policies used to enforce security on Exchange servers?" Class="Question" GroupingClass="True">
+            <Setting Key1="bc9b4160-8049-4b01-8234-9c66a87545eb">
+              <Rule Name="fhasNoCustomGroupPolicies" Query="($.)!='Yes'" Error="Error" Text="Windows Group Policies not leveraged to enforce security settings to the messaging environment" GUID="97e2f5d3-06d7-4347-9599-e65f8880fdee" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="What technologies does your organization use to protect the confidentiality and integrity of email data at the store and in transit? " Class="Question" GroupingClass="True">
+            <Setting Key1="289d10ed-e3b1-4388-97a0-27230bf741f4" />
+            <Setting Key1="8d27868e-9a5b-4653-a2f3-f8b1fd152a25" />
+            <Setting Key1="6f1c794a-1050-4854-947d-b6e288ef9479">
+              <Rule Name="fhasExchangeSecurityEMailStoreTransitProtectIPSECTLS" Query="($.)='IPSECTLS'" Error="None" Text="Customer uses IPSEC/TLS to protect e-mail data" />
+            </Setting>
+            <Setting Key1="8dce1b1e-743f-4769-8217-7b3a931f916f" />
+            <Setting Key1="14969c64-4f8f-467b-8529-42ad444b4381" />
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Messaging Hygiene" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="At what levels in the messaging infrastructure do you maintain antivirus protection controls? " Class="Question" GroupingClass="True">
+            <Setting Key1="121621bc-f4c3-4b1b-8bb7-abc990163c5c">
+              <Rule Name="fhasExchangeHygieneInsufficient" Query="not ((($fhasExchangeHygieneClientLevel or $fhasExchangeHygieneGateway) and $fhasExchangeHygieneStore) or (($fhasExchangeHygieneClientLevel or $fhasExchangeHygieneStore)and $fhasExchangeHygieneGateway) or (($fhasExchangeHygieneStore or $fhasExchangeHygieneGateway) and $fhasExchangeHygieneClientLevel))" Error="Error" Text="Email anti-virus protection is insufficient" GUID="1dd0fc1a-dba9-47b2-ba9e-82df78ebd0f7" />
+              <Rule Name="fhasExchangeHygieneGateway" Query="$fhasExchangeHygieneGatewayMicrosoft or $fhasExchangeHygieneGatewayVendor" Error="None" Text="Customer implements anti-virus controls at the gateway level" />
+              <Rule Name="fhasExchangeHygieneGatewayMicrosoft" Query="($.)='GatewayMicrosoft'" Error="None" Text="Anti-virus controls implemented at the gateway level on a Microsoft platform" />
+            </Setting>
+            <Setting Key1="2c5d090d-653e-47a2-b0e0-2093bc832875">
+              <Rule Name="fhasExchangeHygieneGatewayVendor" Query="($.)='GatewayVendor'" Error="None" Text="Anti-virus controls implemented at the gateway level on a third-party platform" />
+            </Setting>
+            <Setting Key1="0ee084ae-7a23-450f-a1ef-ee94daffa9b7">
+              <Rule Name="fhasExchangeHygieneStore" Query="$fhasExchangeHygieneServerStoreLevelVSAPI or $fhasExchangeHygieneServerStoreLevelESE or $fhasExchangeHygieneServerStoreLevelMAPI" Error="None" Text="Anti-virus controls implemented at the Exchange server store level" GUID="97e2f5d3-06d7-4347-9599-e65f8880fdee" />
+              <Rule Name="fhasExchangeHygieneServerStoreLevelVSAPI" Query="($.)='ServerStoreLevelVSAPI'" Error="None" Text="Anti-virus controls implemented at the Exchange server store level running a VSAPI-based solution" />
+            </Setting>
+            <Setting Key1="f83a3cb9-4089-4901-bf6f-d98ac0dfa1c3">
+              <Rule Name="fhasExchangeHygieneServerStoreLevelESE" Query="($.)='ServerStoreLevelESE'" Error="Error" Text="Anti-virus controls implemented at the Exchange server store level using ESE-based solution" GUID="60726a76-d52e-47f7-aede-48662841911d" />
+            </Setting>
+            <Setting Key1="fbb5273d-fd3a-4596-890b-937157a086be">
+              <Rule Name="fhasExchangeHygieneServerStoreLevelMAPI" Query="($.)='ServerStoreLevelMAPI'" Error="Error" Text="Anti-virus controls implemented at the Exchange server store level using MAPI-based solution" GUID="60726a76-d52e-47f7-aede-48662841911d" />
+            </Setting>
+            <Setting Key1="05ebbc60-5a06-4561-8b8a-3509dc64b8b0">
+              <Rule Name="fhasExchangeHygieneServerFileSystemLevel" Query="($.)='ServerFileSystemLevel'" Error="None" Text="Anti-virus controls implemented at the Exchange server file system level" />
+            </Setting>
+            <Setting Key1="be4ec5ab-f1d4-469e-89c4-bb040679102e">
+              <Rule Name="fhasExchangeHygieneClientLevel" Query="($.)='ClientLevel'" Error="None" Text="Anti-virus controls implemented at the e-mail client level" />
+            </Setting>
+            <Setting Key1="197230a6-7692-40d6-ac55-c155500094d8" />
+          </Object>
+          <Object Type="Operations" Name="How does your organization use file-level, antivirus scanning on Exchange servers?" Class="Question" GroupingClass="True">
+            <Setting Key1="28da8a68-bd9e-48a5-81eb-c715a94fd093">
+              <Rule Name="fhasExchangeHygieneFileAVNone" Query="($.)='None'" Error="Error" Text="The operating system on Exchange servers is not protected from viruses" GUID="60726a76-d52e-47f7-aede-48662841911d" />
+            </Setting>
+            <Setting Key1="43b96578-393c-4468-a41c-20fac3d8d550">
+              <Rule Name="fhasExchangeHygieneFileAVDefault" Query="($.)='Default'" Error="Error" Text="File level Anti-virus is not properly configured on the Exchange servers" GUID="60726a76-d52e-47f7-aede-48662841911d" />
+            </Setting>
+            <Setting Key1="9cfef1d2-43c4-46fe-9810-ca99f1bc4261">
+              <Rule Name="fhasExchangeHygieneFileAVStandard" Query="($.)='Standard'" Error="Error" Text="File level Anti-virus is not properly configured on the Exchange servers" GUID="60726a76-d52e-47f7-aede-48662841911d" />
+            </Setting>
+            <Setting Key1="3ba3d809-25ba-4ec3-b4e3-e21c55849432" />
+            <Setting Key1="a83cd3ac-1e4c-495d-b600-1e2be6dd6d6c" />
+          </Object>
+          <Object Type="Operations" Name="At what level does your organization employ email client and desktop-level, antivirus software?" Class="Question" GroupingClass="True">
+            <Setting Key1="2d795806-4357-422f-b737-7c8867af2b0d">
+              <Rule Name="fhasExchangeHygieneClientNone" Query="($.)='None'" Error="Error" Text="No client level anti-virus scanning is implemented" GUID="1f20319f-2d45-46e9-8921-6e0f7cbd3e56" />
+            </Setting>
+            <Setting Key1="1ece8d6f-6692-4d10-823a-4b3a09635220">
+              <Rule Name="fhasExchangeHygieneClientAdHoc" Query="($.)='Ad-hoc'" Error="Error" Text="Virus protection at the client level is Ad-hoc" GUID="1f20319f-2d45-46e9-8921-6e0f7cbd3e56" />
+            </Setting>
+            <Setting Key1="49116369-9e27-4865-806b-666b9e0cebb4">
+              <Rule Name="fhasExchangeHygieneClientDefined" Query="($.)='Defined'" Error="Error" Text="Client level anti-virus has defined configuration, but the configuration is not consistently and proactively enforced" GUID="1f20319f-2d45-46e9-8921-6e0f7cbd3e56" />
+            </Setting>
+            <Setting Key1="8559d084-6a84-496d-a881-f3c29612aa15" />
+          </Object>
+          <Object Type="Operations" Name="Are all outbound email messages from the Microsoft Exchange Server organization to the Internet being scanned for viruses?" Class="Question" GroupingClass="True">
+            <Setting Key1="7f5f6764-072d-4009-9d72-483bed1bddd3">
+              <Rule Name="fhasExchangeHygieneNoOutboundScanning" Query="($.)='No'" Error="Error" Text="All outbound e-mail messages are not scanned for viruses" GUID="b212becd-e77d-4372-9b53-fed5467fab19" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="At what level does your messaging environment have email attachment management and blocking controls implemented?" Class="Question" GroupingClass="True">
+            <Setting Key1="a85b8e8b-2657-4cf4-b351-8f36cf17860c">
+              <Rule Name="fhasExchangeHygieneAttachmentBlockingNone" Query="($.)='None'" Error="Error" Text="Attachment blocking policies do not exist in the Messaging environment" GUID="dcd61859-7133-483d-a6a9-8d58fbce428f" />
+            </Setting>
+            <Setting Key1="ddee4ca1-cbfa-42e4-8a2f-d1b6a73fff99">
+              <Rule Name="fhasExchangeHygieneAttachmentBlockingAdhoc" Query="($.)='Ad-hoc'" Error="Error" Text="Attachment blocking controls implemented in the Messaging environment are insufficient and/or inconsistent" GUID="dcd61859-7133-483d-a6a9-8d58fbce428f" />
+            </Setting>
+            <Setting Key1="95b52043-39f6-4e3d-ae18-a4db891fc0f9">
+              <Rule Name="fhasExchangeHygieneAttachmentBlockingClient" Query="($.)='Client'" Error="Error" Text="Attachment blocking controls are enforced only at the client level" GUID="dcd61859-7133-483d-a6a9-8d58fbce428f" />
+            </Setting>
+            <Setting Key1="a0e0999d-7ff2-4886-86fe-4118697b91bf">
+              <Rule Name="fhasExchangeHygieneAttachmentBlockingGateway" Query="($.)='Gateway'" Error="Error" Text="Attachment blocking controls are enforced only the gateway level" GUID="dcd61859-7133-483d-a6a9-8d58fbce428f" />
+            </Setting>
+            <Setting Key1="c6e81716-f7f3-42f6-9138-7930938bdf0d">
+              <Rule Name="fhasExchangeHygieneAttachmentBlockingMailbox" Query="($.)='Mailbox'" Error="Error" Text="Attachment blocking controls are enforced only at the mailbox level" GUID="dcd61859-7133-483d-a6a9-8d58fbce428f" />
+            </Setting>
+            <Setting Key1="009d2279-d8ad-43b6-b798-bf5d868943fd" />
+          </Object>
+          <Object Type="Operations" Name="At what level does your organization have a response process for an email virus outbreak, or a spam/email Denial of Service (DoS) attack?" Class="Question" GroupingClass="True">
+            <Setting Key1="ca13f237-0ae3-4fe9-9d50-b66b6e0db3fd">
+              <Rule Name="fhasExchangeHygieneVirusSpamOutbreakResponseNone" Query="($.)='None'" Error="Error" Text="No Email virus outbreak response plan exists" GUID="3161fa18-8091-4bca-bd19-a423f79a40dc" />
+            </Setting>
+            <Setting Key1="ded8e2b1-c6ac-421a-80ce-2d7476a1657c">
+              <Rule Name="fhasExchangeHygieneVirusSpamOutbreakResponseAdhoc" Query="($.)='Ad-hoc'" Error="Error" Text="No messaging specific Email virus outbreak response plan exists, or it is Ad-hoc" GUID="3161fa18-8091-4bca-bd19-a423f79a40dc" />
+            </Setting>
+            <Setting Key1="b294a090-4ae8-4728-8149-c285b0aafdd9">
+              <Rule Name="fhasExchangeHygieneVirusSpamOutbreakResponseDefined" Query="($.)='Defined'" Error="Error" Text="Email virus outbreak plan is defined, but it is not incorporated into the organization-wide risk management process" GUID="3161fa18-8091-4bca-bd19-a423f79a40dc" />
+            </Setting>
+            <Setting Key1="91affa34-84d3-4220-a616-51a2e6153dce" />
+          </Object>
+          <Object Type="Operations" Name="Do you have a user education program dedicated for virus-related threats?" Class="Question" GroupingClass="True">
+            <Setting Key1="66e9be83-a3b0-4a7b-af34-aa3965e93176">
+              <Rule Name="fhasExchangeHygieneVirusNoUserEducation" Query="($.)!='Yes'" Error="Error" Text="User education programs on company policies and procedures around virus protection do not exist" GUID="5d882a7d-7eae-4a93-b7ee-25ec9bf3d864" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="At what level does your organization have anti-spam controls implemented?" Class="Question" GroupingClass="True">
+            <Setting Key1="c3063d1c-28ec-4819-a573-d8bc1bbfb077">
+              <Rule Name="fhasExchangeHygieneSpamControlsNone" Query="($.)='None'" Error="Error" Text="Email anti-spam controls do not exist" GUID="c0d0588c-4f65-40b5-be26-d359f5842d64" />
+            </Setting>
+            <Setting Key1="07b6a4fd-a711-4116-abfc-461d9a950edb">
+              <Rule Name="fhasExchangeHygieneSpamControlsAdhoc" Query="($.)='Ad-hoc'" Error="Error" Text="Email anti-spam controls are insufficient and/or inconsistent" GUID="c0d0588c-4f65-40b5-be26-d359f5842d64" />
+            </Setting>
+            <Setting Key1="db3616c7-9324-4eb2-919c-e503e9ef7e95">
+              <Rule Name="fhasExchangeHygieneSpamControlsRBLBased" Query="($.)='Yes'" Error="Error" Text="Email anti-spam controls are only block list based" GUID="c0d0588c-4f65-40b5-be26-d359f5842d64" />
+            </Setting>
+            <Setting Key1="8f4320b6-b03c-4069-9de0-8502f8d6b5e5">
+              <Rule Name="fhasExchangeHygieneSpamControlsMessageContentBased" Query="($.)='MessageContentBased'" Error="Error" Text="Email anti-spam controls are only content based" GUID="c0d0588c-4f65-40b5-be26-d359f5842d64" />
+            </Setting>
+            <Setting Key1="5634813d-3c75-4f5d-9f7b-5caeea6c8743" />
+          </Object>
+          <Object Type="Operations" Name="If you are using the Exchange Intelligent Message filter, how is it configured?" Class="Question" GroupingClass="True">
+            <Setting Key1="08ce40e9-120c-4e56-b156-15bcfbf9fb8b">
+              <Rule Name="fhasExchangeHygieneIMFSetToArchive" Query="($.)='Archive'" Error="None" Text="Intelligent Message Filter is set to archive." />
+            </Setting>
+            <Setting Key1="aa71b060-42c1-4588-9930-b909f1ecf64a" />
+            <Setting Key1="5859579d-7335-416f-8af0-a956c5451e2c" />
+            <Setting Key1="d86267d5-6ecc-4647-8903-33bba5e0504e">
+              <Rule Name="fhasExchangeHygieneIMFSetToNoAction" Query="($.)='NoAction'" Error="Error" Text="Intelligent Message Filter is set to No Action." GUID="a4e4ff58-7d08-4aae-be9a-38fd935b225d" />
+            </Setting>
+            <Setting Key1="68deeeab-3298-41f7-af5f-a13ceb982bdb" />
+            <Object Type="Operations" Name="If you archive, are you monitoring the archive or using a tool such as the IMF Archive Manager?" Class="Question" GroupingClass="True">
+              <Setting Key1="317a5815-2eba-4c15-9aab-37cf3b29854f">
+                <Rule Name="fhasExchangeHygieneIMFArchiveNoMonitor" Query="($.)='No' and $fhasExchangeHygieneIMFSetToArchive" Error="Error" Text="Intelligent Message Filter archive location is not currently monitored." GUID="a4e4ff58-7d08-4aae-be9a-38fd935b225d" />
+              </Setting>
+            </Object>
+          </Object>
+          <Object Type="Operations" Name="At what level does your messaging organization protect the identity of the owned email domains from spoofing and malicious impersonation through the Internet?" Class="Question" GroupingClass="True">
+            <Setting Key1="f1a9da70-8967-4c66-bbfe-3c40790dc00d">
+              <Rule Name="fhasExchangeHygieneDomainIdentityProtectNone" Query="($.)='None'" Error="Error" Text="The identity of Email domains are not protected" GUID="c9f4b73a-8074-4c49-a5b6-7a34f6917ad2" />
+            </Setting>
+            <Setting Key1="5835b4e5-f9ad-4460-b403-dafcb45d1ae2">
+              <Rule Name="fhasExchangeHygieneDomainIdentityProtectAdhoc" Query="($.)='Ad-hoc'" Error="Error" Text="The identity of Email domains are insufficiently protected" GUID="c9f4b73a-8074-4c49-a5b6-7a34f6917ad2" />
+            </Setting>
+            <Setting Key1="21bbf3c0-9edb-44f5-86b0-71d384b16d9f">
+              <Rule Name="fhasExchangeHygieneDomainIdentityProtectDefined" Query="($.)='Defined'" Error="Error" Text="The identity of Email domains are defined but are not consistently enforced for all inbound Email traffic for spoofing protection" GUID="c9f4b73a-8074-4c49-a5b6-7a34f6917ad2" />
+            </Setting>
+            <Setting Key1="873d2779-7e26-4ee3-8574-ad98938cffa4" />
+          </Object>
+          <Object Type="Operations" Name="At what level does your organization protect large or sensitive email distribution groups from unauthorized email submission and spamming?" Class="Question" GroupingClass="True">
+            <Setting Key1="1eac9fcb-212c-4415-83d9-c5ac2de4ac1e">
+              <Rule Name="fhasExchangeHygieneLargeDGProtectNone" Query="($.)='None'" Error="Error" Text="Large/sensitive distribution groups are not protected" GUID="553f9506-b194-4781-b722-c8bbe8072216" />
+            </Setting>
+            <Setting Key1="65db0009-e632-40c2-83c8-d556b224feff">
+              <Rule Name="fhasExchangeHygieneLargeDGProtectAdhoc" Query="($.)='Ad-hoc'" Error="Error" Text="Large/sensitive distribution groups are protected, but this protection is not enforced by default" GUID="553f9506-b194-4781-b722-c8bbe8072216" />
+            </Setting>
+            <Setting Key1="66f237ab-8f9a-4a9f-a50c-1472585ce6aa">
+              <Rule Name="fhasExchangeHygieneLargeDGProtectManaged" Query="($.)='Managed'" Error="None" Text="Customer has a managed protection of large/sensitive distribution groups" GUID="553f9506-b194-4781-b722-c8bbe8072216" />
+            </Setting>
+            <Object Type="Operations" Name="Are you using a distribution group on your list of sender restrictions?" Class="Question" GroupingClass="True">
+              <Setting Key1="66743038-34ce-43ef-b4b5-e0f10e5c0824">
+                <Rule Name="fhasExchangeHygieneUsingDGWithSenderRestrictions" Query="($.)='Yes' and $fhasExchangeHygieneLargeDGProtectManaged" Error="None" Text="Customer is using DG with sender restrictions.." />
+              </Setting>
+              <Object Type="Operations" Name="Does this distribution group contain nested distribution groups?" Class="Question" GroupingClass="True">
+                <Setting Key1="e5436d38-d240-4a07-b952-2bddfd745cb4">
+                  <Rule Name="fhasExchangeHygieneUsingLargeDGProtectWithNested" Query="($.)='Yes' and $fhasExchangeHygieneUsingDGWithSenderRestrictions" Error="Error" Text="Large Distribution Groups use nested DGs to restrict sending" GUID="553f9506-b194-4781-b722-c8bbe8072216" />
+                </Setting>
+              </Object>
+              <Object Type="Operations" Name="Have you implemented the changes to the restrictionMethod registry key from the Microsoft Knowledge Base article, 895407?" Class="Question" GroupingClass="True">
+                <Setting Key1="ca0350ee-cd88-4715-950b-38eff3ad7ca8">
+                  <Rule Name="fhasExchangeHygieneUsingLargeDGProtectNotOptimized" Query="($.)!='Yes' and $fhasExchangeHygieneUsingDGWithSenderRestrictions" Error="Error" Text="Large Distribution Group restrictions are not optimized with the fix from Knowledge Base article 895407" GUID="553f9506-b194-4781-b722-c8bbe8072216" />
+                </Setting>
+              </Object>
+            </Object>
+          </Object>
+          <Object Type="Operations" Name="Does your Microsoft Exchange Server organization use distribution groups larger than 20,000 recipients to send to all mailboxes in the organization?" Class="Question" GroupingClass="True">
+            <Setting Key1="45a75e3c-5a9b-472b-addf-69823fe44479">
+              <Rule Name="fhasExchangeHygieneUsingLargeDistributionGroups" Query="($.)='Yes'" Error="None" Text="Large Distribution Groups are being used." />
+            </Setting>
+            <Object Type="Operations" Name="Do you have expansion servers set for these large distribution groups?" Class="Question" GroupingClass="True">
+              <Setting Key1="490d99ba-5d5b-4b24-9e4b-e041877b8629">
+                <Rule Name="fhasExchangeHygieneUsingLargeDGWithoutExpansionServers" Query="($.)='No' and $fhasExchangeHygieneUsingLargeDistributionGroups" Error="Error" Text="Large Expansion Groups do not have Expansion Servers set" GUID="f1e7be56-51ae-4eb4-949b-b934d8c3f3f0" />
+              </Setting>
+            </Object>
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Mailbox Access" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Are users ever granted access to other user mailboxes for anything other than HR, security, or legal reasons?" Class="Question" GroupingClass="True">
+            <Setting Key1="870e5085-adcc-4eda-ac1b-f8ca2b814f6f">
+              <Rule Name="fhasMailboxAccessUsersGrantedAccess" Query="($.)='Yes'" Error="Error" Text="Users are granted access to other users' mailboxes" GUID="c212e75b-1af1-4da1-b3a3-0743e4beb95b" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="How often does an audit occur to verify that no users have access to another's individual mailbox?" Class="Question" GroupingClass="True">
+            <Setting Key1="22263d1d-cccb-4b1d-9461-75fd711f118c" />
+            <Setting Key1="dde9e150-520d-450a-b96a-09872b3537cc" />
+            <Setting Key1="6db6f6f6-800f-40cf-b198-79c34d315dbe" />
+            <Setting Key1="ad862f61-c1b3-44e2-b1f7-8580568cd7fb">
+              <Rule Name="fhasMailboxAccessQuarterlyAudit" Query="($.)='Quarterly'" Error="Error" Text="Insufficient/infrequent mailbox access auditing occurs" GUID="c2d11fae-1b9b-4c87-ad49-122d75bda3e6" />
+            </Setting>
+            <Setting Key1="d8155ba4-6e2c-4ed1-8a0b-f4a11cc29eda">
+              <Rule Name="fhasMailboxAccessNoAudit" Query="($.)='Never'" Error="Error" Text="Mailbox access is not audited" GUID="c2d11fae-1b9b-4c87-ad49-122d75bda3e6" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Are system administrators given permission to mailboxes in the environment?" Class="Question" GroupingClass="True">
+            <Setting Key1="fc0705de-8fe0-441e-91fb-b63ce22ab23c">
+              <Rule Name="fhasMailboxAccessAdministratorDefaultRights" Query="($.)='Yes'" Error="Error" Text="Exchange Server Administrators have default access to mailboxes in the environment" GUID="1ce4a295-83b7-400e-8320-6b732381ad5a" />
+            </Setting>
+            <Setting Key1="df391726-1b35-44de-a28f-70aa7788c110" />
+            <Setting Key1="15687733-2b4d-43a4-a889-812ef6582925" />
+          </Object>
+        </Object>
+      </Object>
+      <Object Type="Operations" Name="Disaster Recovery" Class="Section" GroupingClass="True">
+        <Object Type="Operations" Name="Planning" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Do you have a documented disaster recovery plan? " Class="Question" GroupingClass="True">
+            <Setting Key1="642720a3-16c9-4f68-8a6d-1ec5d14b1461">
+              <Rule Name="fhasDisasterRecoveryPlanningNone" Query="($.)='No'" Error="Error" Text="A documented disaster recovery plan does not exist" GUID="1d619f77-261e-4b47-a628-02fc69767b5c" />
+            </Setting>
+            <Object Type="Operations" Name="Is your disaster recovery plan documented thoroughly enough so that any member of your staff can perform a successful backup and restore when needed?" Class="Question" GroupingClass="True">
+              <Setting Key1="2ffc3432-c999-44e1-9c29-90b03bca9b62">
+                <Rule Name="fhasDisasterRecoveryPlanningInsufficientDocumentation" Query="($.)='No'" Error="Error" Text="A documented disaster recovery plan exists, but lacks sufficient detail" GUID="1cd8e299-f7b6-440b-a7b8-bf8b63e1eadf" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name="Do you practice or test your disaster recovery plans at least once a quarter?" Class="Question" GroupingClass="True">
+              <Setting Key1="4f0e7e88-93ff-4ce6-b8c6-c2a8f100f712">
+                <Rule Name="fhasDisasterPlanningInsufficientFireDrills" Query="($.)='No'" Error="Error" Text="The disaster recovery plan is not routinely practiced (e.g. simulated fire drills)" GUID="e18ee53e-c5ef-43da-864f-24a8dd8bd6e7" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name="Do your documents include detailed instructions for dealing with the following?" Class="Question" GroupingClass="True">
+              <Rule Name="fhasDisasterPlanningMissingCoreScenarios" Query="count(..//Setting/Value[text()!='Yes']) &gt; 0 and not($fhasDisasterRecoveryPlanningNone)" Error="Error" Text="The disaster recovery plan is missing common scenarios" GUID="9b85be06-3c85-40ee-a0b8-69191809edf0" />
+              <Setting Key1="4302f6fb-b729-4c6a-9e82-df2f12d13bd9" />
+              <Setting Key1="c8ed0937-92c7-42c0-807c-9bec29ed8a29" />
+              <Setting Key1="e6c00823-d93d-4a5f-8ac9-79e259676c32" />
+              <Setting Key1="9ec4fff0-dace-430b-8f8a-330256c6f837" />
+              <Setting Key1="ddc8ff64-9878-4dce-8e6e-0fa1564a75e6" />
+              <Setting Key1="94a669e8-b128-41a0-bf8f-2ac5a57b4002" />
+            </Object>
+          </Object>
+          <Object Type="Operations" Name="Have you defined disaster recovery service level agreements for backup and recovery?" Class="Question" GroupingClass="True">
+            <Setting Key1="7576ad71-f9d9-4954-956b-1a915741a575">
+              <Rule Name="fhasDisasterPlanningNoServiceLevelAgreements" Query="($.)='No'" Error="Error" Text="Defined Service Level Agreements do not exist for backup and recovery processes" GUID="1e490bec-97f5-4b10-8699-3b312b00ef3c" />
+            </Setting>
+            <Object Type="Operations" Name="Are you able to meet your service level agreements?" Class="Question" GroupingClass="True">
+              <Setting Key1="50f5dfcf-cba7-4374-b25c-14322905dff9">
+                <Rule Name="fhasDisasterPlanningUnableToMeetSla" Query="($.)='No' and not($fhasDisasterPlanningNoServiceLevelAgreements)" Error="Error" Text="Service Level Agreements are not met for disaster recovery" GUID="4d3b29d5-c4f5-4ea0-8022-5aa8909efca0" />
+              </Setting>
+            </Object>
+          </Object>
+          <Object Type="Operations" Name="Do you plan or monitor for growth and also determine how it will affect your service level agreements?" Class="Question" GroupingClass="True">
+            <Setting Key1="540aa81a-32ed-4947-a212-e9d3f41b10a9">
+              <Rule Name="fhasDisasterPlanningDoesNotMonitorGrowth" Query="($.)='No'" Error="Error" Text="The effect of growth and how it will impact Service Level Agreements is not planned for or monitored" GUID="654c72dc-fe44-44de-90b8-a917ee63090b" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Is there a process in place to verify that your backups are valid and restorable?" Class="Question" GroupingClass="True">
+            <Setting Key1="25c92d6a-7fb0-4aed-ba85-8abebf88afe0">
+              <Rule Name="fhasDisasterPlanningDoesNotValidateBackups" Query="($.)='No'" Error="Error" Text="Backups are not verified to be valid or restorable" GUID="618f5309-2a3a-4574-b627-b0dc02917f6b" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Is there a process in place to protect and verify the Exchange configuration data and dependencies such as the Active Directory, DNS, or the IIS Metabase?" Class="Question" GroupingClass="True">
+            <Setting Key1="78d2bd60-8fb1-441b-85d6-dcf4e91663f2">
+              <Rule Name="fhasDisasterPlanningDoesNotProtectExchangeDependencies" Query="($.)='No'" Error="Error" Text="Exchange configuration data and/or dependencies are not backed up" GUID="fb8578f5-d52a-4985-8b03-ad617330f872" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have extra disk/server hardware available for Exchange disaster recovery? " Class="Question" GroupingClass="True">
+            <Setting Key1="e8ae0414-3ca4-4a0c-91df-8d28b1067a36">
+              <Rule Name="fhasDisasterPlanningExtraHardwareNone" Query="($.)='No'" Error="Error" Text="Spare hardware is not available for use during disaster recovery" GUID="c8a8fd3e-fb4a-4423-b983-216da65630ae" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have a dedicated server for Exchange disaster recovery? " Class="Question" GroupingClass="True">
+            <Setting Key1="7e8658a7-2163-4100-9aee-44831f2d8244">
+              <Rule Name="fhasDisasterPlanningDedicatedServerNone" Query="($.)='No'" Error="Error" Text="No dedicated servers are available for disaster recovery" GUID="7b23638a-c4c8-452b-b81f-e4f36beddbf4" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have additional disk space available on your Exchange servers for use by the Recovery Storage group? " Class="Question" GroupingClass="True">
+            <Setting Key1="8ca24d15-0c3d-47aa-9928-1bbe305d8283">
+              <Rule Name="fhasDisasterPlanningRecoveryStorageGroupDiskSpaceNone" Query="($.)='No'" Error="Error" Text="The Recovery Storage Group capability of Exchange Server 2003 is not utilized" GUID="bf8dc64c-760a-4ccc-b020-3aca931210c1" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Have you encountered corruption in the past 12 months? " Class="Question" GroupingClass="True">
+            <Setting Key1="429ddabf-19c8-497c-8a91-a0fbc108ef56">
+              <Rule Name="fhasDisasterPlanningEncounteredCorruption" Query="($.)='Yes'" Error="None" Text="Customer has encountered corruption in the last 12 months" />
+            </Setting>
+            <Object Type="Operations" Name="When you encounter multiple corruption events, do you troubleshoot for the root cause?" Class="Question" GroupingClass="True">
+              <Setting Key1="94b11968-1d8e-4e35-ac9d-8607606a6fa6">
+                <Rule Name="fhasDisasterPlanningCorruptionAnalysisNone" Query="($.)='No' and ($fhasDisasterPlanningEncounteredCorruption)" Error="Error" Text="All instances of database corruption are not investigated down to root cause" GUID="dc15d831-d457-440e-9eb8-c44ec9bc1ec7" />
+              </Setting>
+            </Object>
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Backup Schedule" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Do you back up your Microsoft Exchange Server databases?" Class="Question" GroupingClass="True">
+            <Setting Key1="ed3cad89-b4d3-4a90-abd6-d8253e45d73a">
+              <Rule Name="fhasDisasterRecoveryBackupDatabasesNone" Query="($.)='No'" Error="Error" Text="Exchange databases are not being backed up" GUID="618b8fa8-6b13-48f2-970c-9af4302d5ae5" />
+            </Setting>
+            <Object Type="Operations" Name="Do you take daily full backups or copy backups?" Class="Question" GroupingClass="True">
+              <Setting Key1="cb1c5cba-f127-4089-8451-5f33aa4f62a0">
+                <Rule Name="fhasDisasterRecoveryBackupFullOnlineInsufficient" Query="($.)='No' and not ($fhasDisasterRecoveryBackupDatabasesNone)" Error="Error" Text="Full online backups of all Exchange databases are not taken frequently enough" GUID="69f05881-34c4-488e-a59f-9f037d138763" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name="Do you use VSS or any other type of snapshot/clone technology?" Class="Question" GroupingClass="True">
+              <Setting Key1="61ace9d8-0866-499b-be60-240d7613dbd5">
+                <Rule Name="fhasDisasterRecoveryBackupUsingVSS" Query="($.)='Yes' and not ($fhasDisasterRecoveryBackupDatabasesNone)" Error="None" Text="Customer is using VSS technology" />
+              </Setting>
+              <Object Type="Operations" Name="Does the solution adhere to the requirements outlined in KB822896?" Class="Question" GroupingClass="True">
+                <Setting Key1="9913a6a0-c27d-4c3a-878c-ad861bdf6cbf">
+                  <Rule Name="fhasDisasterRecoveryVSSDoesNotAdhereKB822896" Query="($.)='No' and not ($fhasDisasterRecoveryBackupDatabasesNone)" Error="Error" Text="Snapshot/clone technology does not adhere to Knowledge Base article 822896" GUID="98a1e31e-4903-4c16-91e1-396aea588944" />
+                </Setting>
+              </Object>
+            </Object>
+            <Object Type="Operations" Name="Do you have an established backup window that does not conflict with OLD or OLM?" Class="Question" GroupingClass="True">
+              <Setting Key1="77364263-1b57-40b1-b69d-f9b1f310976b">
+                <Rule Name="fhasDisasterRecoveryBackupWindowInSufficient" Query="($.)='No' and not ($fhasDisasterRecoveryBackupDatabasesNone)" Error="Error" Text="No established backup windows exist for Exchange databases" GUID="2e2dbd14-9c5c-4899-adb5-b7c70e4f7401" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name=" Do backups run on Exchange servers during regular business hours?" Class="Question" GroupingClass="True">
+              <Setting Key1="36cbf092-260a-4f90-88ee-90b702268f62">
+                <Rule Name="fhasDisasterRecoveryBackupDuringBuisnessHours" Query="($.)='Yes' and not ($fhasDisasterRecoveryBackupDatabasesNone)" Error="None" Text="Exchange database backups occur during business hours" />
+              </Setting>
+              <Object Type="Operations" Name="Do you monitor performance to ensure that users are not impacted by the additional load?" Class="Question" GroupingClass="True">
+                <Setting Key1="752cb419-32ad-4640-a0fd-d8dd813f5839">
+                  <Rule Name="fhasDisasterRecoveryBackupDuringBuisnessHoursNotMonitored" Query="($.)='No' and ($fhasDisasterRecoveryBackupDuringBuisnessHours)" Error="Error" Text="Performance is not monitored to ensure users are not impacted by backups running during business hours" GUID="5675165b-f0d4-4391-848c-05afeb78d0fc" />
+                </Setting>
+              </Object>
+            </Object>
+            <Object Type="Operations" Name="How long, on average, does it take to back up your largest mailbox database?" Class="Question" GroupingClass="True">
+              <Setting Key1="169173f3-7359-40ad-94f3-86bf6c297ace" />
+              <Setting Key1="4c41fa69-fec1-42ae-9606-9168e85196af" />
+              <Setting Key1="ada1fd9b-e413-4a91-95df-022e90c8bff5">
+                <Rule Name="fhasDisasterRecoveryMailboxBackupTimeSeven" Query="($.)='Yes' and not ($fhasDisasterRecoveryBackupDatabasesNone)" Error="Error" Text="Mailbox backups take seven or more hours to complete" GUID="1b44599a-7a13-42d8-b8b6-f338e10cd534" />
+              </Setting>
+              <Setting Key1="89bab850-2366-4af3-92bd-82bed9425aff">
+                <Rule Name="fhasDisasterRecoveryMailboxBackupTimeTwelve" Query="($.)='Yes' and not ($fhasDisasterRecoveryBackupDatabasesNone)" Error="Error" Text="Mailbox backups take twelve or more hours to complete" GUID="1b44599a-7a13-42d8-b8b6-f338e10cd534" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name="How long, on average, does it take to back up your largest public folder database?" Class="Question" GroupingClass="True">
+              <Setting Key1="7d704abc-9bbb-4b04-b572-d3b9440afee4" />
+              <Setting Key1="cdc18b8b-32e0-4243-bf05-bbe27d6e3be2" />
+              <Setting Key1="6e83c3bb-34be-48c9-801a-5b448f8ab527">
+                <Rule Name="fhasDisasterRecoveryPublicFolderBackupTimeSeven" Query="($.)='Yes' and not ($fhasDisasterRecoveryBackupDatabasesNone)" Error="Error" Text="Public folder database backups take seven or more hours to complete" GUID="b9f14c12-5b2e-4619-a384-a98261132d42" />
+              </Setting>
+              <Setting Key1="c0abebd2-192f-4861-9e0e-038e748eace6">
+                <Rule Name="fhasDisasterRecoveryPublicFolderBackupTimeTwelve" Query="($.)='Yes' and not ($fhasDisasterRecoveryBackupDatabasesNone)" Error="Error" Text="Public folder database backups take twelve or more hours to complete" GUID="b9f14c12-5b2e-4619-a384-a98261132d42" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name="How long do you expect it to take to restore a single mailbox database?" Class="Question" GroupingClass="True">
+              <Setting Key1="8f8315e2-f87a-4aee-a1b7-247ca46cc6be" />
+              <Setting Key1="b9edc291-3654-4c14-bf67-55b85d5263c0" />
+              <Setting Key1="91371b27-e201-4cfa-8f8d-10d9b5a03c80">
+                <Rule Name="fhasDisasterRecoveryMailboxRestoreTimeSeven" Query="($.)='Yes' and not ($fhasDisasterRecoveryBackupDatabasesNone)" Error="Error" Text="Mailbox restore process takes seven or more hours to complete" GUID="ff2e8290-b223-4760-8b82-c5a1756c9501" />
+              </Setting>
+              <Setting Key1="4ffb8b5b-0c5d-44b6-9db9-99497b507c5f">
+                <Rule Name="fhasDisasterRecoveryMailboxRestoreTimeTwelve" Query="($.)='Yes' and not ($fhasDisasterRecoveryBackupDatabasesNone)" Error="Error" Text="Mailbox restore process takes twelve or more hours to complete" GUID="ff2e8290-b223-4760-8b82-c5a1756c9501" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name="How long do you expect it to take to restore a single public folder database?" Class="Question" GroupingClass="True">
+              <Setting Key1="a1ca6887-120e-4d09-8757-3c2a10de1a5c" />
+              <Setting Key1="3ebc0f5c-b74c-4731-9877-85250389e0bb" />
+              <Setting Key1="e95b393d-f457-478c-a6ec-ffb57c87d58f">
+                <Rule Name="fhasDisasterRecoveryPublicFolderRestoreTimeSeven" Query="($.)='Yes' and not ($fhasDisasterRecoveryBackupDatabasesNone)" Error="Error" Text="Public folder restore process takes seven or more hours to complete" GUID="1815eae1-2bf2-40b7-b272-9271323a9a5c" />
+              </Setting>
+              <Setting Key1="8b2526e4-ebe4-4680-a858-9dbc92761994">
+                <Rule Name="fhasDisasterRecoveryPublicFolderRestoreTimeTwelve" Query="($.)='Yes' and not ($fhasDisasterRecoveryBackupDatabasesNone)" Error="Error" Text="Public folder restore process takes twelve or more hours to complete" GUID="1815eae1-2bf2-40b7-b272-9271323a9a5c" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name="Do you use tape as a backup media?" Class="Question" GroupingClass="True">
+              <Setting Key1="2d254930-e23b-40d4-b2cf-25619d6899ec">
+                <Rule Name="fhasDisasterRecoveryUsesTape" Query="($.)='Yes' and not ($fhasDisasterRecoveryBackupDatabasesNone)" Error="None" Text="Customer uses tape as a backup media" />
+              </Setting>
+              <Object Type="Operations" Name="Do you have a tape rotation scheme?" Class="Question" GroupingClass="True">
+                <Setting Key1="d515eb78-6040-4632-94e3-7d9e3ddd33d2">
+                  <Rule Name="fhasDisasterRecoveryTapeRotationNone" Query="($.)='No' and ($fhasDisasterRecoveryUsesTape)" Error="None" Text="Tape is used as a backup media, but no tape rotation scheme exists" GUID="2f2d8daa-d311-4c53-bfab-b1c4b0c7cc99" />
+                </Setting>
+              </Object>
+              <Object Type="Operations" Name="Do you have a plan for retiring tapes that adheres to manufacturer recommendations?" Class="Question" GroupingClass="True">
+                <Setting Key1="46f4a052-9019-4870-8fad-b29bd5f14e58">
+                  <Rule Name="fhasDisasterRecoveryBackupTapeLifeCycleInsufficient" Query="($.)='No' and ($fhasDisasterRecoveryUsesTape)" Error="Error" Text="Tape retirement plans do not adhere to manufacturer's recommendations" GUID="bf6ba0ca-e3ee-442e-958a-b68dd8a887ac" />
+                </Setting>
+              </Object>
+              <Object Type="Operations" Name="Do you have an OLA with your backup team to guarantee tape and device availability in the event of a disaster?" Class="Question" GroupingClass="True">
+                <Setting Key1="6addfb02-f707-4663-91df-11998ba59f3c">
+                  <Rule Name="fhasDisasterRecoveryNoBackupTeamOLA" Query="($.)='No' and ($fhasDisasterRecoveryUsesTape)" Error="Error" Text="No OLA exists with the backup team to guarantee tape and device availability in the event of a disaster" GUID="2dfd38f9-c1f4-4b3d-a84b-0f3f6b95c0f4" />
+                </Setting>
+              </Object>
+            </Object>
+            <Object Type="Operations" Name="Are you in an industry that is mandated to store this data offsite?" Class="Question" GroupingClass="True">
+              <Setting Key1="3b5ad459-4e86-4e81-a3db-d486f2c475ec">
+                <Rule Name="fhasDisasterRecoveryOffsiteRequirment" Query="($.)='Yes' and ($fhasDisasterRecoveryUsesTape)" Error="None" Text="Customer has offsite backup media requirements" />
+              </Setting>
+              <Object Type="Operations" Name="Do you adhere to these requirements by moving tapes or other backup media offsite?" Class="Question" GroupingClass="True">
+                <Setting Key1="e17ec362-6217-48fa-a319-24d488bb00c3">
+                  <Rule Name="fhasDisasterRecoveryBackupMediaNotStoredOffsite" Query="($.)='No' and ($fhasDisasterRecoveryOffsiteRequirment)" Error="Error" Text="Industry-mandated offsite storage requirements are not met" GUID="0b6d4ecf-ca7e-4520-8733-1b5879de9d3d" />
+                </Setting>
+              </Object>
+            </Object>
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Maintenance" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Does Exchange online maintenance (OLM) complete at least once a week?" Class="Question" GroupingClass="True">
+            <Setting Key1="dbe85e32-e2cc-4c20-9c42-3115298386ad">
+              <Rule Name="fhasDisasterRecoveryMaintenanceOLMInsufficient" Query="($.)='No'" Error="Error" Text="Exchange online maintenance does not complete at least once a week" GUID="24790aba-560c-47b5-86a0-d5aeeea082c7" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Does Exchange online defragmentation (OLD) complete at least twice a month on your Microsoft Exchange Server databases?" Class="Question" GroupingClass="True">
+            <Setting Key1="cf2cb8d7-b203-4fb2-a265-48877c8b563b">
+              <Rule Name="fhasDisasterRecoveryMaintenanceOLDInsufficient" Query="($.)='No'" Error="Error" Text="Exchange online defragmentation does not complete at least twice per month" GUID="1ab4d5e7-482c-4e62-8a2b-1fb70f2c86d2" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you find it necessary to run eseutil /p (repair) more than once every six months?" Class="Question" GroupingClass="True">
+            <Setting Key1="8c2abf0e-eeed-4337-9d01-423fceddf552">
+              <Rule Name="fhasDisasterRecoveryMaintenanceRepairToFrequent" Query="($.)='Yes'" Error="Error" Text="Eseutil/p (repair) is run too often" GUID="349fb3b1-1843-4dc6-a836-d8e504d438b4" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you find it necessary to run eseutil /g (integrity check) more than once every six months?" Class="Question" GroupingClass="True">
+            <Setting Key1="a50f56c9-bf75-4159-b3a5-2ec01ecaf343">
+              <Rule Name="fhasDisasterRecoveryMaintenanceIntegrityCheckToFrequent" Query="($.)='Yes'" Error="Error" Text="Eseutil/g (integrity) is run too often" GUID="51304d7f-4f78-45b9-8da5-d0b1d6ed6493" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you find it necessary to run eseutil /d (offline defragmentation) more than once every six months?" Class="Question" GroupingClass="True">
+            <Setting Key1="b47d2a06-0d9d-44ab-823b-3d1692dd8c54">
+              <Rule Name="fhasDisasterRecoveryMaintenanceOfflineDefragToFrequent" Query="($.)='Yes'" Error="Error" Text="Eseutil/d (offline defragmentation) is run too often" GUID="550b8eb1-edb5-4a93-9a14-b3fe882e0682" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you find it necessary to run isinteg more than once every six months?" Class="Question" GroupingClass="True">
+            <Setting Key1="fec87bf0-f24f-45fe-a248-2b95f9af74c9">
+              <Rule Name="fhasDisasterRecoveryMaintenanceIsintegToFrequent" Query="($.)='Yes'" Error="Error" Text="Isinteg is run too often" GUID="16435b96-c7f6-433e-82e9-f9c9a8696996" />
+            </Setting>
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Training" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Does your staff know how to accomplish or handle the following?" Class="Question" GroupingClass="True">
+            <Rule Name="fhasDisasterRecoveryTrainingCanHandleCommonFailures" Query="count(..//Setting/Value[text()!='Yes']) &gt; 3" Error="Error" Text="Staff is not trained to handle common database failures" GUID="c8fc4a7a-7396-46ad-ad8e-d6774bfe4b9e" />
+            <Setting Key1="b8844b11-2698-4239-88e8-cadb9cb6ddeb" />
+            <Setting Key1="dfbcb3cd-13f7-4132-b6e1-9515d3d2a1b6" />
+            <Setting Key1="f573102b-a98f-4569-9f34-3b33b2d42759" />
+            <Setting Key1="06b6e35c-f52d-4900-bfbd-3c2f0940e5b4" />
+            <Setting Key1="8aefe22c-7423-4120-9e76-2712462ec991" />
+            <Setting Key1="d8ef6504-ff0c-4c59-b4a9-13dcd579717d" />
+            <Setting Key1="2521ab74-e6d1-4e66-844c-35f374e79a62" />
+            <Setting Key1="0c8a87c7-e000-4486-85ba-ff964c002222" />
+            <Setting Key1="fea1dcf0-73a6-4ae2-812b-fc40ddb90830" />
+          </Object>
+          <Object Type="Operations" Name="Does your staff understand the following?" Class="Question" GroupingClass="True">
+            <Rule Name="fhasDisasterRecoveryTrainingUnderstandsArchitecture" Query="count(..//Setting/Value[text()!='Yes']) &gt; 3" Error="Error" Text="Staff lacks sufficient training in common database concepts" GUID="2755402a-0d77-4611-8298-3b5d17e68840" />
+            <Setting Key1="023b06f1-4b64-4ff7-b28a-d60307f9bb22" />
+            <Setting Key1="3d25e1f5-ebec-4aa5-831e-4be1ef49cf80" />
+            <Setting Key1="6c95209b-889e-45b7-95a3-596873561460" />
+            <Setting Key1="93d9e09c-dc42-490a-b444-dcbad4ce3414" />
+            <Setting Key1="4fc09b2e-1e63-467f-8cd6-2a2a71f5ee2a" />
+            <Setting Key1="c8061f76-4730-4845-9966-bba3cae65c70" />
+            <Setting Key1="9fbbc75e-5791-41a1-a6d1-dfa529092251" />
+            <Setting Key1="65698df7-b717-44ba-b0a1-2eb104fb6dba" />
+            <Setting Key1="633009e8-a379-4c82-bc38-b61470483d00" />
+          </Object>
+        </Object>
+      </Object>
+      <Object Type="Operations" Name="High Availability " Class="Section" GroupingClass="True">
+        <Object Type="Operations" Name="Storage " Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Do you know what the read/write response times are during peak periods on the disks that support Microsoft Exchange Server?" Class="Question" GroupingClass="True">
+            <Setting Key1="03e76380-7714-4f72-ae0d-53fd2dcacb91">
+              <Rule Name="fhasnoPolicyToMeasurePeakReadWriteResponseTimes" Query="($.)='No'" Error="Error" Text="Peak read/response times on the disks supporting Exchange are not known" GUID="822c2300-23df-43fd-ba2d-27f84b943429" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="What items do you consider when provisioning storage for Microsoft Exchange Server?" Class="Question" GroupingClass="True">
+            <Setting Key1="bae06396-7723-438c-b735-a95cada6d05c" />
+            <Setting Key1="56bfd6bc-506b-4920-9b1d-ea9c7009acd9" />
+            <Setting Key1="ba9aa10c-bc71-4da0-b85f-a1ca5d6b602e" />
+            <Setting Key1="460e228d-f655-4f11-a3ce-a6077ff76dfe">
+              <Rule Name="fhasNoPerformanceProvisioning" Query="($.)!='PerformanceBasedOnIOSec'" Error="Error" Text="Performance in I/O per second is not considered when provisioning storage for Exchange" GUID="9b7ae246-f850-4838-a2e7-cb3fb757df58" />
+            </Setting>
+            <Setting Key1="bb6644c6-caf9-4eb8-bdd0-75bc0da09674" />
+          </Object>
+          <Object Type="Operations" Name="Are you currently using an email archiving product or planning to evaluate one?" Class="Question" GroupingClass="True">
+            <Setting Key1="de4d0ab1-b95a-4885-8e0a-244c85e931bc" />
+            <Object Type="Operations" Name="" Class="Question" GroupingClass="True">
+              <Setting Key1="685f8987-1729-46bf-9030-070b5ce7138b" />
+            </Object>
+          </Object>
+          <Object Type="Operations" Name="What storage vendors are you currently using or planning to deploy?" Class="Question" GroupingClass="True">
+            <Setting Key1="d94181af-9e07-47d8-af95-15b2b84540d4" />
+            <Setting Key1="37323a5c-eeb0-4c8f-9909-6ba5abfd0dfd" />
+            <Setting Key1="ffccf520-05fe-47a7-94fd-ebadf6d73c49" />
+            <Setting Key1="7cefcf6b-2f2c-449f-8068-d56795e0d524" />
+            <Setting Key1="cf66a41b-3463-4a9d-963b-d269de173092" />
+            <Setting Key1="375959ce-8404-4b14-96a4-d5581f03534e" />
+            <Setting Key1="0b9b3525-dbf6-4d92-bbf2-d3f66946d3cf" />
+            <Setting Key1="b80473e2-78c8-40ee-8a96-320fca691264" />
+            <Object Type="Operations" Name="What other storage vendors are you using?" Class="Question" GroupingClass="True">
+              <Setting Key1="7d76e627-1ec1-474a-bee0-829ece40baa0" />
+            </Object>
+          </Object>
+          <Object Type="Operations" Name="Are you using shared SAN storage for Exchange?" Class="Question" GroupingClass="True">
+            <Setting Key1="2d50f990-b5cd-46cf-9121-6ccad7c3f4e2">
+              <Rule Name="fHighAvailabilityUsingSharedSANStorage" Query="($.)='Yes'" Error="None" Text="Customer is using shared SAN storage" />
+            </Setting>
+            <Object Type="Operations" Name="Do you support a variety of business applications in a shared storage controller (array/frame) or do you dedicate controllers? " Class="Question" GroupingClass="True">
+              <Setting Key1="f51bdb50-845c-443f-b777-69353fb45690" />
+              <Setting Key1="4ecbebbf-eecb-40d4-bd99-b47902b0da7c">
+                <Rule Name="fHighAvailabilityUsingSharedControllers and ($fHighAvailabilityUsingSharedSANStorage)" Query="($.)='Yes'" Error="Error" Text="A shared storage controller is used to support a variety of business applications" GUID="15aaa4bf-5c34-4599-a1e6-5ff92858c6a2" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name="Do you dedicate disk drive resources for Exchange performance?" Class="Question" GroupingClass="True">
+              <Setting Key1="d986085f-98d4-4a3a-803a-a00c881a4335">
+                <Rule Name="fhasSharedAllocationConfiguration" Query="($.)='No' and $fHighAvailabilityUsingSharedSANStorage" Error="Error" Text="Disk drive resources are not dedicated for Exchange performance" GUID="44ad4e3d-243d-4c77-ba73-1ec1bf0d7544" />
+              </Setting>
+            </Object>
+          </Object>
+          <Object Type="Operations" Name="Is your storage environment supported by Microsoft Hardware Compatibility List HCL? " Class="Question" GroupingClass="True">
+            <Setting Key1="cc05c160-b730-43f6-b01f-0be0aa0537d9">
+              <Rule Name="fhasHighAvailabilityStorageVendorSupport" Query="($.)!='Yes'" Error="Error" Text="The storage environment in use is not on the certified Microsoft Hardware Compatibility List" GUID="9fdb5a9e-d7a5-4eed-8fe8-3215942996b7" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Is there a site-level disaster plan that uses data movement technology? " Class="Question" GroupingClass="True">
+            <Setting Key1="487c989c-742e-41b6-8dfa-3cb70ad39b7e" />
+            <Object Type="Operations" Name="If so, what type of technology is being used?" Class="Question" GroupingClass="True">
+              <Setting Key1="8d7dd3ec-242f-45cb-a41d-a4a564a5ecf3" />
+              <Setting Key1="3541cd70-dc71-4603-b213-927f527c99db" />
+              <Setting Key1="ef698f64-7283-423e-91f4-e7a51cd21d74" />
+              <Setting Key1="48c854bf-dac2-4140-a262-5bee59707a5e" />
+              <Setting Key1="6d782a60-525c-48ac-af18-453e363c5d9f" />
+            </Object>
+            <Object Type="Operations" Name="If so, what update method is being used?" Class="Question" GroupingClass="True">
+              <Setting Key1="878807ac-9c4e-4e18-b8d6-4800037d6087" />
+              <Setting Key1="c41c7746-2755-4804-93a5-f81d683f9407" />
+            </Object>
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Clustering" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Have you deployed a Microsoft MSCS clustered Exchange configuration?" Class="Question" GroupingClass="True">
+            <Setting Key1="1378a760-b763-43a9-b436-0e1d2bb4b49d">
+              <Rule Name="fhasHighAvailabilityClusteringDeployed" Query="($.)='Yes'" Error="Error" Text="Microsoft Exchange clustering implemented" GUID="06d1be5a-edca-4865-beeb-d7853e19bf54" />
+            </Setting>
+            <Object Type="Operations" Name="What type of clusters have you deployed?" Class="Question" GroupingClass="True">
+              <Setting Key1="c52abdfb-3b38-4d06-980e-7d5c13c27948" />
+              <Setting Key1="9d18425f-f4e9-4909-866c-6e01879c7b60">
+                <Rule Name="fhasHighAvailabilityTwoNodeActiveActive" Query="($.)='ActiveActive' and $fhasHighAvailabilityClusteringDeployed" Error="Error" Text="Microsoft Exchange Active/Active clustering is implemented" GUID="0d98c4e0-8cef-4630-b264-0e068ddeee11" />
+              </Setting>
+              <Setting Key1="f8666821-9b63-4dc7-afdc-46269409fba7" />
+              <Object Type="Operations" Name="Do you have more than 1,900 mailboxes per active instance?" Class="Question" GroupingClass="True">
+                <Setting Key1="5a510b41-6ba5-44b0-9b05-8fde9bc331ca">
+                  <Rule Name="fhasHighAvailabilityMoreThan1900MbxPerActiveInstance" Query="($.)='Yes' and $fhasHighAvailabilityClusteringDeployed" Error="Error" Text="More than 1900 mailboxes exist per active instance" GUID="892c98a7-b027-4cb4-8aeb-c19cc893fbe8" />
+                </Setting>
+              </Object>
+            </Object>
+            <Object Type="Operations" Name="Do you use the default cluster resource parameters (Affect the Group, Restart)? " Class="Question" GroupingClass="True">
+              <Setting Key1="081f35dc-ac6a-440f-b055-fea4648c17f6">
+                <Rule Name="fhasHighAvailabilityClusteringUsingDefaultResourceParameters" Query="($.)='Yes' and $fhasHighAvailabilityClusteringDeployed" Error="None" Text="Default Microsoft cluster resource parameters are in use" />
+              </Setting>
+              <Object Type="Operations" Name="If the Affect the Group option is enabled, do you adjust the Exchange group Failover Policy?" Class="Question" GroupingClass="True">
+                <Setting Key1="c890a948-c66d-4cd9-9300-ef5c57f41331">
+                  <Rule Name="fhasNoAdjustFailoverAffectGroupEnabled" Query="($.)='No' and $fhasHighAvailabilityClusteringUsingDefaultResourceParameters" Error="Error" Text="Affect the Group option is enabled and the Exchange Group Failover Policy has not been adjusted" GUID="f3feb53d-effd-4fc1-a551-a145211877a9" />
+                </Setting>
+              </Object>
+              <Object Type="Operations" Name="Is the Affect the Group option disabled on non-critical resources such as MSDTC and MSSearch?" Class="Question" GroupingClass="True">
+                <Setting Key1="a734337d-788e-4efe-a06e-54d30bd9e7d2">
+                  <Rule Name="fhasAffectGroupDisabledCriticalResources" Query="($.)='No' and $fhasHighAvailabilityClusteringUsingDefaultResourceParameters" Error="Error" Text="Affect the Group option is enabled for non-critical resources" GUID="769caf05-7637-4167-8dff-c71cbfc3efc8" />
+                </Setting>
+              </Object>
+            </Object>
+            <Object Type="Operations" Name="Do you have an effective monitoring system to detect resource state changes?" Class="Question" GroupingClass="True">
+              <Setting Key1="a284543a-91a8-46a3-87a3-1e521aff7af3">
+                <Rule Name="fhasHighAvailabilityEffectiveEventManagement" Query="($.)!='Yes' and $fhasHighAvailabilityClusteringDeployed" Error="Error" Text="No effective event monitoring system to detect resource state changes exists" GUID="83e0a83d-451d-4dc2-aaed-20125d19eec5" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name="Do you disable the event log replication service?" Class="Question" GroupingClass="True">
+              <Setting Key1="14545d61-1ed6-46a2-b87f-98427c98222b">
+                <Rule Name="fhasHighAvailabilityDisabledEventLogReplication" Query="($.)!='Yes' and $fhasHighAvailabilityClusteringDeployed" Error="Error" Text="Event log replication is not disabled" GUID="87750ee6-ff4b-408a-a8ce-2b3688f3604b" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name="Do you have a public and an internal network set up to support each cluster?" Class="Question" GroupingClass="True">
+              <Setting Key1="ce31a710-2be4-49ca-8938-ba50452ce52e">
+                <Rule Name="fhasHighAvailabilityPublicAndInternalNetworks" Query="($.)!='Yes' and $fhasHighAvailabilityClusteringDeployed" Error="Error" Text="Separate Public and Internal networks are not set up to support each cluster" GUID="359544b7-fd20-455e-b332-9dac516289a0" />
+              </Setting>
+              <Object Type="Operations" Name="Is the internal network set to support only internal cluster communications?" Class="Question" GroupingClass="True">
+                <Setting Key1="d746b688-9e3e-46ee-977b-7e61f876d9bf">
+                  <Rule Name="fhasNetworkSupportsOnlyInternalCluster" Query="($.)='No' and not ($fhasHighAvailabilityPublicAndInternalNetworks)" Error="Error" Text="The internal network is not set to support only internal cluster communications" GUID="cdcf5938-5b04-4bd0-9042-fda602543edb" />
+                </Setting>
+              </Object>
+              <Object Type="Operations" Name="Is the public network set to support all communications?" Class="Question" GroupingClass="True">
+                <Setting Key1="1826821d-3d4d-465d-b684-2a406487c1cf">
+                  <Rule Name="fhasPublicInternalForEachCluster" Query="($.)='No' and not ($fhasHighAvailabilityPublicAndInternalNetworks)" Error="Error" Text="The public network is not set to support all cluster communications" GUID="359544b7-fd20-455e-b332-9dac516289a0" />
+                </Setting>
+              </Object>
+              <Object Type="Operations" Name="Is the internal network set to have a higher priority?" Class="Question" GroupingClass="True">
+                <Setting Key1="de4deab9-97f7-46e8-a897-456cb3424a88">
+                  <Rule Name="fhasNotSetInternalNetworkPriority" Query="($.)='No' and not ($fhasHighAvailabilityPublicAndInternalNetworks)" Error="Error" Text="The internal network is not set to have a higher priority" GUID="70fce003-985a-4101-95ca-6c4da5462685" />
+                </Setting>
+              </Object>
+            </Object>
+            <Object Type="Operations" Name="Do you use teamed network adapters?" Class="Question" GroupingClass="True">
+              <Setting Key1="fcc0a6ed-278d-4a56-9792-81aae04052c0">
+                <Rule Name="fhasHighAvailabilityTeamedNetworkAdapters" Query="($.)!='No' and $fhasHighAvailabilityClusteringDeployed" Error="None" Text="NIC Teaming in use" />
+              </Setting>
+              <Object Type="Operations" Name="Do you team the public-facing NICS? " Class="Question" GroupingClass="True">
+                <Setting Key1="d9f4ef11-73ee-4523-a7be-cd715cc1052e" />
+              </Object>
+              <Object Type="Operations" Name="Do you team the internal NICS?" Class="Question" GroupingClass="True">
+                <Setting Key1="e9ab3be1-1ff2-4d05-8046-ba48c4a6d7f8">
+                  <Rule Name="fhasInternalNICTeaming" Query="($.)!='No' and $fhasHighAvailabilityTeamedNetworkAdapters" Error="Error" Text="Internal Network Interface Cards are teamed " GUID="142e4b77-0795-40e7-88e1-ff1779ac7a4f" />
+                </Setting>
+              </Object>
+              <Object Type="Operations" Name="Do you use a Load Balanced Team (LBP)?" Class="Question" GroupingClass="True">
+                <Setting Key1="7278a8fd-bc8d-4de2-a009-53f692d1a35a" />
+              </Object>
+              <Object Type="Operations" Name="Do you set NIC negotiation to match switch port configuration such as Auto and 100MB/Full Duplex?" Class="Question" GroupingClass="True">
+                <Setting Key1="ff505309-583b-4266-9de7-fe91914934b1">
+                  <Rule Name="fhasnotSetNICNegotiationtoMatchSwitchPort" Query="($.)!='Yes' and $fhasHighAvailabilityTeamedNetworkAdapters" Error="Error" Text="Network Interface Card negotiation is not set to match switch port configuration" GUID="b98355ea-1720-41cc-9133-00b6818dfe98" />
+                </Setting>
+              </Object>
+              <Object Type="Operations" Name="Are there any sustained indications of 1022 or 1023 events in the SYSTEM event log?" Class="Question" GroupingClass="True">
+                <Setting Key1="d976ea21-57e6-4b4b-87a5-b06f4c7b012d">
+                  <Rule Name="fhas1022or1023Events" Query="($.)!='No' and $fhasHighAvailabilityTeamedNetworkAdapters" Error="Error" Text="The System event log indicates the presence of sustained 1022 or 1023 errors" GUID="02e2ccb6-1930-4343-ad6f-e52167f3ab01" />
+                </Setting>
+              </Object>
+            </Object>
+            <Object Type="Operations" Name="Are the public-facing adapters bound to have the highest priority in Advanced Settings within Network Connections on all nodes?" Class="Question" GroupingClass="True">
+              <Setting Key1="e67c3c21-dc5e-4eef-b1d5-0765446ffe36">
+                <Rule Name="fhasPublicAdapterNotHighestPriority" Query="($.)!='Yes' and $fhasHighAvailabilityClusteringDeployed" Error="Error" Text="Public-facing adapters are not bound at highest priority within the Windows networking" GUID="e5a42503-f8ba-4589-a5ce-6d0c29c56b62" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name="Does it take longer then five minutes to move an Exchange resource group between nodes? " Class="Question" GroupingClass="True">
+              <Setting Key1="8253cb27-f66d-4c79-a7bb-b19cd86644fa">
+                <Rule Name="fhasHighAvailabilityLongerThanFiveMinuteManualFailOver" Query="($.)!='No' and $fhasHighAvailabilityClusteringDeployed" Error="Error" Text="Cluster resource groups take more than five minutes to fail over" GUID="06d1be5a-edca-4865-beeb-d7853e19bf54" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name="Is your cluster configuration listed within the Microsoft Windows Server Catalog as a cluster solution?" Class="Question" GroupingClass="True">
+              <Setting Key1="131ef2dd-a101-4c02-93ed-2f5b56f69848">
+                <Rule Name="fhasClusterNotListedWSC" Query="($.)!='Yes' and $fhasHighAvailabilityClusteringDeployed" Error="Error" Text="Cluster configuration is not listed within the Windows Server Catalog" GUID="51edcf70-a7b2-493a-a7cd-0ef4c6a40e9a" />
+              </Setting>
+            </Object>
+          </Object>
+        </Object>
+      </Object>
+      <Object Type="Operations" Name="Public Folders" Class="Section" GroupingClass="True">
+        <Object Type="Operations" Name="Management" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="How do you control the size of individual folders?" Class="Question" GroupingClass="True">
+            <Setting Key1="bcf53720-d955-4d27-9916-468dadfb5fdb" />
+            <Setting Key1="fe1e141f-7cb1-4e1c-83c7-f9ceb632e142" />
+            <Setting Key1="45b12c86-08d5-4947-9cd6-d4445644f153" />
+            <Setting Key1="ac2df786-d43d-4b24-87df-f4a97866cee7">
+              <Rule Name="fhasNoPublicFolderSizeControl" Query="($.)='None'" Error="Error" Text="Public Folder size is not controlled" GUID="0a13e691-4d9d-4ede-8c9e-b5923350e19a" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you centrally control replica placement?" Class="Question" GroupingClass="True">
+            <Setting Key1="8c3a3cab-5243-456d-96e1-02fa10e57cae">
+              <Rule Name="fhasPublicFolderReplicaPlacementControlNone" Query="($.)='No'" Error="Error" Text="Public Folder replica placement is not controlled" GUID="5e70e961-3767-41aa-a25f-4c5c2905d28d" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Is the public folder permission and creation management centralized?" Class="Question" GroupingClass="True">
+            <Setting Key1="3bfc874a-e6ed-46ae-8a3b-2970b7559bdb">
+              <Rule Name="fhasPublicFolderPolicyCentralizedNone" Query="($.)='No'" Error="Error" Text="Public Folder permission and management is not centralized" GUID="9e2ecd25-6cd7-428f-9845-38a9c062afd1" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have workflow or other applications that rely on public folders?" Class="Question" GroupingClass="True">
+            <Setting Key1="fcea953e-e9a3-4c14-8c5c-6c5912a3fd38">
+              <Rule Name="fhasPublicFolderWorkFlowDependency" Query="($.)='Yes'" Error="None" Text="Public folders contain workflow" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have business-critical data stored in public folders?" Class="Question" GroupingClass="True">
+            <Setting Key1="22b70f8a-330b-41b4-a772-9bf01a69fcf8">
+              <Rule Name="fhasPublicFolderBusinessCriticalData" Query="($.)='Yes'" Error="None" Text="Business critical data contained within Public Folders" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have more than 250 subfolders per folder?" Class="Question" GroupingClass="True">
+            <Setting Key1="5f151204-8477-4a15-8274-96af5bf1296d">
+              <Rule Name="fhasPublicFolderToManySubFolders" Query="($.)='Yes'" Error="Error" Text="The maximum number of subfolders per folder exceeds 250" GUID="3a100a9f-498d-48f5-9bdc-413b7330e44b" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have more than 10,000 messages per folder, not including system folders?" Class="Question" GroupingClass="True">
+            <Setting Key1="f21e13f5-355e-4482-9fd9-2524d9b16cb1">
+              <Rule Name="fhasPublicFolderToManyMessages" Query="($.)='Yes'" Error="Error" Text="The maximum number of messages per folder exceeds 10,000" GUID="52d86b60-f3c1-4180-a98e-d3b5457622fc" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have more that 10,000 mailboxes pointed to a single public folder database?" Class="Question" GroupingClass="True">
+            <Setting Key1="089d9f0c-01d3-48b2-a032-9575bc01d2ee">
+              <Rule Name="fhasPublicFolderToManyMailboxs" Query="($.)='Yes'" Error="Error" Text="More than 10,000 users per public store are in use" GUID="0ced9efc-898b-45b9-90e0-33a62a126a13" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have servers dedicated solely to public folders?" Class="Question" GroupingClass="True">
+            <Setting Key1="445bfba5-9461-46cf-bd79-caee7863035a">
+              <Rule Name="fPublicFolderDedicated" Query="($.)='No'" Error="Error" Text="Dedicated public folder servers do not exist" GUID="65309648-f8f4-47a6-8459-28ac442ff20d" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Have you ever had a public folder replication storm?" Class="Question" GroupingClass="True">
+            <Setting Key1="610e323c-32ef-40ec-8ccd-ec4ecda2b4a8">
+              <Rule Name="fPublicFodersHasReplicationStorms" Query="($.)='Yes'" Error="None" Text="Public folder replication storm has happened in the past" />
+            </Setting>
+            <Object Type="Operations" Name="When was the last replication storm?" Class="Question" GroupingClass="True">
+              <Setting Key1="59c556ff-9e35-4d99-903d-0320cdccd441">
+                <Rule Name="fPublicFolderReplicationStorm3mon" Query="($.)='Yes' and $fPublicFodersHasReplicationStorms" Error="Error" Text="A replication storm has occurred within the last three months" GUID="45f154fe-ebe3-46bb-9dcd-29ba276422b3" />
+              </Setting>
+              <Setting Key1="e093de9e-46fb-4be2-9c71-3259190e2252">
+                <Rule Name="fPublicFolderReplicationStorm3to6mon" Query="($.)='Yes' and $fPublicFodersHasReplicationStorms" Error="Error" Text="A replication storm has occurred within the last six months" GUID="45f154fe-ebe3-46bb-9dcd-29ba276422b3" />
+              </Setting>
+              <Setting Key1="ea148f0f-9641-4491-a75e-3120e93b7ae6">
+                <Rule Name="fPublicFolderReplicationStormMore6mon" Query="($.)='Yes' and $fPublicFodersHasReplicationStorms" Error="Error" Text="A replication storm has occurred greater than six months ago" GUID="45f154fe-ebe3-46bb-9dcd-29ba276422b3" />
+              </Setting>
+            </Object>
+          </Object>
+          <Object Type="Operations" Name="Are you currently consolidating or planning to consolidate your public folders? " Class="Question" GroupingClass="True">
+            <Setting Key1="ce8eee66-9b4f-4345-9844-60f3890269eb">
+              <Rule Name="fPublicFodersPlanningConsolidation" Query="($.)='Yes'" Error="None" Text="Exchange Consolidation planning in progress" />
+            </Setting>
+            <Object Type="Operations" Name="Will you be running E2K3 Sp1 or later on your servers and Microsoft Outlook 2003 cached-mode on your clients when you do it?" Class="Question" GroupingClass="True">
+              <Setting Key1="20a37307-e4a2-46d9-9c9c-5bde91090dae">
+                <Rule Name="fPublicFolderConsolidatePreE2K3SP1" Query="($.)='No' and $fPublicFodersPlanningConsolidation" Error="Error" Text="During public folder consolidation, Exchange Server 2003 SP1 or later with Outlook 2003 cached-mode is not deployed" GUID="e190053a-cb17-4032-9f8d-b3c5ad4e0eea" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name="Do you batch the replica changes?" Class="Question" GroupingClass="True">
+              <Setting Key1="ece1bcd1-d0fb-44c5-9f37-d6b6a3d16d80">
+                <Rule Name="fPublicFolderConsolidateNoBatching" Query="($.)='No' and $fPublicFodersPlanningConsolidation" Error="Error" Text="During public folder consolidation, replica changes are not batched" GUID="e190053a-cb17-4032-9f8d-b3c5ad4e0eea" />
+              </Setting>
+            </Object>
+            <Object Type="Operations" Name="Do you perform the content migrations during the business day?" Class="Question" GroupingClass="True">
+              <Setting Key1="443b3539-24fd-41fd-8c49-461d1fcf2943">
+                <Rule Name="fPublicFolderConsolidateDuringDay" Query="($.)='Yes' and $fPublicFodersPlanningConsolidation" Error="Error" Text="During public folder consolidation, content migrations are performed during the business day" GUID="e190053a-cb17-4032-9f8d-b3c5ad4e0eea" />
+              </Setting>
+            </Object>
+          </Object>
+          <Object Type="Operations" Name="Do you have content stored in public folders that does not require replication? " Class="Question" GroupingClass="True">
+            <Setting Key1="78ba6fb3-f84a-45b6-9a0d-78b087b7a70e" />
+          </Object>
+          <Object Type="Operations" Name="Do you have content stored in public folders that has to be held for legal and regulatory retention?" Class="Question" GroupingClass="True">
+            <Setting Key1="84313b2b-7f0a-430c-9d2f-c146124c8215" />
+          </Object>
+        </Object>
+      </Object>
+      <Object Type="Operations" Name="Transport and Internet Mail" Class="Section" GroupingClass="True">
+        <Object Type="Operations" Name="Configuration" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Is message tracking enabled on all the Exchange servers that route mail?" Class="Question" GroupingClass="True">
+            <Setting Key1="809580e9-3bf6-4ecd-a800-fd7128cffc70">
+              <Rule Name="fTransportAndInternetMailConfigurationMessageTrackingEnabled" Query="($.)!='Yes'" Error="Error" Text="Message tracking is not enabled on all Exchange servers" GUID="34409ac1-1157-41d2-8375-9df1d3cdd568" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Have you configured DNS records for all outbound SMTP so Internet domains can perform reverse resolution on domains that you are responsible for?" Class="Question" GroupingClass="True">
+            <Setting Key1="1314f15c-abc9-40a0-9652-e3b04f7223d6">
+              <Rule Name="fTransportAndInternetMailConfigurationReverseDnsResolution" Query="($.)!='Yes'" Error="Error" Text="Outbound SMTP servers need DNS records to allow for reverse resolution" GUID="9e2b8877-b890-466b-aa63-0e090437c9ea" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do Internet-facing email gateways have SMTP closed for relay from the Internet?" Class="Question" GroupingClass="True">
+            <Setting Key1="f99e4bd4-a8ab-4c47-877d-3817b4f9f782" />
+            <Setting Key1="b15c1b5b-6802-45da-9910-11effcb37339">
+              <Rule Name="fTransportAndInternetMailConfigurationSmtpClosedRelayAnonymous" Query="($.)='Yes'" Error="Error" Text="Internet-facing SMTP gateways are not closed for relay from the Internet" GUID="2899f481-9a64-49fb-a0dc-9e36cefda2d6" />
+            </Setting>
+            <Setting Key1="8b4b2e1b-2b6d-4aef-9c91-6e03c154b9be">
+              <Rule Name="fTransportAndInternetMailConfigurationSmtpClosedRelayNone" Query="($.)='Yes'" Error="Error" Text="One or more Internet-facing SMTP gateways is open for anonymous relay" GUID="2899f481-9a64-49fb-a0dc-9e36cefda2d6" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Is unrestricted, anonymous SMTP access allowed to the internal messaging servers?" Class="Question" GroupingClass="True">
+            <Setting Key1="8697520c-f2f3-4669-9e81-c1a10f95fb56">
+              <Rule Name="fTransportAndInternetMailConfigurationInternalAnonymousSmtp" Query="($.)='Yes'" Error="Error" Text="Access to internal SMTP servers is not restricted" GUID="f3278e63-7540-423a-b5b7-0443d862b3a2" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="What measures are employed to establish fault tolerance and business continuity for the organization's Internet email flow?" Class="Question" GroupingClass="True">
+            <Setting Key1="b8b9fc31-e602-4f05-a688-ef49f6e919ca" />
+            <Setting Key1="4c088bb2-ba88-4f31-ab82-d46bdd395539" />
+            <Setting Key1="0480dc68-5a30-4ab4-b27b-e2988b7edd03" />
+            <Setting Key1="bf14c0a6-4f05-4d83-8073-a6a23003c5bf">
+              <Rule Name="fTransportAndInternetMailConfigurationGatewayRedundancy" Query="($.)='Yes'" Error="Error" Text="Internet Email infrastructure does not have redundancy and/or business continuity features" GUID="d60381a5-3164-466e-a023-0d2eafdf06e1" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have your Internet-facing Exchange SMTP servers configured to filter recipients who are not in the directory? " Class="Question" GroupingClass="True">
+            <Setting Key1="3b685115-37ad-4835-8616-9206df151bbb">
+              <Rule Name="fTransportAndInternetMailConfigurationFilterNonDirectoryRecipients" Query="($.)='Yes'" Error="None" Text="SMTP servers are configured to filter recipients who are not in the directory" />
+            </Setting>
+            <Object Type="Operations" Name="Have you configured the registry to use the tarpitTime feature, from the Microsoft Knowledge Base article 842851, to delay response time?" Class="Question" GroupingClass="True">
+              <Setting Key1="cdf4aa22-a017-4051-9766-90d249307ac3">
+                <Rule Name="fTransportAndInternetMailConfigurationTarpPitTimeFeature" Query="($.)!='Yes' and $fTransportAndInternetMailConfigurationFilterNonDirectoryRecipients" Error="Error" Text="Exchange servers performing recipient filtering should have the tarpitTime feature enabled per Knowledge Base article 842851" GUID="6e06ea58-61d5-423a-a28c-a74db9b8df0b" />
+              </Setting>
+            </Object>
+          </Object>
+          <Object Type="Operations" Name="Is your Microsoft Exchange Server environment set up to share email domains?" Class="Question" GroupingClass="True">
+            <Setting Key1="88050e69-66b0-4271-9615-90348e9d3937">
+              <Rule Name="fTransportAndInternetMailConfigurationShareEmailDomains" Query="($.)='Yes'" Error="None" Text="Customer is sharing email domains" />
+            </Setting>
+            <Object Type="Operations" Name="Is your Exchange organization the final link for mail destined for the domain that is shared?" Class="Question" GroupingClass="True">
+              <Setting Key1="3d7051a3-64c2-43de-80a4-f963b0bcb738">
+                <Rule Name="fTransportAndInternetMailConfigurationFinalDestination" Query="($.)!='No' and $fTransportAndInternetMailConfigurationShareEmailDomains" Error="Error" Text="The Exchange organization is set up to be the final destination for a shared Email domain" GUID="9b4b985e-8474-4903-a3ec-5193fa7adfc4" />
+              </Setting>
+            </Object>
+          </Object>
+          <Object Type="Operations" Name="Does your staff know how to do the following?" Class="Question" GroupingClass="True">
+            <Setting Key1="b4de2992-b29c-4577-a356-9a736fce9604" />
+            <Setting Key1="e87ada50-1eca-4243-9027-d16914fda06d" />
+            <Setting Key1="8c45e191-8a51-4a1d-95f6-81b6d7ef3487" />
+            <Setting Key1="5ef125de-c95c-4f1b-9428-2521d4309284" />
+            <Setting Key1="376bd80f-d017-4bd2-8b00-1efb7155570f" />
+            <Setting Key1="13d184bb-2566-476c-bf25-ece070978434" />
+            <Setting Key1="4acaea98-3c3e-4506-bc8f-55a5b06e0ef3" />
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Winroute" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Were you able to run Winroute?" Class="Question" GroupingClass="True">
+            <Setting Key1="2b684d36-75b4-49cd-b944-f6f550195531">
+              <Rule Name="fTransportAndInternetMailWinrouteToolWasRun" Query="($.)='Yes'" Error="None" Text="Engineer was able to run winroute" />
+            </Setting>
+            <Object Type="Operations" Name="Are there any servers that are not connected to the routing group masters? " Class="Question" GroupingClass="True">
+              <Setting Key1="e5a5d005-80f1-40ca-95d2-209e815f454f">
+                <Rule Name="fTransportAndInternetMailWinrouteNotConnectedToMaster" Query="($.)='Yes' and $fTransportAndInternetMailWinrouteToolWasRun" Error="None" Text="Servers are not connected to the routing group master" />
+              </Setting>
+              <Object Type="Operations" Name="Are they front-end servers? " Class="Question" GroupingClass="True">
+                <Setting Key1="9fdb2f69-2ab0-4ccf-bb1a-ae58dcc41799" />
+              </Object>
+              <Object Type="Operations" Name="Are they back-end or routing servers?" Class="Question" GroupingClass="True">
+                <Setting Key1="ae25b4fb-4339-452e-8d75-afb104693982">
+                  <Rule Name="fTransportAndInternetMailWinrouteBackendServer" Query="($.)='Yes' and $fTransportAndInternetMailWinrouteNotConnectedToMaster" Error="Error" Text="Exchange back-end or routing group servers appear disconnected from the routing group master" GUID="97e20b8e-0299-4f69-ac7c-37c0469f99fe" />
+                </Setting>
+              </Object>
+            </Object>
+            <Object Type="Operations" Name="Does the Winroute output contain a [Objects not found in DS] or [Routing groups not found in DS] container that is not the result of inadequate permissions at the time Winroute was run?" Class="Question" GroupingClass="True">
+              <Setting Key1="8d9b23ab-a38d-4f29-9aa6-64ce6ca34e51">
+                <Rule Name="fTransportAndInternetMailWinrouteObjectsNotFoundInDs" Query="($.)='Yes' and $fTransportAndInternetMailWinrouteToolWasRun" Error="None" Text="Winroute output contains a [Objects not found in DS] or [Routing groups not found in DS]" />
+              </Setting>
+              <Object Type="Operations" Name="Does that container hold any objects that were not actually deleted?" Class="Question" GroupingClass="True">
+                <Setting Key1="34a2e996-0ca6-4724-93f8-c0e2bca90b3d">
+                  <Rule Name="fTransportAndInternetMailWinrouteObjectsNotDeleted" Query="($.)='Yes' and $fTransportAndInternetMailWinrouteObjectsNotFoundInDs" Error="Error" Text="The DS container includes Winroute objects that have not been deleted" GUID="2466277a-67ee-4f2f-9ead-b0ace8af0e97" />
+                </Setting>
+              </Object>
+              <Object Type="Operations" Name="Has remonitor been run in inject mode to clean up the entries in this container?" Class="Question" GroupingClass="True">
+                <Setting Key1="6f91b4bd-272b-471b-a630-a2c708d9e3d0">
+                  <Rule Name="fTransportAndInternetMailWinrouteRemonitorInjectMode" Query="($.)='No' and $fTransportAndInternetMailWinrouteObjectsNotFoundInDs" Error="Error" Text="The Winroute packet has not been cleaned using REMonitor in inject mode" GUID="2466277a-67ee-4f2f-9ead-b0ace8af0e97" />
+                </Setting>
+              </Object>
+            </Object>
+          </Object>
+        </Object>
+      </Object>
+      <Object Type="Operations" Name="Mobile Messaging " Class="Section" GroupingClass="True">
+        <Object Type="Operations" Name="What mobile messaging services are provided to your users over the Internet?" Class="Question" GroupingClass="True">
+          <Setting Key1="2c4f3de2-6590-4156-8839-0d3756881b13">
+            <Rule Name="fhasMobileMessagingServiceOWA" Query="($.)='Microsoft Exchange Outlook Web Access'" Error="None" Text="OWA service being provided over the Internet" />
+            <Rule Name="fhasMobileMessagingServicesProvided" Query="$fhasMobileMessagingServiceOWA or $fhasMobileMessagingServiceOMA or $fhasMobileMessagingServiceEAS or $fhasMobileMessagingServiceRPC or $fhasMobileMessagingServiceRPCHTTP" Error="None" Text="Exchange mobile messaging services being provided over the Internet" />
+          </Setting>
+          <Setting Key1="6d2f5837-2ed8-4097-8728-fb7f45b718a0">
+            <Rule Name="fhasMobileMessagingServiceOMA" Query="($.)='Microsoft Exchange Outlook Mobile Access'" Error="None" Text="OMA service being provided over the Internet" />
+          </Setting>
+          <Setting Key1="93c8b79b-e141-4e97-9fee-9df7f97a2ed4">
+            <Rule Name="fhasMobileMessagingServiceEAS" Query="($.)='Microsoft Exchange Active Sync'" Error="None" Text="EAS service being provided over the Internet" />
+          </Setting>
+          <Setting Key1="57b253e4-45c1-4d92-9d4a-e1bcf166ec87">
+            <Rule Name="fhasMobileMessagingServiceRPC" Query="($.)='Microsoft Outlook access using Remote Procedure Calls (RPC) over the Internet'" Error="None" Text="Outlook MAPI/RPC service being provided over the Internet" />
+          </Setting>
+          <Setting Key1="a9756add-a53a-449c-8352-ab051575863d">
+            <Rule Name="fhasMobileMessagingServiceRPCHTTP" Query="($.)='Microsoft Outlook access using RPC/HTTP over the internet'" Error="None" Text="Outlook RPC/HTTP service being provided over the Internet" />
+          </Setting>
+          <Setting Key1="19fd89a6-ce64-4652-93e0-23c68c8bf569" />
+          <Setting Key1="54fa3522-9bbf-40d3-a0f6-777d6a57fd79" />
+          <Setting Key1="76c03218-9019-4991-a1b6-8b6b0f7a3813" />
+          <Setting Key1="2256bf80-e2e8-4672-9dd2-474a44fb7339" />
+          <Object Type="Operations" Name="What types of network security controls are implemented for your Internet-facing Exchange mobile messaging infrastructure?" Class="Question" GroupingClass="True">
+            <Setting Key1="448119ea-db85-4613-9c05-74941b04c5a5">
+              <Rule Name="fhasMobileMessagingNetworkSecurityRouterACLs" Query="($.)='NetworkLevelFilteringAndTranslation'" Error="None" Text="Router ACL's and NAT for Exchange Front End publishing in use" />
+            </Setting>
+            <Setting Key1="89446651-e0b9-479e-b413-36fe2f3cf2d7">
+              <Rule Name="fhasMobileMessagingNetworkSecurityFEinDMZ" Query="($.)='DMZ'" Error="None" Text="Exchange Front End servers in the DMZ environment" />
+              <Rule Name="fhasMobileMessagingNetworkSecurityAppProxyAndDMZ" Query="$fhasMobileMessagingServicesProvided and $fhasMobileMessagingNetworkSecurityFEinDMZ and not ($fhasMobileMessagingNetworkSecurityNOAppProxy)" Error="Error" Text="Application proxy servers are in use, but the Exchange front-end servers are located in the perimeter network" GUID="a28ff6cc-c06a-44e4-8e04-45bed349a746" />
+            </Setting>
+            <Setting Key1="48344cd4-1338-4413-99c9-ea440b740f69">
+              <Rule Name="fhasMobileMessagingNetworkSecurityNOAppProxy" Query="($.)!='ApplicationLevelProxy' and $fhasMobileMessagingServicesProvided" Error="Error" Text="No use of application-level proxying or filtering controls" GUID="a28ff6cc-c06a-44e4-8e04-45bed349a746" />
+            </Setting>
+            <Setting Key1="7f1d75be-b2c6-47f6-8823-9a8812b6bc88">
+              <Rule Name="fhasMobileMessagingNetworkSecurityNone" Query="($.)='None'" Error="Error" Text="No use of network-level filtering and translation security controls" GUID="a28ff6cc-c06a-44e4-8e04-45bed349a746" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="At what level is encryption implemented for mobile messaging clients?" Class="Question" GroupingClass="True">
+            <Setting Key1="1b791287-e7d1-42ad-ba60-98467e153a01">
+              <Rule Name="fhasMobileMessagingEncryptionNone" Query="($.)='None'" Error="Error" Text="Encryption for mobile messaging clients coming from the Internet is not implemented" GUID="941c42d7-8145-4d99-a977-a81bf9828e54" />
+            </Setting>
+            <Setting Key1="3cc6b26f-9e68-4083-8c6e-c65a0ccebe8b">
+              <Rule Name="fhasMobileMessagingEncryptionClientProxy" Query="($.)='ClientToProxy'" Error="Error" Text="Encryption for mobile messaging connections is not maintained between the Proxy infrastructure and Exchange front-end servers" GUID="941c42d7-8145-4d99-a977-a81bf9828e54" />
+            </Setting>
+            <Setting Key1="ddfaff69-bea2-4c5a-a62e-3f29a4066dbb">
+              <Rule Name="fhasMobileMessagingEncryptionClientFrontEnd" Query="($.)='ClientToFrontEnd'" Error="None" Text="Mobile messaging encryption is maintained from the client through the front-end server" GUID="941c42d7-8145-4d99-a977-a81bf9828e54" />
+            </Setting>
+            <Setting Key1="5f5817c6-473b-4d26-b667-1ad2fd44a13e">
+              <Rule Name="fhasMobileMessagingEncryptionClientBackEnd" Query="($.)='ClientToBackEnd'" Error="None" Text="Mobile messaging encryption maintained from the client through the back-end server" GUID="941c42d7-8145-4d99-a977-a81bf9828e54" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have redundancy and fault tolerance in your Exchange front-end infrastructure?" Class="Question" GroupingClass="True">
+            <Setting Key1="4520dc8a-aab3-42ed-8012-61b0313da779">
+              <Rule Name="fhasMobileMessagingNoFrontEndRedundancy" Query="($.)='No'" Error="Error" Text="No front-end redundancy or fault tolerance exists" GUID="9ff31887-0084-4f8c-9d18-77ba10ff2fbf" />
+            </Setting>
+            <Object Type="Operations" Name="What is the redundancy for the Exchange front-end infrastructure based on?" Class="Question" GroupingClass="True">
+              <Setting Key1="600d8269-6d13-44dc-9d74-de034eb25536" />
+              <Setting Key1="a18a975c-85c8-40da-82bf-30d3dac5e07e" />
+              <Setting Key1="23415962-fe05-4df0-8efb-a451966f748f" />
+              <Setting Key1="1af5db06-aa3b-403c-a1be-dd9f9b02ca5a" />
+              <Setting Key1="faa3b268-ed32-40cd-b273-49a6e2484553" />
+            </Object>
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="How are internal mobile messaging clients, such as internal Microsoft Outlook Web Access or EAS, accessing the environment?" Class="Question" GroupingClass="True">
+          <Setting Key1="72654ec1-d44d-4077-b447-0715d3ff42b8">
+            <Rule Name="fhasMobileMessagingInternalClientsNone" Query="($.)='None'" Error="None" Text="No internal mobile messaging clients" />
+          </Setting>
+          <Setting Key1="d26e2aae-67c9-4104-a9be-171a429216b0">
+            <Rule Name="fhasMobileMessagingInternalClientsBackEnd" Query="($.)='ExchangeBackEnd'" Error="Error" Text="Internal mobile messaging clients connect directly to Exchange back-end servers" GUID="94bc180c-8747-4564-9fd3-e3534d373261" />
+          </Setting>
+          <Setting Key1="eda75609-c11c-4eac-9d63-98d1b7702d18">
+            <Rule Name="fhasMobileMessagingInternalClientsFrontEndEncouraged" Query="($.)='ExchangeFrontEndEncouraged'" Error="Error" Text="Internal mobile clients are encouraged, but not required to use Exchange front-end servers" GUID="94bc180c-8747-4564-9fd3-e3534d373261" />
+          </Setting>
+          <Setting Key1="ae6faaaf-a54b-4ffd-b6e3-b7c3792db172">
+            <Rule Name="fhasMobileMessagingInternalClientsFrontEndRequired" Query="($.)='ExchangeFrontEndRrequired'" Error="None" Text="All internal mobile clients are required to use Front End servers" GUID="94bc180c-8747-4564-9fd3-e3534d373261" />
+          </Setting>
+        </Object>
+      </Object>
+      <Object Type="Operations" Name="Environmental Dependencies" Class="Section" GroupingClass="True">
+        <Object Type="Operations" Name="Active Directory (AD)" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Do you have global catalog servers available in every Active Directory® site that hosts an Exchange server?" Class="Question" GroupingClass="True">
+            <Setting Key1="fa5e9316-ec7b-42e7-baf7-6c0d1c9bbd7f">
+              <Rule Name="fhasEnviromentalDependenciesActiveDirectorySiteGCInEverySiteNone" Query="($.)='No'" Error="Error" Text="Not all Active Directory sites hosting Exchange servers have Global Catalog servers" GUID="e350827e-85f0-4139-b92f-ae0a9b6d17a3" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you ensure that the PDC Emulator FSMO role-holder is avoided by Exchange either by locating it in an Active Directory site that is not used for Exchange or by using the MinUserDc registry value?" Class="Question" GroupingClass="True">
+            <Setting Key1="55160b92-12f5-4a42-ae55-104ff28bde6b">
+              <Rule Name="fhasEnviromentalDependenciesActiveDirectorySitePDCFSMO" Query="($.)='No'" Error="Error" Text="PDC FSMO role-holder is available for use by Exchange" GUID="26a5879f-d84a-40e8-b21b-ab4ef6b419a8" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you have your Exchange servers in a separate Active Directory site with dedicated global catalog servers?" Class="Question" GroupingClass="True">
+            <Setting Key1="2a7ecb7d-9ad3-45eb-a91d-2aa5a5482880">
+              <Rule Name="fhasEnviromentalDependenciesActiveDirectorySiteDedicatedGCNone" Query="($.)='No'" Error="Error" Text="A dedicated Active Directory Site with Global Catalogs is not implemented for Exchange" GUID="aaab52b2-0b91-4bd7-8c90-b1e26c320088" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Does your IT organization employ tools to verify that AD replication is succeeding across all domain controllers in the forest?" Class="Question" GroupingClass="True">
+            <Setting Key1="c35e3925-67f3-43dc-be9b-073dad050249">
+              <Rule Name="fhasEnviromentalDependenciesActiveDirectoryNoAdReplicationTools" Query="($.)='No'" Error="Error" Text="Active Directory replication success is not verified across all domain controllers" GUID="34de37ae-6db6-41fc-b51e-bfb54aa41e75" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Does your IT organization employ tools to verify that DNS records are properly registered by all domain controllers in the forest? " Class="Question" GroupingClass="True">
+            <Setting Key1="c00b9241-ef85-489c-b076-fa701d8a089b">
+              <Rule Name="fhasEnviromentalDependenciesActiveDirectoryNoAdDNSTools" Query="($.)='No'" Error="Error" Text="Successful DNS record registration by all domain controllers in the forest is not verified" GUID="fe9d7223-b675-4f25-b1ca-971703e020d7" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="In the past 12 months how many problems have you experienced with your Microsoft Exchange Server environment that were caused by issues with Active Directory? " Class="Question" GroupingClass="True">
+            <Setting Key1="fb6bf846-df82-4bb5-958b-c70ac0323913" />
+            <Setting Key1="66d7e48b-696a-4295-ba3c-ce1b3ad39a1d" />
+            <Setting Key1="74f12d0a-9ac7-449a-945b-01049ad87968" />
+            <Setting Key1="88e784b8-749c-4409-81ff-a26f53366c9b" />
+            <Object Type="Operations" Name="Was the root cause diagnosed and fixed?" Class="Question" GroupingClass="True">
+              <Setting Key1="573be156-9bc7-4a93-b9bc-d87c8ca1c758" />
+            </Object>
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Domain Name System (DNS)" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Are dynamic updates enabled for SRV, A, and CNAME record types throughout the AD forest?" Class="Question" GroupingClass="True">
+            <Setting Key1="63d64a76-18cc-491e-b9ad-7e7bc54c30eb">
+              <Rule Name="fhasEnviromentalDependenciesDNSInSufficient" Query="($.)='No'" Error="Error" Text="Dynamic updates are not enabled for all necessary DNS record types" GUID="3b582d0b-7c90-45fc-97fe-d011da3304fe" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you monitor the availability of all A records for all SMTP servers?" Class="Question" GroupingClass="True">
+            <Setting Key1="97707be8-cab6-4c6b-9965-43b6c5ad1bfe" />
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Network" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Do you maintain a complete and up-to-date diagram of your network that shows bandwidth, routing, and user counts at each physical location?" Class="Question" GroupingClass="True">
+            <Setting Key1="97e49683-abe9-4f9b-b7ff-ad5b25ce83e2">
+              <Rule Name="fhasEnviromentalDependenciesNetworkDiagramNone" Query="($.)='No'" Error="Error" Text="Current network diagrams are not maintained" GUID="bf6af6cd-b8de-4803-a97a-e6d8709a7cfd" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Do you discuss bandwidth needs with your networking team prior to implementing a new technology or feature?" Class="Question" GroupingClass="True">
+            <Setting Key1="ad6e8284-b810-4564-bff7-d1127a60a9e2">
+              <Rule Name="fhasEnviromentalDependenciesNetworkBandwithReviewNone" Query="($.)='No'" Error="Error" Text="Network bandwidth reviews are not conducted prior to new hardware or technology deployments" GUID="331aa05c-1066-415c-be59-7ae663c18cea" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="Is the messaging team notified of network issues and outages within 15 minutes?" Class="Question" GroupingClass="True">
+            <Setting Key1="6848f79e-2890-4cfa-868b-16c783003779">
+              <Rule Name="fhasEnviromentalDependenciesNetworkOutageNotificationsNone" Query="($.)='No'" Error="Error" Text="Network outage notifications are not timely" GUID="5a4c69b6-cfb5-4ef9-bade-3e656bf8fa05" />
+            </Setting>
+          </Object>
+          <Object Type="Operations" Name="How frequently does your company experience a networking issue or outage that affects Microsoft Exchange Server?" Class="Question" GroupingClass="True">
+            <Setting Key1="89f5f301-f626-4d42-aea8-2789a08a7308">
+              <Rule Name="fhasEnviromentalDependenciesNetworkOutagesDaily" Query="($.)='Daily'" Error="Error" Text="Daily network outages are experienced" GUID="26b8e856-52b9-41c8-87ad-e6bc00228c28" />
+            </Setting>
+            <Setting Key1="9fdbf2cd-581b-4d09-ae5b-cad9960d4731">
+              <Rule Name="fhasEnviromentalDependenciesNetworkOutagesMonthly" Query="($.)='Monthly'" Error="Error" Text="Monthly network outages are experienced" GUID="26b8e856-52b9-41c8-87ad-e6bc00228c28" />
+            </Setting>
+            <Setting Key1="84b3551b-ea1a-477a-8c11-e4aa9794f4d0">
+              <Rule Name="fhasEnviromentalDependenciesNetworkOutagesQuarterly" Query="($.)='Quarterly'" Error="Error" Text="Quarterly network outages are experienced" GUID="26b8e856-52b9-41c8-87ad-e6bc00228c28" />
+            </Setting>
+            <Setting Key1="56519bfe-d6f2-4d56-bdba-dfe0ce27cec2" />
+            <Setting Key1="24d9beac-5832-4007-abb5-70b9446f3d4a" />
+          </Object>
+        </Object>
+      </Object>
+    </Object>
+  </Object>
+</ObjectCollector>

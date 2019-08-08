@@ -1,0 +1,44 @@
+Peer to Peer Replication Sequence:
+==================================
+
+Initial Setup
+-------------
+
+o - Ensure SQL Agent started and set to automatically startup
+
+o - Manage identity columns at source and target either by ranges or composite keys
+    Identity columns will require reseeding e.g. :
+    DBCC CHECKIDENT ("[XYZMain].[dbo].[Customers]", noreseed);
+    DBCC CHECKIDENT ("[XYZMain].[dbo].[Customers]", RESEED, 200000);
+    Composites primary including local state guarantees uniqueness across servers
+    NOT FOR Replication - means that the constraint will NOT be applied by repl agents
+
+o - Setup the distributor at all nodes - still require a replication snapshot share as P2P is transactional
+    A publisher can only publish to one distributor, however a distributor may have many publishers
+
+o - Create transactional publication, no filtering, no initial snapshot(?), set security
+
+o - Convert the transactional replication created above to a peer to peer type (careful with nodeid)
+
+o - If peer is already initialised with data, access properties of publication and add the node by
+    selecting 'configure peer to peer topology'. Select the option detailing how the peer was initialised
+
+
+Adding a New Peer Node
+----------------------
+ 
+o - setup distributor on new node
+
+o - snapshots are not used to initialise peers, best practice is a backup from an existing node with P2P set
+
+o - Take a full database backup from one of the peer nodes (ensure P2P article is configured before backup)
+
+o - Restore to new target node WITH RECOVERY
+
+o - Change primary key default if managed with composite key OR reseed Identity columns as appropriate
+
+o - Add new node to topology from an existing node using 'configure peer to peer topology'
+
+
+
+

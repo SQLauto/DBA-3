@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Demos">
+  <Items>
+    <LogicalFolder Name="Connections" Type="2" Sorted="true">
+      <Items>
+        <ConnectionNode Name="(local)\SQLDEV01:roadrunnerT60\Kimberly">
+          <Created>2009-08-13T05:50:13.1483117-07:00</Created>
+          <Type>SQL</Type>
+          <Server>(local)\SQLDEV01</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB />
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Queries" Type="0" Sorted="true">
+      <Items>
+        <FileNode Name="01 Dynamic String Execution vs. sp_executesql.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\SQLDEV01:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>(local)\SQLDEV01</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>01 Dynamic String Execution vs. sp_executesql.sql</FullPath>
+        </FileNode>
+        <FileNode Name="02 RecompilationIssues.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>02 RecompilationIssues.sql</FullPath>
+        </FileNode>
+        <FileNode Name="03 ModularProcedures.SQL">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>03 ModularProcedures.SQL</FullPath>
+        </FileNode>
+        <FileNode Name="04 Proc Params and BAD Performance.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>04 Proc Params and BAD Performance.sql</FullPath>
+        </FileNode>
+        <FileNode Name="AnalyzingCache.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\SQLDEV01:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>(local)\SQLDEV01</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>AnalyzingCache.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Dynamic String Execution.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Dynamic String Execution.sql</FullPath>
+        </FileNode>
+        <FileNode Name="DynamicStringExecution SecurityProblems.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\SQLDEV01:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>(local)\SQLDEV01</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>DynamicStringExecution SecurityProblems.sql</FullPath>
+        </FileNode>
+        <FileNode Name="sp_executesql advanced examples.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>sp_executesql advanced examples.sql</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
+      <Items />
+    </LogicalFolder>
+  </Items>
+</SqlWorkbenchSqlProject>

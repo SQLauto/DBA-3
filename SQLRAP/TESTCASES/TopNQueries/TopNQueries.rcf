@@ -1,0 +1,85 @@
+<TestCase Signature="04D5AAF6D9A9E912" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="26" ExecutionOrder="2">
+  <!-- DataType is the type which is used to communicate between Collection and Analysis stage. 
+       Type is the type which does the work of collection of the data...
+  -->	
+  <WorkItem
+    Name            =   "TopNQueries"
+    Category        =   "Performance"
+    DisplayName     =   "Top N Queries"
+    Description     =   "The test case collects the top 50 queries that consume high CPU usage, perform high physical reads and took longer durations.  This test case is only available in SQL Server 2005 instances."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.TestCases.TopNQueries.TopNQueriesWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+        
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.TopNQueries.TopNQueriesResultData, Microsoft.SqlRap.Client" />
+		<ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+      <SqlScript FileName ="TestCases\TopNQueries\SQLVersion.sql" IssueFileRuleQuery = "TopNQueries"/>
+			<SqlScript FileName ="TestCases\TopNQueries\QueryForToN.sql" IssueFileRuleQuery = "TopNQueries"/>
+		</ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+ <help:HelpItem FileName="TopNQueries.htm" WorkItem="TopNQueries" DisplayName="TopNQueries" Description="Reports the top queries that consume high CPU cycles, performs top disk I/O activities and take high duration." Details="The test case collects the top 50 queries that consume high CPU usage, perform high physical reads and took longer durations.  This test case is only available in SQL Server 2005 instances."/>
+
+  <RuleSet>
+	<!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	<!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+    </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+    <TableStates>
+      <TableState Name="HighCPUQueriesDetail" SortColumn="" SortDirection="descending" Title="High CPU Queries" ShowFilter="true" ShowTitle="true" ShowToolstrip="true" ShowTotalCount="true" ShowSelectedCount="true" UndoEdit="true">
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="Type" HeaderText="Type" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="ServerName" HeaderText="Server Name" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="InstanceName" HeaderText="Instance Name" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="query_text" HeaderText="query_text" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="ExecutionCount" HeaderText="Execution Count" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="TotalCPUTime" HeaderText="Total CPU Time" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="TotalDuration" HeaderText="Total Duration" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="TotalPhysicalReads" HeaderText="Total Physical Reads" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="TotalLogicalWrites" HeaderText="Total Logical Writes" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="DBName" HeaderText="DBName" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="ObjectId" HeaderText="ObjectId" Frozen="false" Visible="true" />        
+      </TableState>
+      <TableState Name="HighDurationDetail" SortColumn="" SortDirection="descending" Title="High Duration Detail" ShowFilter="true" ShowTitle="true" ShowToolstrip="true" ShowTotalCount="true" ShowSelectedCount="true" UndoEdit="true">
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="Type" HeaderText="Type" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="ServerName" HeaderText="Server Name" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="InstanceName" HeaderText="Instance Name" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="query_text" HeaderText="query_text" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="ExecutionCount" HeaderText="Execution Count" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="TotalCPUTime" HeaderText="Total CPU Time" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="TotalDuration" HeaderText="Total Duration" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="TotalPhysicalReads" HeaderText="Total Physical Reads" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="TotalLogicalWrites" HeaderText="Total Logical Writes" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="DBName" HeaderText="DBName" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="ObjectId" HeaderText="ObjectId" Frozen="false" Visible="true" />
+      </TableState>
+      <TableState Name="HighPhysicalReadsDetail" SortColumn="" SortDirection="descending" Title="High Physical Reads" ShowFilter="true" ShowTitle="true" ShowToolstrip="true" ShowTotalCount="true" ShowSelectedCount="true" UndoEdit="true">
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="Type" HeaderText="Type" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="ServerName" HeaderText="Server Name" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="InstanceName" HeaderText="Instance Name" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="query_text" HeaderText="query_text" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="ExecutionCount" HeaderText="Execution Count" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="TotalCPUTime" HeaderText="Total CPU Time" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="TotalDuration" HeaderText="Total Duration" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="TotalPhysicalReads" HeaderText="Total Physical Reads" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="TotalLogicalWrites" HeaderText="Total Logical Writes" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="DBName" HeaderText="DBName" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="ObjectId" HeaderText="ObjectId" Frozen="false" Visible="true" />
+      </TableState>
+      <TableState Name="ServerMain" SortColumn="" SortDirection="descending" Title="Server Name" ShowFilter="true" ShowTitle="true" ShowToolstrip="true" ShowTotalCount="true" ShowSelectedCount="true" UndoEdit="true">
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="ServerName" HeaderText="Server Name" Frozen="false" Visible="true" />
+        <ColumnState Name="_textBoxColumnMainServerName" DataPropertyName="InstanceName" HeaderText="Instance Name" Frozen="false" Visible="true" />
+      </TableState>
+    </TableStates>
+  </ResultsViewer>
+</TestCase>
+
+
+

@@ -1,0 +1,68 @@
+<TestCase Signature="F4CD827538547963" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex">
+  <WorkItem Name="PerfCollectorHyperV" Category="Performance"
+            DisplayName="Hyper-V Performance" 
+            Description="This test case collects perfmon logs from each machine identified as part of the Risk Assessment." 
+            Schema="" DataType=""  Type="Microsoft.Rap.TestCases.Common.PerfCollectorHyperV.PerfCollectorHyperV, Microsoft.Rap.TestCases.Common.PerfCollectorHyperV">
+<Configuration>
+  <Setting Name="CollectionRollupInterval" Value="60" Default="60" Description="Amount of time to group the collection samples in.  This is in seconds."/>
+  <Setting Name="RuleRollupInterval" Value="30:00" Default="30:00" Description=" In Minutes (m:ss) :  This is the interval of data over which the rules will be applied.  For example, if data is collected for 2 hours, rules will be applied over each of the 4 - 30 minute intervals. Allows interval lesser than a minute e.g. 0:25 (25 seconds)."/>
+  <Setting Name="UseExistingFiles" Value="False" Default="False" Description="If set to False, it will generate new perfmon logs.  If set to True, it will attempt to find existing perfmon logs."/>
+  <Setting Name="CounterQuerySize" Value="10" Default="10" Description="Number of counters processed by Logparser in each query."/>
+  <Setting Name="ChartsTimeZone" Value="Target Server Time" Default="Target Server Time" Description="Charts Time Zone:  The time stamps of the X-Axis of the charts will be displayed in this time zone.  Three options are available: &#xD;&#xA; &#xD;&#xA;Target Server Time – Displays the time stamps in the time zone of the target server&#xD;&#xA;Local Machine Time – Displays the time stamps in the local machine time zone&#xD;&#xA;UTC – Displays the time stamps in UTC. &#xD;&#xA; &#xD;&#xA;This setting will apply to all charts displayed in the View Results screen of the Perf Collector test case. The charts creation can be time consuming depending on the amount of data, so it is advised to select the most appropriate setting here and avoid the need for regenerating the charts in a different time zone later."/>
+</Configuration>
+    <State/>
+    </WorkItem>
+  <help:HelpItem FileName="PerfCollector.Help.htm" WorkItem="PerfCollectorHyperV" DisplayName="Perf Collector HyperV" Description="Provides a summary of performance information from each machine." Details="This test case collects performance logs from each machine identified in this Health Check."/>
+  <RuleSet>
+    <Rule Name="Virtualization.HostProcessor.Warning" Type="Microsoft.Rap.TestCases.Common.PerfCollector.Rules.PerfCollectorRule, Microsoft.Rap.TestCases.Common.PerfCollector" />
+    <Rule Name="Virtualization.HostProcessor.error" Type="Microsoft.Rap.TestCases.Common.PerfCollector.Rules.PerfCollectorRule, Microsoft.Rap.TestCases.Common.PerfCollector" />
+    <Rule Name="Virtualization.GuestProcessor.Warning" Type="Microsoft.Rap.TestCases.Common.PerfCollector.Rules.PerfCollectorRule, Microsoft.Rap.TestCases.Common.PerfCollector" />
+    <Rule Name="Virtualization.GuestProcessor.error" Type="Microsoft.Rap.TestCases.Common.PerfCollector.Rules.PerfCollectorRule, Microsoft.Rap.TestCases.Common.PerfCollector" />
+    <Rule Name="Virtualization.HostDiskReadLatency.Warning" Type="Microsoft.Rap.TestCases.Common.PerfCollector.Rules.PerfCollectorRule, Microsoft.Rap.TestCases.Common.PerfCollector" />
+    <Rule Name="Virtualization.HostDiskReadLatency.Error" Type="Microsoft.Rap.TestCases.Common.PerfCollector.Rules.PerfCollectorRule, Microsoft.Rap.TestCases.Common.PerfCollector" />
+    <Rule Name="Virtualization.HostDiskWriteLatency.Warning" Type="Microsoft.Rap.TestCases.Common.PerfCollector.Rules.PerfCollectorRule, Microsoft.Rap.TestCases.Common.PerfCollector" />
+    <Rule Name="Virtualization.HostDiskWriteLatency.Error" Type="Microsoft.Rap.TestCases.Common.PerfCollector.Rules.PerfCollectorRule, Microsoft.Rap.TestCases.Common.PerfCollector" />
+    <Rule Name="Virtualization.HostMemory.Warning" Type="Microsoft.Rap.TestCases.Common.PerfCollector.Rules.PerfCollectorRule, Microsoft.Rap.TestCases.Common.PerfCollector" />
+    <Rule Name="Virtualization.HostMemory.Error" Type="Microsoft.Rap.TestCases.Common.PerfCollector.Rules.PerfCollectorRule, Microsoft.Rap.TestCases.Common.PerfCollector" />
+    <Rule Name="Virtualization.HostNetwork.Warning" Type="Microsoft.Rap.TestCases.Common.PerfCollector.Rules.PerfCollectorRule, Microsoft.Rap.TestCases.Common.PerfCollector" />
+    <Rule Name="Virtualization.HostNetwork.Error" Type="Microsoft.Rap.TestCases.Common.PerfCollector.Rules.PerfCollectorRule, Microsoft.Rap.TestCases.Common.PerfCollector" />
+  </RuleSet>
+  
+   <!--<ResultsViewer Type="Microsoft.Rap.TestCases.Common.PerfCollector.Results.PerfCollectorResults,Microsoft.Rap.TestCases.Common.PerfCollector">-->
+  <ResultsViewer Type="Microsoft.Rap.TestCases.Common.PerfCollector.Results.PerfCollectorResultsWpf,Microsoft.Rap.TestCases.Common.PerfCollector">
+    <TableStates>
+      <!-- only required if you want to change the column header names, reorder, format data within the columns-->
+      <TableState Name="ResultsSummary"  ShowToolstrip="true" ShowTotalCount="true" >
+        <ColumnState Name="Server" DataPropertyName="Server" Frozen="true" Sortable="true" Visible="true" Alignment="MiddleLeft" HeaderText="Server" />
+        <ColumnState Name="HyperVRootGuestTime" DataPropertyName="HyperVRootGuestTime" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootGuestTime" />
+        <ColumnState Name="HyperVRootHypervisor" DataPropertyName="HyperVRootHypervisor" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootHypervisor" />
+        <ColumnState Name="HyperVRootRunTime" DataPropertyName="HyperVRootRunTime" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootRunTime" />
+        <ColumnState Name="HyperVRootAvailMem" DataPropertyName="HyperVRootAvailMem" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootAvailMem" />
+        <ColumnState Name="HyperVRootPagesSec" DataPropertyName="HyperVRootPagesSec" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootPagesSec" />
+        <ColumnState Name="HyperVRootGPA" DataPropertyName="HyperVRootGPA" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootGPA" />
+        <ColumnState Name="HyperVRootDepositedPages" DataPropertyName="HyperVRootDepositedPages" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootDepositedPages" />
+        <ColumnState Name="HyperVRootAddressSpaces" DataPropertyName="HyperVRootAddressSpaces" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootAddressSpaces" />
+        <ColumnState Name="HyperVRootGPARoot" DataPropertyName="HyperVRootGPARoot" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootGPARoot" />
+        <ColumnState Name="HyperVRootGPAModSec" DataPropertyName="HyperVRootGPAModSec" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootGPAModSec" />
+        <ColumnState Name="HyperVRootVPRoot" DataPropertyName="HyperVRootVPRoot" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootVPRoot" />
+        <ColumnState Name="HyperVRootTLBFlush" DataPropertyName="HyperVRootTLBFlush" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootTLBFlush" />
+        <ColumnState Name="HyperVRootTLBPages" DataPropertyName="HyperVRootTLBPages" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootTLBPages" />
+        <ColumnState Name="HyperVRootIDEReadBytes" DataPropertyName="HyperVRootIDEReadBytes" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootIDEReadBytes" />
+        <ColumnState Name="HyperVRootIDEReadSectors" DataPropertyName="HyperVRootIDEReadSectors" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootIDEReadSectors" />
+        <ColumnState Name="HyperVRootIDEWriteBytes" DataPropertyName="HyperVRootIDEWriteBytes" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootIDEWriteBytes" />
+        <ColumnState Name="HyperVRootIDEWriteSectors" DataPropertyName="HyperVRootIDEWriteSectors" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootIDEWriteSectors" />
+        <ColumnState Name="HyperVRootNetworkRec" DataPropertyName="HyperVRootNetworkRec" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootNetworkRec" />
+        <ColumnState Name="HyperVRootNetworkSent" DataPropertyName="HyperVRootNetworkSent" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="HyperVRootNetworkSent" />
+
+      </TableState>
+      <!-- only required if you want to change the column header names, reorder, format data within the columns-->
+      <TableState Name="ResultsByServer" ShowToolstrip="true" ShowTotalCount="true" >
+        <ColumnState Name="Timestamp" DataPropertyName="Timestamp" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" Format="G" HeaderText="Timestamp" />
+        <ColumnState Name="Average" DataPropertyName="Average" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  Format="#,##0.0000" HeaderText="Average" />
+        <ColumnState Name="Minimum" DataPropertyName="Minimum" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  Format="#,##0.0000" HeaderText="Minimum" />
+        <ColumnState Name="Maximum" DataPropertyName="Maximum" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  Format="#,##0.0000" HeaderText="Maximum" />
+        <ColumnState Name="Samples" DataPropertyName="Samples" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight"  Format="#,###" HeaderText="Samples" />
+      </TableState>
+    </TableStates>
+  </ResultsViewer>
+</TestCase>

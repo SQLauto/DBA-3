@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:complexType name="ClusInfo">
+    <xs:sequence>
+      <xs:element name="Cluster" type="Cluster" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="ScriptVersion" type="xs:string" use="required" />
+    <xs:attribute name="ScriptStartTime" type="xs:string" use="required" />
+    <xs:attribute name="Status" type="xs:int" use="required" />
+    <xs:attribute name="ScriptEndTime" type="xs:string" use="required" />
+    <xs:attribute name="ElapsedTimeInSeconds" type="xs:int" use="required" />
+    <xs:attribute name="Error" type="xs:string" use="optional" />
+  </xs:complexType>
+  <xs:complexType name="Cluster">
+    <xs:sequence>
+      <xs:element name="Resource" type="Resource" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="ClusterName" type="xs:string" use="required" />
+    <xs:attribute name="NodeList" type="xs:string" use="optional" />
+    <xs:attribute name="TimeStamp" type="xs:string" use="required" />
+    <xs:attribute name="QuorumLogFileSize" type="xs:string" use="optional" />
+    <xs:attribute name="MaintenanceFile" type="xs:string" use="optional" />
+    <xs:attribute name="CLUSDB" type="xs:string" use="optional" />
+    <xs:attribute name="IsMnsCluster" type="xs:string" use="optional" />    
+  </xs:complexType>
+  <xs:complexType name="Resource">
+    <xs:sequence>
+      <xs:element name="Node" type="Node" minOccurs="0" maxOccurs="unbounded" nillable="true" />
+      <xs:element name="Dependent" type="Dependent" minOccurs="0" maxOccurs="unbounded" nillable="true" />
+    </xs:sequence>
+    <xs:attribute name="NetworkDTC" type="xs:string" use="optional" />
+    <xs:attribute name="Name" type="xs:string" use="optional" />
+    <xs:attribute name="Type" type="xs:string" use="optional" />
+    <xs:attribute name="Description" type="xs:string" use="optional" />
+    <xs:attribute name="GroupName" type="xs:string" use="optional" />
+    <xs:attribute name="RestartAction" type="xs:string" use="optional" />
+    <xs:attribute name="DTCDependsOnQuorum" type="xs:string" use="optional" />
+    <xs:attribute name="PossibleResOwners" type="xs:string" use="optional" />
+  </xs:complexType>
+  <xs:complexType name="Node">
+    <xs:attribute name="NodeDTC" type="xs:string" use="optional" />
+  </xs:complexType>
+  <xs:complexType name="Dependent">
+    <xs:attribute name="ResourceDependentOn" type="xs:string" use="optional" />
+    <xs:attribute name="Type" type="xs:string" use="optional" />
+  </xs:complexType>
+  <xs:element name="Collated" type="Collated" />
+  <xs:complexType name="Collated">
+    <xs:sequence>
+      <xs:element name="ClusInfo" type="ClusInfo" maxOccurs="unbounded" />
+      <xs:element name="NodeInfo" type="NodeInfo" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="StringValue">
+    <xs:attribute name="Value" type="xs:string" use="required" />
+  </xs:complexType>
+  <xs:complexType name="NodeInfo">
+    <xs:sequence>
+      <xs:element name="Server" type="Server" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="ScriptVersion" type="xs:string" use="required" />
+    <xs:attribute name="ScriptStartTime" type="xs:string" use="required" />
+    <xs:attribute name="Status" type="xs:int" use="required" />
+    <xs:attribute name="ScriptEndTime" type="xs:string" use="required" />
+    <xs:attribute name="ElapsedTimeInSeconds" type="xs:int" use="required" />
+    <xs:attribute name="Error" type="xs:string" use="optional" />
+  </xs:complexType>
+  <xs:complexType name="Server">
+    <xs:sequence>
+      <xs:element name="NodeOS" type="NodeOS" nillable="true" minOccurs="0" maxOccurs="unbounded" />      
+      <xs:element name="QFE" type="QFE" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="PageFile" type="PageFile" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="ServerName" type="xs:string" use="required" />
+    <xs:attribute name="ClusterName" type="xs:string" use="required" />
+    <xs:attribute name="TimeStamp" type="xs:string" use="required" />
+    <xs:attribute name="Error" type="xs:string" use="optional" />
+  </xs:complexType>
+  <xs:complexType name="PageFile">
+    <xs:attribute name="Name" type="xs:string" use="optional" />
+    <xs:attribute name="InitialSize" type="xs:string" use="optional" />
+    <xs:attribute name="MaximumSize" type="xs:string" use="optional" />
+  </xs:complexType>
+  <xs:complexType name="QFE">
+    <xs:attribute name="HotFixID" type="xs:string" use="optional" />
+    <xs:attribute name="InstallDate" type="xs:string" use="optional" />
+    <xs:attribute name="InstalledOn" type="xs:string" use="optional" />
+    <xs:attribute name="Name" type="xs:string" use="optional" />
+    <xs:attribute name="ServicePackInEffect" type="xs:string" use="optional" />
+  </xs:complexType>
+  <xs:complexType name="NodeOS">
+    <xs:attribute name="BootDevice" type="xs:string" use="optional" />
+    <xs:attribute name="BuildNumber" type="xs:string" use="optional" />
+    <xs:attribute name="BuildType" type="xs:string" use="optional" />
+    <xs:attribute name="ClusterLogFilesize" type="xs:string" use="optional" />
+    <xs:attribute name="CSDVersion" type="xs:string" use="optional" />
+    <xs:attribute name="Caption" type="xs:string" use="optional" />
+    <xs:attribute name="CurrentTimeZone" type="xs:string" use="optional" />
+    <xs:attribute name="LargeSystemCache" type="xs:string" use="optional" />
+    <xs:attribute name="LocalDateTime" type="xs:string" use="optional" />
+    <xs:attribute name="MaxProcessMemorySize" type="xs:string" use="optional" />
+    <xs:attribute name="PAEEnabled" type="xs:string" use="optional" />
+    <xs:attribute name="ProductType" type="xs:string" use="optional" />    
+    <xs:attribute name="ServicePackMajorVersion" type="xs:string" use="optional" />
+    <xs:attribute name="ServicePackMinorVersion" type="xs:string" use="optional" />
+    <xs:attribute name="SystemDevice" type="xs:string" use="optional" />
+    <xs:attribute name="SystemDirectory" type="xs:string" use="optional" />
+    <xs:attribute name="SystemDrive" type="xs:string" use="optional" />
+    <xs:attribute name="Version" type="xs:string" use="optional" />
+    <xs:attribute name="WindowsDirectory" type="xs:string" use="optional" />
+    <xs:attribute name="Bootini" type="xs:string" use="optional" />
+    <xs:attribute name="ApplicationReponse" type="xs:string" use="optional" />
+    <xs:attribute name="RequireDNS" type="xs:string" use="optional" />
+    <xs:attribute name="RequireKerberos" type="xs:string" use="optional" />
+    <xs:attribute name="AutomaticManagedPagefile" type="xs:string" use="optional" />
+    <xs:attribute name="AutomaticResetBootOption" type="xs:string" use="optional" />
+    <xs:attribute name="AutomaticResetCapability" type="xs:string" use="optional" />
+    <xs:attribute name="DNSHostName" type="xs:string" use="optional" />
+    <xs:attribute name="Domain" type="xs:string" use="optional" />
+    <xs:attribute name="DomainRole" type="xs:string" use="optional" />
+    <xs:attribute name="Manufacturer" type="xs:string" use="optional" />
+    <xs:attribute name="Model" type="xs:string" use="optional" />
+    <xs:attribute name="NumberOfLogicalProcessors" type="xs:string" use="optional" />
+    <xs:attribute name="NumberOfProcessors" type="xs:string" use="optional" />
+    <xs:attribute name="PartOfDomain" type="xs:string" use="optional" />
+    <xs:attribute name="SystemStartupDelay" type="xs:string" use="optional" />
+    <xs:attribute name="SystemStartupOptions" type="xs:string" use="optional" />
+    <xs:attribute name="SystemStartupSetting" type="xs:string" use="optional" />
+    <xs:attribute name="TotalPhysicalMemory" type="xs:string" use="optional" />
+    <xs:attribute name="ProcessorMake" type="xs:string" use="optional" />
+    <xs:attribute name="Error" type="xs:string" use="optional" />    
+  </xs:complexType>
+</xs:schema>

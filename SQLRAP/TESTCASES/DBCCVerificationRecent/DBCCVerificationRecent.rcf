@@ -1,0 +1,54 @@
+<TestCase Signature="EB4508E05DB93ED2" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="18" ExecutionOrder="2">
+  <WorkItem
+    Name            =   "DBCCVerificationRecent"
+    Category        =   "SQL Operations"
+    DisplayName     =   "DBCC Verification - Recent"
+    Description     =   "Only for SQL 2005 - Reports all user databases which have not had a DBCC CHECKDB run against them in the last seven days."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.DBCCVerificationRecent.DBCCVerificationRecentResultData, Microsoft.SqlRap.Client" />
+        <ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+					
+<SqlScript FileName ="Testcases\DBCCVerificationRecent\sql_dbcc_dbinfo_checkdb_run_verification.sql" IssueFileRuleQuery = "sql_dbcc_dbinfo_checkdb_run_verification"/>
+		</ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="DBCCVerificationRecent.htm" WorkItem="DBCCVerificationRecent" DisplayName="DBCC Verification - Recent" Description="Gets when was the last known good DBCC check for user databases." Details="Only for SQL 2005 - Reports all user databases which have not had a DBCC CHECKDB run against them in the last seven days."/>
+
+  <RuleSet>
+	<!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	<!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+
+    <Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlInstanceProcessor, Microsoft.SqlRap.Client" Name="sql_dbcc_dbinfo_checkdb_run_verification"/>
+  </RuleSet>
+<ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+		<TableState Name            ="DBCCVerificationRecent" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="DBCC Verification - Recent" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName"  HeaderText = "Database Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseID"  DataPropertyName ="DatabaseID"  HeaderText = "Database ID"  Frozen = "false" Visible="true" ColumnType="int"/> 
+			<ColumnState Name="_txtDateoflastDBCCCHECKDB"  DataPropertyName ="DateoflastDBCCCHECKDB"  HeaderText = "Date of last DBCC CHECKDB"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDaysSinceLastDBCCCHECKDB"  DataPropertyName ="DaysSinceLastDBCCCHECKDB"  HeaderText = "Days Since Last DBCC CHECKDB"  Frozen = "false" Visible="true" /> 
+	  </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

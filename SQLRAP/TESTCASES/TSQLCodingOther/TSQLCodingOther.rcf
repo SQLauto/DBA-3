@@ -1,0 +1,60 @@
+<TestCase Signature="8006DB4FB307CAC2" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex"  ExecutionOrder="4">
+  <WorkItem
+    Name            =   "TSQLCodingOther"
+    Category        =   "TSQL Coding"
+    DisplayName     =   "T-SQL Coding: Other"
+    Description     =   "This test case examines the uncommented codebase for the use of GOTO syntax,  SELECT statements without WHERE clauses, use of SELECT * syntax and system  tables for use of sp_ (system stored procedure) naming convention for user stored procedures."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.TSQLCodingOther.TSQLCodingOtherResultData, Microsoft.SqlRap.Client" />
+          <ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+					
+<SqlScript FileName ="Testcases\TSQLCodingOther\SQLCensus_Other_Issues.sql" IssueFileRuleQuery = ""/>		
+		</ScriptRule>
+        </StateBag>
+      </State>
+    </WorkItem>
+
+  <help:HelpItem FileName="TSQLCodingOther.htm" WorkItem="TSQLCodingOther" DisplayName="TSQL-Coding: Other" Description="Provide the list of all T-SQL objects with miscellaneous violations like stored procedures start with sp_xxx etc." Details="This test case examines the uncommented codebase for the use of GOTO syntax,  SELECT statements without WHERE clauses, use of SELECT * syntax and system  tables for use of sp_ (system stored procedure) naming convention for user stored procedures."/>
+
+  <RuleSet>
+    <!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+    <!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+    <Rule Name="SQL_missing_where_statement" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="sql_goto" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="sql_select_star" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <Rule Name="SQL_sp_naming_convention" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />
+    <!--<Rule Name="SQL_xp_cmdshell" Type="Microsoft.SqlRap.Client.Core.TSQLRuleProcessor, Microsoft.SqlRap.Client" />    -->
+  </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+    <TableStates>
+		<TableState Name            ="TSQLCodingOther" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="TSQL-Coding: Other" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName"  HeaderText = "Database Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtOwnerName"  DataPropertyName ="OwnerName"  HeaderText = "Owner/Schema Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtObjectName"  DataPropertyName ="ObjectName"  HeaderText = "Object Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtObjectType"  DataPropertyName ="ObjectType"  HeaderText = "Object Type"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtIssue"  DataPropertyName ="Issue"  HeaderText = "Issue"  Frozen = "false" Visible="true" />
+      <ColumnState Name="_txtRuleName"  DataPropertyName ="RuleName"  HeaderText = "RuleName"  Frozen = "false" Visible="false" />
+
+    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

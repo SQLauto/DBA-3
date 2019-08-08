@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestCase Signature="47F4D08487E38F93" SortOrder="25" xmlns="http://www.microsoft.com/StaticWorkItem" xmlns:help="http://www.microsoft.com/Rapid/HelpIndex">
+  <WorkItem Name="PerfCollector" Category="Performance" DisplayName="Perf Collector" Description="This test case gathers performance counters, plots the results and raises issues when values fall outside of best practice thresholds.  The scheduler within Change Settings should be used to schedule data collection and this test case should be run to perform analysis only after counters have been collected." Schema="" DataType="" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfCollectorClientWorkItem, Microsoft.SqlRap.Client">
+    <Configuration>
+      <Setting Name="CollectionRollupInterval" Value="60" Default="60" Description="Amount of time to group the collection samples in.  This is in seconds."/>
+      <Setting Name="RuleRollupInterval" Value="30:00" Default="30:00" Description=" In Minutes (m:ss) :  This is the interval of data over which the rules will be applied.  For example, if data is collected for 2 hours, rules will be applied over each of the 4 - 30 minute intervals. Allows interval lesser than a minute e.g. 0:25 (25 seconds)."/>
+      <Setting Name="UseExistingFiles" Value="False" Default="False" Description="If set to False, it will generate new perfmon logs.  If set to True, it will attempt to find existing perfmon logs."/>
+      <Setting Name="CounterQuerySize" Value="10" Default="10" Description="Number of counters processed by Logparser in each query."/>
+      <Setting Name="ChartsTimeZone" Value="Target Server Time" Default="Target Server Time" Description="Charts Time Zone:  The time stamps of the X-Axis of the charts will be displayed in this time zone.  Three options are available: &#xD;&#xA; &#xD;&#xA;Target Server Time – Displays the time stamps in the time zone of the target server&#xD;&#xA;Local Machine Time – Displays the time stamps in the local machine time zone&#xD;&#xA;UTC – Displays the time stamps in UTC. &#xD;&#xA; &#xD;&#xA;This setting will apply to all charts displayed in the View Results screen of the Perf Collector test case. The charts creation can be time consuming depending on the amount of data, so it is advised to select the most appropriate setting here and avoid the need for regenerating the charts in a different time zone later."/>
+    </Configuration>
+    <!-- Added this ScriptRule element to get the SQL Server Version information (Bug 380413 : To eliminate error message in log file) -->
+    <State>
+      <ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >        
+      </ScriptRule>
+    </State>
+  </WorkItem>
+  <help:HelpItem FileName="PerfCollector.Help.htm" WorkItem="PerfCollector" DisplayName="Perf Collector" Description="Provides a summary of performance information from each machine." Details="This test case gathers performance counters, plots the results and raises issues when values fall outside of best practice thresholds.  The scheduler within Change Settings should be used to schedule data collection and this test case should be run to perform analysis only after counters have been collected." />
+  <RuleSet>
+    <Rule Name="fhasPerfBadAvailableMemSize_Rule" Type="Microsoft.Rap.TestCases.Common.PerfCollector.Rules.PerfCollectorRuleThreshold,Microsoft.Rap.TestCases.Common.PerfCollector">      
+      <RuleArgument Name="CounterName" Value="AvailableMemory" />
+      <RuleArgument Name="Value" Value="100" />
+      <RuleArgument Name="Field" Value="Average" />
+      <RuleArgument Name="Operation" Value="LessThan" />      
+    </Rule>
+    <Rule Name="fhasPerfBadMemoryFreePTE_7000" Type="Microsoft.Rap.TestCases.Common.PerfCollector.Rules.PerfCollectorRuleThreshold,Microsoft.Rap.TestCases.Common.PerfCollector">
+      <RuleArgument Name="CounterName" Value="FreePTEs" />
+      <RuleArgument Name="Value" Value="7000" />
+      <RuleArgument Name="Field" Value="Average" />
+      <RuleArgument Name="Operation" Value="LessThan" />      
+    </Rule>
+    <Rule Name="fhasPerfBadPagesInputPerSec_10" Type="Microsoft.Rap.TestCases.Common.PerfCollector.Rules.PerfCollectorRuleThreshold,Microsoft.Rap.TestCases.Common.PerfCollector">
+      <RuleArgument Name="CounterName" Value="PagesInputPerSec" />
+      <RuleArgument Name="Value" Value="10" />
+      <RuleArgument Name="Field" Value="Average" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    
+    <!-- TODO :Custom query High page file usage-->
+    
+    <Rule Name="fhasPerfBadPagingFileUsage_50" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.PerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName1" Value="PagingFileUsagePeak" />
+      <RuleArgument Name="Value1" Value="50" />
+      <RuleArgument Name="Field1" Value="Maximum" />
+      <RuleArgument Name="Instance1" Value="*" />
+      <RuleArgument Name="Operation1" Value="GreaterThan" />
+      
+      <RuleArgument Name="BitwiseOperation" Value="Or" />
+      
+      <RuleArgument Name="CounterName21" Value="PagingFileUsagePeak" />
+      <RuleArgument Name="Field21" Value="Maximum" />
+      <RuleArgument Name="Operate2" Value="Multiply" />
+      <RuleArgument Name="CounterName22" Value="TotalMaxPageFileSize" />
+      <RuleArgument Name="Field22" Value="Custom" />
+      <RuleArgument Name="Operation2" Value="GreaterThan" />
+      <RuleArgument Name="Value2" Value="409600" />      
+    </Rule>
+    <Rule Name="fhasPerfBadProcessorTime_80" Type="Microsoft.Rap.TestCases.Common.PerfCollector.Rules.PerfCollectorRuleThreshold,Microsoft.Rap.TestCases.Common.PerfCollector">
+      <RuleArgument Name="CounterName" Value="ProcessorTime" />
+      <RuleArgument Name="Value" Value="80" />
+      <RuleArgument Name="Field" Value="Average" />
+      <RuleArgument Name="Instance" Value="*" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    <Rule Name="fhasPerfBadSQLServer_PrivilegedTime_30" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.PerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName11" Value="PrivilegedTime" />
+      <RuleArgument Name="Instance11" Value="_Total" />
+      <RuleArgument Name="Field11" Value="Average" />
+      <RuleArgument Name="CounterName12" Value="ProcessorTime" />
+      <RuleArgument Name="Instance12" Value="_Total" />
+      <RuleArgument Name="Field12" Value="Average" />
+      <RuleArgument Name="Operate" Value="DividedBy" />
+      <RuleArgument Name="Value" Value="0.3" />
+      <RuleArgument Name="Operation" Value="GreaterThanOrEqualTo" />
+    </Rule>
+    <Rule Name="fhasHighContextSwitches" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.PerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName11" Value="ContextSwitchesPerSec" />
+      <RuleArgument Name="Field11" Value="Average" />
+      <RuleArgument Name="CounterName12" Value="NumberOfProcessors" />
+      <RuleArgument Name="Field12" Value="Custom" />
+      <RuleArgument Name="Operate" Value="DividedBy" />
+      <RuleArgument Name="Value" Value="6000" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    <Rule Name="fhasPerfBadProcessorQueueLength_4" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.PerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName11" Value="ProcessorQueueLength" />
+      <RuleArgument Name="Field11" Value="Average" />
+      <RuleArgument Name="CounterName12" Value="NumberOfProcessors" />
+      <RuleArgument Name="Field12" Value="Custom" />
+      <RuleArgument Name="Operate" Value="DividedBy" />
+      <RuleArgument Name="Value" Value="4" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />      
+    </Rule>
+    <Rule Name="fhasPerfBadPhysicalAvgReadsWritesPerSec" Type="Microsoft.Rap.TestCases.Common.PerfCollector.Rules.PerfCollectorRuleThreshold,Microsoft.Rap.TestCases.Common.PerfCollector">
+      <RuleArgument Name="CounterName1" Value="PhysicalAvgSecPerRead" />
+      <RuleArgument Name="Value1" Value="0.008" />
+      <RuleArgument Name="Field1" Value="Average" />
+      <RuleArgument Name="Instance1" Value="*" />
+      <RuleArgument Name="Operation1" Value="GreaterThan" />
+      <RuleArgument Name="CounterName2" Value="PhysicalAvgSecPerWrite" />
+      <RuleArgument Name="Value2" Value="0.004" />
+      <RuleArgument Name="Field2" Value="Average" />
+      <RuleArgument Name="Instance2" Value="*" />
+      <RuleArgument Name="Operation2" Value="GreaterThan" />
+      <RuleArgument Name="BitwiseOperation" Value="Or" />
+    </Rule>
+    <Rule Name="fhasHighFarwardRecords" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName11" Value="ForwardedRecordsSec" />
+      <RuleArgument Name="Field11" Value="Average" />
+      <RuleArgument Name="CounterName12" Value="BatchRequestssec" />
+      <RuleArgument Name="Field12" Value="Average" />
+      <RuleArgument Name="Operate" Value="DividedBy" />
+      <RuleArgument Name="Value" Value="0.10" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    <Rule Name="fhasHighFreeSpaceScans" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName11" Value="FreeSpaceScansSec" />
+      <RuleArgument Name="Field11" Value="Average" />
+      <RuleArgument Name="CounterName12" Value="BatchRequestssec" />
+      <RuleArgument Name="Field12" Value="Average" />
+      <RuleArgument Name="Operate" Value="DividedBy" />
+      <RuleArgument Name="Value" Value="0.10" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    <Rule Name="fhasHighFullScans" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName11" Value="IndexSearchesSec" />
+      <RuleArgument Name="Field11" Value="Average" />
+      <RuleArgument Name="CounterName12" Value="FullScansSec" />
+      <RuleArgument Name="Field12" Value="Average" />
+      <RuleArgument Name="Operate" Value="DividedBy" />
+      <RuleArgument Name="Value" Value="1000" />
+      <RuleArgument Name="Operation" Value="LessThen" />
+    </Rule>
+    <Rule Name="fhasHighPageSplits" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName11" Value="PageSplitsSec" />
+      <RuleArgument Name="Field11" Value="Average" />
+      <RuleArgument Name="CounterName12" Value="BatchRequestssec" />
+      <RuleArgument Name="Field12" Value="Average" />
+      <RuleArgument Name="Operate" Value="DividedBy" />
+      <RuleArgument Name="Value" Value="0.2" />
+      <RuleArgument Name="Operation" Value="GreaterThen" />
+    </Rule>
+    <Rule Name="fhasPerfBadScanPointRevalidationsSec_10" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfRUleThreshold,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName" Value="ScanPointRevalidationsSec" />
+      <RuleArgument Name="Value" Value="10" />
+      <RuleArgument Name="Field" Value="Average" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    <Rule Name="fhasHighWorkFiles" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName11" Value="WorkfilesCreatedSec" />
+      <RuleArgument Name="Field11" Value="Average" />
+      <RuleArgument Name="CounterName12" Value="BatchRequestssec" />
+      <RuleArgument Name="Field12" Value="Average" />
+      <RuleArgument Name="Operate" Value="DividedBy" />
+      <RuleArgument Name="Value" Value="0.2" />
+      <RuleArgument Name="Operation" Value="GreaterThen" />
+    </Rule>
+    <Rule Name="fhasHighWorkTables" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName11" Value="WorktablesCreatedSec" />
+      <RuleArgument Name="Field11" Value="Average" />
+      <RuleArgument Name="CounterName12" Value="BatchRequestssec" />
+      <RuleArgument Name="Field12" Value="Average" />
+      <RuleArgument Name="Operate" Value="DividedBy" />
+      <RuleArgument Name="Value" Value="0.2" />
+      <RuleArgument Name="Operation" Value="GreaterThen" />
+    </Rule>
+    
+    <Rule Name="fhasHighWorkTablesFromCache" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName1" Value="WorktablesFromCacheRatio" />
+      <RuleArgument Name="Field1" Value="Average" />
+      <RuleArgument Name="Operation1" Value="LessThan" />
+      <RuleArgument Name="Value1" Value="90" />
+
+      <RuleArgument Name="BitwiseOperation" Value="And" />
+
+      <RuleArgument Name="CounterName21" Value="WorktablesCreatedSec" />
+      <RuleArgument Name="Field21" Value="Average" />
+      <RuleArgument Name="CounterName22" Value="BatchRequestssec" />
+      <RuleArgument Name="Field22" Value="Average" />
+      <RuleArgument Name="Operate2" Value="DividedBy" />
+      <RuleArgument Name="Value2" Value="20" />
+      <RuleArgument Name="Operation2" Value="GreaterThen" />
+    </Rule>
+    
+    <Rule Name="fhasPerfBadBufferCacheHitRatio_97" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfRUleThreshold,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName" Value="BufferCacheHitRatio" />
+      <RuleArgument Name="Value" Value="97" />
+      <RuleArgument Name="Field" Value="Average" />
+      <RuleArgument Name="Operation" Value="LessThan" />
+    </Rule>
+    <Rule Name="fhasPerfBadFreePages_640" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfRUleThreshold,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName" Value="FreePages" />
+      <RuleArgument Name="Value" Value="640" />
+      <RuleArgument Name="Field" Value="Average" />
+      <RuleArgument Name="Operation" Value="LessThan" />
+    </Rule>
+    <Rule Name="fhasPerfBadLazyWritesSec_20" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfRUleThreshold,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName" Value="LazyWritesSec" />
+      <RuleArgument Name="Value" Value="20" />
+      <RuleArgument Name="Field" Value="Average" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    <Rule Name="fhasPerfBadPageLifeExpectancy_300" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfRUleThreshold,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName" Value="PageLifeExpectancy" />
+      <RuleArgument Name="Value" Value="300" />
+      <RuleArgument Name="Field" Value="Average" />
+      <RuleArgument Name="Operation" Value="LessThan" />
+    </Rule>
+    <Rule Name="fhasHighPageLookups" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName11" Value="PageLookupsSec" />
+      <RuleArgument Name="Field11" Value="Average" />
+      <RuleArgument Name="CounterName12" Value="BatchRequestssec" />
+      <RuleArgument Name="Field12" Value="Average" />
+      <RuleArgument Name="Operate" Value="DividedBy" />
+      <RuleArgument Name="Value" Value="100" />
+      <RuleArgument Name="Operation" Value="GreaterThen" />
+    </Rule>
+    <Rule Name="fhasPerfBadPageReadsSec_90" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfRUleThreshold,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName" Value="PageReadsSec" />
+      <RuleArgument Name="Value" Value="90" />
+      <RuleArgument Name="Field" Value="Average" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    <Rule Name="fhasHighCursorRequests" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName11" Value="CursorRequestsSec" />
+      <RuleArgument Name="Field11" Value="Average" />
+      <RuleArgument Name="CounterName12" Value="BatchRequestssec" />
+      <RuleArgument Name="Field12" Value="Average" />
+      <RuleArgument Name="Operate" Value="DividedBy" />
+      <RuleArgument Name="Value" Value="0.2" />
+      <RuleArgument Name="Operation" Value="GreaterThen" />
+    </Rule>  
+    <Rule Name="fhasHighLatchWaitTime" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName11" Value="TotalLatchWaitTimeMS" />
+      <RuleArgument Name="Field11" Value="Average" />
+      <RuleArgument Name="CounterName12" Value="LatchWaitsSec" />
+      <RuleArgument Name="Field12" Value="Average" />
+      <RuleArgument Name="Operate" Value="DividedBy" />
+      <RuleArgument Name="Value" Value="10" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    <Rule Name="fhasHighLockRequests" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName11" Value="LockRequestsSec" />
+      <RuleArgument Name="Field11" Value="Average" />
+      <RuleArgument Name="CounterName12" Value="BatchRequestssec" />
+      <RuleArgument Name="Field12" Value="Average" />
+      <RuleArgument Name="Operate" Value="DividedBy" />
+      <RuleArgument Name="Value" Value="500" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    <Rule Name="fhasPerfBadDeadlocksSec_1" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfRUleThreshold,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName" Value="DeadlocksSec" />
+      <RuleArgument Name="Value" Value="1" />
+      <RuleArgument Name="Field" Value="Minimum" />
+      <RuleArgument Name="Instance" Value="_Total" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    <Rule Name="fhasPerfBadMemoryGrantsPending_0" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfRUleThreshold,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName" Value="MemoryGrantsPending" />
+      <RuleArgument Name="Value" Value="0" />
+      <RuleArgument Name="Field" Value="Minimum" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    <Rule Name="fhasHighTotalServerMemory" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName11" Value="TotalServerMemory" />
+      <RuleArgument Name="Field11" Value="Average" />
+      <RuleArgument Name="CounterName12" Value="TargetServerMemory" />
+      <RuleArgument Name="Field12" Value="Average" />
+      <RuleArgument Name="Operate" Value="DividedBy" />
+      <RuleArgument Name="Value" Value="1" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    <Rule Name="fhasHighSQLCompilations" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName1" Value="SQLServerVersion" />
+      <RuleArgument Name="Field1" Value="Custom" />
+      <RuleArgument Name="Operation1" Value="Equals" />
+      <RuleArgument Name="Value1" Value="SQL2005" />
+
+      <RuleArgument Name="BitwiseOperation" Value="And" />
+
+      <RuleArgument Name="CounterName21" Value="SQLCompilationsSec" />
+      <RuleArgument Name="Field21" Value="Average" />
+      <RuleArgument Name="CounterName22" Value="BatchRequestssec" />
+      <RuleArgument Name="Field22" Value="Average" />
+      <RuleArgument Name="Operate2" Value="DividedBy" />
+      <RuleArgument Name="Value2" Value="0.2" />
+      <RuleArgument Name="Operation2" Value="GreaterThen" />
+    </Rule>
+
+    <Rule Name="fhasHighSQLCompilations" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName1" Value="SQLServerVersion" />
+      <RuleArgument Name="Field1" Value="Custom" />
+      <RuleArgument Name="Operation1" Value="Equals" />
+      <RuleArgument Name="Value1" Value="SQL2000" />
+
+      <RuleArgument Name="BitwiseOperation" Value="And" />
+
+      <RuleArgument Name="CounterName21" Value="SQLCompilationsSec" />
+      <RuleArgument Name="Field21" Value="Average" />
+      <RuleArgument Name="CounterName22" Value="BatchRequestssec" />
+      <RuleArgument Name="Field22" Value="Average" />
+      <RuleArgument Name="Operate2" Value="DividedBy" />
+      <RuleArgument Name="Value2" Value="0.1" />
+      <RuleArgument Name="Operation2" Value="GreaterThen" />
+    </Rule>
+    <Rule Name="fhasHighSQLReCompilations" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName1" Value="SQLServerVersion" />
+      <RuleArgument Name="Field1" Value="Custom" />
+      <RuleArgument Name="Operation1" Value="Equals" />
+      <RuleArgument Name="Value1" Value="SQL2005" />
+
+      <RuleArgument Name="BitwiseOperation" Value="And" />
+
+      <RuleArgument Name="CounterName21" Value="SQLRecompilationsSec" />
+      <RuleArgument Name="Field21" Value="Average" />
+      <RuleArgument Name="CounterName22" Value="SQLCompilationsSec" />
+      <RuleArgument Name="Field22" Value="Average" />
+      <RuleArgument Name="Operate2" Value="DividedBy" />
+      <RuleArgument Name="Value2" Value="0.2" />
+      <RuleArgument Name="Operation2" Value="GreaterThen" />
+    </Rule>
+    <Rule Name="fhasHighSQLReCompilations" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfOperationRule,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName1" Value="SQLServerVersion" />
+      <RuleArgument Name="Field1" Value="Custom" />
+      <RuleArgument Name="Operation1" Value="Equals" />
+      <RuleArgument Name="Value1" Value="SQL2000" />
+
+      <RuleArgument Name="BitwiseOperation" Value="And" />
+
+      <RuleArgument Name="CounterName21" Value="SQLRecompilationsSec" />
+      <RuleArgument Name="Field21" Value="Average" />
+      <RuleArgument Name="CounterName22" Value="SQLCompilationsSec" />
+      <RuleArgument Name="Field22" Value="Average" />
+      <RuleArgument Name="Operate2" Value="DividedBy" />
+      <RuleArgument Name="Value2" Value="0.1" />
+      <RuleArgument Name="Operation2" Value="GreaterThen" />
+    </Rule>
+    <Rule Name="fhasPerfBadLockWaitTime_500" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfRUleThreshold,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName" Value="LockWaitTime" />
+      <RuleArgument Name="Value" Value="500" />
+      <RuleArgument Name="Field" Value="Average" />
+      <RuleArgument Name="Instance" Value="_Total" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    <Rule Name="fhasPerfBadLogwritewaits_500" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfRUleThreshold,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName" Value="Logwritewaits" />
+      <RuleArgument Name="Value" Value="500" />
+      <RuleArgument Name="Field" Value="Average" />
+      <RuleArgument Name="Instance" Value="Average wait time (ms)" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    <Rule Name="fhasPerfBadNetworkIOwaits_500" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfRUleThreshold,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName" Value="NetworkIOwaits" />
+      <RuleArgument Name="Value" Value="500" />
+      <RuleArgument Name="Field" Value="Average" />
+      <RuleArgument Name="Instance" Value="Average wait time (ms)" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    <Rule Name="fhasPerfBadNonPagelatchwaits_500" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfRUleThreshold,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName" Value="Non-Pagelatchwaits" />
+      <RuleArgument Name="Value" Value="500" />
+      <RuleArgument Name="Field" Value="Average" />
+      <RuleArgument Name="Instance" Value="Average wait time (ms)" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    <Rule Name="fhasPerfBadPageIOlatchwaits_500" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfRUleThreshold,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName" Value="PageIOlatchwaits" />
+      <RuleArgument Name="Value" Value="500" />
+      <RuleArgument Name="Field" Value="Average" />
+      <RuleArgument Name="Instance" Value="Average wait time (ms)" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    <Rule Name="fhasPerfBadPagelatchwaits_500" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfRUleThreshold,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName" Value="Pagelatchwaits" />
+      <RuleArgument Name="Value" Value="500" />
+      <RuleArgument Name="Field" Value="Average" />
+      <RuleArgument Name="Instance" Value="Average wait time (ms)" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+    <Rule Name="fhasPerfBadWaitfortheworker_500" Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfRules.SQLPerfRUleThreshold,Microsoft.SqlRap.Client">
+      <RuleArgument Name="CounterName" Value="Waitfortheworker" />
+      <RuleArgument Name="Value" Value="500" />
+      <RuleArgument Name="Field" Value="Average" />
+      <RuleArgument Name="Instance" Value="Average wait time (ms)" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+    </Rule>
+  </RuleSet>
+  <ResultsViewer Type="Microsoft.SqlRap.Client.TestCases.PerfCollector.PerfResultsWpf, Microsoft.SqlRap.Client">
+    <TableStates>
+      <!-- only required if you want to change the column header names, reorder, format data within the columns-->
+      <TableState Name="ResultsSummary" ShowToolstrip="true" ShowTotalCount="true" Title="ResultsSummary" ShowFilter ="true" SortColumn="" SortDirection="descending" ShowTitle="true" ShowSelectedCount="true" UndoEdit="true">
+        <ColumnState Name="Server" DataPropertyName="Server" Frozen="true" Sortable="true" Visible="true" Alignment="MiddleLeft" HeaderText="Server" />
+        <ColumnState Name="ProcessorTime" DataPropertyName="ProcessorTime" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="Processor::% Processor Time([Instance])" />
+        <ColumnState Name="PrivilegedTime" DataPropertyName="PrivilegedTime" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="Processor::% Priviledged Time([Instance])" />
+        <ColumnState Name="AvailableMemory" DataPropertyName="AvailableMemory" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="Memory::Available MBytes" />
+        <ColumnState Name="ProcessorQueueLength" DataPropertyName="ProcessorQueueLength" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="System::Processor Queue Length" />
+        <ColumnState Name="ContextSwitchesPerSec" DataPropertyName="ContextSwitchesPerSec" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="System::Context Switches/Sec" />
+        <ColumnState Name="FreePTEs" DataPropertyName="FreePTEs" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="Memory::Free System Page Table Entries" />
+        <ColumnState Name="PagesPerSec" DataPropertyName="PagesPerSec" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="Memory::Pages/Sec" />
+        <ColumnState Name="PagesInputPerSec" DataPropertyName="PagesInputPerSec" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="Memory::Pages Input/Sec" />
+        <ColumnState Name="PagingFileUsage" DataPropertyName="PagingFileUsage" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="Paging File::%Usage([Instance])" />
+        <ColumnState Name="PagingFileUsagePeak" DataPropertyName="PagingFileUsagePeak" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="Paging File::%Usage Peak([Instance])" />
+        <ColumnState Name="PhysicalAvgSecPerRead" DataPropertyName="PhysicalAvgSecPerRead" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="Physical Disk::Avg. Disk sec/Read ([Instance])" />
+        <ColumnState Name="PhysicalAvgSecPerWrite" DataPropertyName="PhysicalAvgSecPerWrite" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="Physical Disk::Avg. Disk sec/Write ([Instance])" />
+        <ColumnState Name="SQLServer_ProcessorTime" DataPropertyName="SQLServer_ProcessorTime" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="Process::% Processor Time ([Instance])" />
+        <ColumnState Name="SQLServer_PrivilegedTime" DataPropertyName="SQLServer_PrivilegedTime" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="Process::% Privileged Time ([Instance])" />
+        <ColumnState Name="Error" DataPropertyName="Error" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleLeft" HeaderText="Error" />
+        <ColoringRule Query="Error != ''" Color="Red" />
+      </TableState>
+      <!-- only required if you want to change the column header names, reorder, format data within the columns-->
+      <TableState Name="ResultsByServer" ShowToolstrip="true" ShowTotalCount="true" Title="ResultsByServer" ShowFilter ="true" SortColumn="" SortDirection="descending" ShowTitle="true" ShowSelectedCount="true" UndoEdit="true">
+        <ColumnState Name="Timestamp" DataPropertyName="Timestamp" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="Timestamp" />
+        <ColumnState Name="Average" DataPropertyName="Average" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" Format="{0.0000}" HeaderText="Average" />
+        <ColumnState Name="Minimum" DataPropertyName="Minimum" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" Format="{0.0000}" HeaderText="Minimum" />
+        <ColumnState Name="Maximum" DataPropertyName="Maximum" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" Format="{0.0000}" HeaderText="Maximum" />
+        <ColumnState Name="Samples" DataPropertyName="Samples" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" Format="#,###" HeaderText="Samples" />
+      </TableState>
+		<TableState Name="ResultsBySqlServer" ShowToolstrip="true" ShowTotalCount="true" Title="ResultsBySqlServer" ShowFilter ="true" SortColumn="" SortDirection="descending" ShowTitle="true" ShowSelectedCount="true" UndoEdit="true">
+			<ColumnState Name="Timestamp" DataPropertyName="Timestamp" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" HeaderText="Timestamp" />
+			<ColumnState Name="Average" DataPropertyName="Average" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" Format="{0.0000}" HeaderText="Average" />
+			<ColumnState Name="Minimum" DataPropertyName="Minimum" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" Format="{0.0000}" HeaderText="Minimum" />
+			<ColumnState Name="Maximum" DataPropertyName="Maximum" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" Format="{0.0000}" HeaderText="Maximum" />
+			<ColumnState Name="Samples" DataPropertyName="Samples" Frozen="false" Sortable="true" Visible="true" Alignment="MiddleRight" Format="#,###" HeaderText="Samples" />
+		</TableState>
+    </TableStates>
+  </ResultsViewer>
+</TestCase>

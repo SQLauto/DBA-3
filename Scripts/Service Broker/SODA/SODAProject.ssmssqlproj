@@ -1,0 +1,232 @@
+<?xml version="1.0"?>
+<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SODAProject">
+  <Items>
+    <LogicalFolder Name="Connections" Type="2">
+      <Items>
+        <ConnectionNode Name="(local)\SQLDEV02:(local)\Administrator">
+          <Created>2006-08-30T13:40:31.9141904-07:00</Created>
+          <Type>SQL</Type>
+          <Server>(local)\SQLDEV02</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB>pubs</InitialDB>
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+        <ConnectionNode Name="(local)\SQLDEV01:(local)\Administrator">
+          <Created>2006-08-31T21:19:47.1832704-07:00</Created>
+          <Type>SQL</Type>
+          <Server>(local)\SQLDEV01</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB>pubs</InitialDB>
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Queries" Type="0">
+      <Items>
+        <FileNode Name="1a-SimpleBroker.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>1a-SimpleBroker.sql</FullPath>
+        </FileNode>
+        <FileNode Name="1b-TestSimple.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>1b-TestSimple.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2a-AddEncryption.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>2a-AddEncryption.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2b-TestEncryption.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>2b-TestEncryption.sql</FullPath>
+        </FileNode>
+        <FileNode Name="3a-Endpoint1.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>3a-Endpoint1.sql</FullPath>
+        </FileNode>
+        <FileNode Name="3a-Endpoint2.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>3a-Endpoint2.sql</FullPath>
+        </FileNode>
+        <FileNode Name="3b-AuthEP1.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>3b-AuthEP1.sql</FullPath>
+        </FileNode>
+        <FileNode Name="3b-AuthEP2.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>3b-AuthEP2.sql</FullPath>
+        </FileNode>
+        <FileNode Name="3c-TransportInit.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>3c-TransportInit.sql</FullPath>
+        </FileNode>
+        <FileNode Name="3c-TransportTarget.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>3c-TransportTarget.sql</FullPath>
+        </FileNode>
+        <FileNode Name="3d-TransportTest.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>3d-TransportTest.sql</FullPath>
+        </FileNode>
+        <FileNode Name="4c-RoutingInitiator.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\SQLDEV01:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>(local)\SQLDEV01</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>4c-RoutingInitiator.sql</FullPath>
+        </FileNode>
+        <FileNode Name="4c-RoutingTarget.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\SQLDEV01:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>(local)\SQLDEV01</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>4c-RoutingTarget.sql</FullPath>
+        </FileNode>
+        <FileNode Name="4d-RoutingTest.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\SQLDEV02:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>(local)\SQLDEV02</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>4d-RoutingTest.sql</FullPath>
+        </FileNode>
+        <FileNode Name="5b-EPEncryptOff.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>5b-EPEncryptOff.sql</FullPath>
+        </FileNode>
+        <FileNode Name="5c-DialogSecAnonOn.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>5c-DialogSecAnonOn.sql</FullPath>
+        </FileNode>
+        <FileNode Name="5d-TestDialogSec.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>5d-TestDialogSec.sql</FullPath>
+        </FileNode>
+        <FileNode Name="6c-DialogSecurityNamed.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>6c-DialogSecurityNamed.sql</FullPath>
+        </FileNode>
+        <FileNode Name="6d-TestDialogSecurity.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\SQLDEV01:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>(local)\SQLDEV01</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>6d-TestDialogSecurity.sql</FullPath>
+        </FileNode>
+        <FileNode Name="7a-AddValidation1.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>7a-AddValidation1.sql</FullPath>
+        </FileNode>
+        <FileNode Name="7a-AddValidation2.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>7a-AddValidation2.sql</FullPath>
+        </FileNode>
+        <FileNode Name="7d-TestValidation.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>7d-TestValidation.sql</FullPath>
+        </FileNode>
+        <FileNode Name="8a-PoisonMessage.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\SQLDEV01:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>(local)\SQLDEV01</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>8a-PoisonMessage.sql</FullPath>
+        </FileNode>
+        <FileNode Name="8d-TestPoisonMessage.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\SQLDEV01:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>(local)\SQLDEV01</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>8d-TestPoisonMessage.sql</FullPath>
+        </FileNode>
+        <FileNode Name="9 -AddDatabaseTable.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\SQLDEV01:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>(local)\SQLDEV01</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>9 -AddDatabaseTable.sql</FullPath>
+        </FileNode>
+        <FileNode Name="9a-AddActivation1.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\SQLDEV01:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>(local)\SQLDEV01</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>9a-AddActivation1.sql</FullPath>
+        </FileNode>
+        <FileNode Name="9b-AddActivation2.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\SQLDEV01:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>(local)\SQLDEV01</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>9b-AddActivation2.sql</FullPath>
+        </FileNode>
+        <FileNode Name="9d-TestActivation.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\SQLDEV01:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>(local)\SQLDEV01</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>9d-TestActivation.sql</FullPath>
+        </FileNode>
+        <FileNode Name="9e-TurnActivationOff.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\SQLDEV01:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>(local)\SQLDEV01</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>9e-TurnActivationOff.sql</FullPath>
+        </FileNode>
+        <FileNode Name="98-Cleanup1.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>98-Cleanup1.sql</FullPath>
+        </FileNode>
+        <FileNode Name="98-Cleanup2.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>98-Cleanup2.sql</FullPath>
+        </FileNode>
+        <FileNode Name="99-Diagnostics.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\SQLDEV01:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>(local)\SQLDEV01</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>99-Diagnostics.sql</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Miscellaneous" Type="3">
+      <Items />
+    </LogicalFolder>
+  </Items>
+</SqlWorkbenchSqlProject>

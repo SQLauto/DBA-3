@@ -1,0 +1,52 @@
+<TestCase Signature="685456CAD241F3F8" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="16" ExecutionOrder="2">
+  <WorkItem
+    Name            =   "DatabaseFilePlacementSummary"
+    Category        =   "SQL Operations"
+    DisplayName     =   "Database File Placement Summary"
+    Description     =   ""
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+        <ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+					
+<SqlScript FileName ="Testcases\DatabaseFilePlacementSummary\SQL_database_file_placement.sql" IssueFileRuleQuery = "SQL_database_file_placement"/>
+		</ScriptRule>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.DatabaseFilePlacementSummary.DatabaseFilePlacementSummaryResultData, Microsoft.SqlRap.Client" />
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="DatabaseFilePlacementSummary.htm" WorkItem="DatabaseFilePlacementSummary" DisplayName="Database File Placement Summary" Description="Reports the Database and locations of the respective data and log files created." Details="Reports the Database and locations of the respective data and log files created."/>
+
+  <RuleSet>
+
+  </RuleSet>
+<ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+		<TableState Name            ="DatabaseFilePlacementSummary" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="Database File Placement Summary" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName"  HeaderText = "Database Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseID"  DataPropertyName ="DatabaseID"  HeaderText = "Database ID"  Frozen = "false" Visible="true" ColumnType="int" /> 
+			<ColumnState Name="_txtFileType"  DataPropertyName ="FileType"  HeaderText = "File Type"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtFilePhysicalLocation"  DataPropertyName ="FilePhysicalLocation"  HeaderText = "File Physical Location"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtFileSize"  DataPropertyName ="FileSize"  HeaderText = "File Size"  Frozen = "false" Visible="true" /> 
+    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

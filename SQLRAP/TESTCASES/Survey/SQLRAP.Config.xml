@@ -1,0 +1,505 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- ** Input file for the Microsoft Exchange Server Best Practices Analyzer Tool (ExBPA) - Errors/Additions/Comments, please e-mail EXBPAFB@MICROSOFT.COM ** -->
+<!-- *********************************************************************  -->
+<!--  Copyright (C) 2004-2005 Microsoft Corporation. All Rights Reserved.   -->
+<!-- *********************************************************************  -->
+<!-- EXBPA DEPENDENCIES:
+	+ .NET Framework 1.1 installed on workstation/server where ExBPA is being run
+	+ IIS Common component installed on workstation to allow remote metabase access
+	+ Active Directory (Windows 2000 or Windows 2003)
+	+ At least one Exchange 2000/2003 server within the Active Directory
+	+ Machine Administrator permissions for enumerating Active Directory information and calling the WMI providers on DC/GC servers
+	+ Member of Local Administrators group on each Exchange server for calling the WMI providers and accessing the registry and metabase
+	+ Delegated at least Exchange View Only Permissions on the Exchange Organization
+	+ "Remote Registry" (RemoteRegistry) service must be running on both DC/GC and Exchange servers
+	+ "Windows Management Instrumentation" (winmgmt) service must be running on both DC/GC and Exchange servers
+	+ "Exchange Management" (MSExchangeMGMT) service must be running on all Exchange 200x servers
+	+ Tool must be run from a folder where the logged on user has read/write access
+	+ To collect HBA information, an HBA API-compliant driver and remoting service (such as Emulex's HBAnywhere service) is required on the server
+	+  - Additionally, the HBA API MOF installer must be run on both the ExBPA workstation and target server where the HBA is installed
+
+	SUPPORTED ENVIRONMENTS:
+
+		Exchange 5.5 on Windows 2000 SP3 and later
+			NOTE: The Exchange 5.5 server must be part of a mixed-mode Exchange organization, represented in the Active Directory
+
+		Exchange 2000 (all SPs) on Windows 2000 SP3 and later
+			NOTE: Neither Windows 2000 nor Exchange 2000 support extensive WMI providers. Data collection and analysis may be limited
+
+		Exchange 2003 (all SPs) on Windows 2000 SP3 and later
+			NOTE: Windows 2000 does not support extensive WMI providers. Data collection and analysis may be limited
+
+		Exchange 2003 (all SPs) on Windows 2003
+-->
+<ObjectCollector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <_locDefinition>
+    <_locDefault _loc="locNone" />
+    <_locTag _loc="locNone" _locAttrData="Class,LogText">Object</_locTag>
+    <_locTag _loc="locNone" _locAttrData="Text,Title">Rule</_locTag>
+    <_locTag _loc="locNone" _locAttrData="Text,Title">Template</_locTag>
+    <_locTag _loc="locNone" _locAttrData="Name">Baseline</_locTag>
+    <_locTag _loc="locNone" _locAttrData="Display,Description">RestrictionType</_locTag>
+    <_locTag _loc="locNone" _locAttrData="Display,Description">Option</_locTag>
+  </_locDefinition>
+  <Configuration ConfigVersion="9992.10.0.1" ConfigName="ExRAP Master Input File" DownloadURL="http://www.microsoft.com/exchange/code/ExRAP" ArticleURL="http://go.microsoft.com/fwlink/?linkid=30939&amp;l={0}&amp;v=ExBPA.{1}&amp;id={2}" HelpFile="ExBPA.chm" ChangeDescription="Various enhancements and fixes. Added support for new versions of Exchange-aware antivirus products. New configuration version is 2.10.0.1" SQMUploadURL="https://sqm.microsoft.com/sqm/exchange/sqmserver.dll">
+    <ConfigPreprocessor Name="0 Type Preprocessor" Assembly="BPA.Common.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.TypeConfigPreprocessor" />
+    <ConfigPreprocessor Name="1 Baseline Preprocessor" Assembly="ExBPA.Shared.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Exchange.BaselineConfigPreprocessor" />
+    <ObjectProcessor ObjectType="Operations" Assembly="BPA.ECOE.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.ECOEOperationsObjectProcessor" />
+    <ObjectProcessor Name="Group" Assembly="BPA.Common.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.GroupObjectProcessor" />
+    <ObjectProcessor Name="Cache" Assembly="BPA.Common.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.CacheObjectProcessor" />
+    <ExtFunction Name="list-average" Assembly="BPA.ConfigCollector.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.PdhObjectProcessor" Function="Average" Returns="Number" Parameters="String" />
+    <ExtFunction Name="list-sigma" Assembly="BPA.ConfigCollector.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.PdhObjectProcessor" Function="Sigma" Returns="Number" Parameters="String" />
+    <ExtFunction Name="list-median" Assembly="BPA.ConfigCollector.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.PdhObjectProcessor" Function="Median" Returns="Number" Parameters="String" />
+    <ExtFunction Name="list-min" Assembly="BPA.ConfigCollector.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.PdhObjectProcessor" Function="ListMin" Returns="Number" Parameters="String" />
+    <ExtFunction Name="list-max" Assembly="BPA.ConfigCollector.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.PdhObjectProcessor" Function="ListMax" Returns="Number" Parameters="String" />
+    <ExtFunction Name="list-percentile" Assembly="BPA.ConfigCollector.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.PdhObjectProcessor" Function="ListPercentile" Returns="Number" Parameters="String,Number" />
+    <RuleProcessor Name="1" Assembly="BPA.Common.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.MainRuleProcessor" />
+    <IssueProcessor Name="Events" Assembly="BPA.Common.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.EventProcessor" />
+    <ExtFormat Name="LowerCase" Assembly="BPA.Common.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Common.CacheObjectProcessor" Convert="ToLower" />
+    <RestrictionType Name="Category" Display="Category" Description="" Collapse="False">
+      <Option Name="General" Display="General" Description="Check basic information." />
+      <Option Name="Performance" Display="Performance" Description="Sample key performance monitor counters." />
+      <Option Name="Connectivity" Display="Connectivity" Description="Check server connectivity." />
+      <Option Name="Baseline" Display="Baseline" Description="Compare settings between servers." />
+      <Option Name="CustomBaseline" Display="CustomBaseline" Description="Compare settings between servers." />
+      <Option Name="ECOE" Display="ECOE" Description="Used for ECOE data collection" />
+    </RestrictionType>
+    <IssueProcessor Name="ExRapEventProcessor" Assembly="BPA.ECOE.dll" Class="Microsoft.WindowsServerSystem.BestPracticesAnalyzer.Extensions.ExRapEventProcessor" />
+  </Configuration>
+  <Object Type="Group" Name="EXRAP Customer Branding" Category="General" Level="1" Key1="$(M.MSName)" Key2="$(M.MCID)" Key3="$(M.SDOID)" Key4="$(M.HASH)" Key5="$(M.SITEName)" />
+  <Object Type="Group" Name="Full Run" Level="1" />
+  <Object Type="Group" Name="SQL Server Risk Assessment" GroupingClass="True" Class="ECOE">
+    <Object Type="Operations" Name="Operational Interview" Key1="C:\Documents and Settings\gayathrib.IEI\Desktop\FXCOPTest\FXCOP\TestCases\Survey\SQLRAP Survey.xml" Key2="svy" Key3="http://www.microsoft.com/surveys" GroupingClass="True" Class="Survey">
+      <Object Type="Operations" Name="Operational Excellence" Class="Section" GroupingClass="True">
+        <Object Type="Operations" Name="People" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Do you know who your Customer Support Manager (CSM) is? (The Customer Support Manager (CSM) is the primary role for service delivery on your Microsoft Premier Support Agreement)" Class="Question" GroupingClass="True">
+            <Setting Key1="3be3b93b-7015-43bc-931a-e98675452686" />
+            <Rule Name="fCSMNotKnown" Query="($.)='No'" Error="Error" Text="Do you know who your Customer Support Manager (CSM) is? (The Customer Support Manager (CSM) is the primary role for service delivery on your Microsoft Premier Support Agreement)" GUID="e3ab26b5-f17a-4e58-8012-b6fa430c5fd2" />
+          </Object>
+          <Object Type="Operations" Name="Does your operations staff know how to create an incident/support request with CSS?" Class="Question" GroupingClass="True">
+            <Setting Key1="dd7cacbc-34ff-4994-bc92-188652a84306" />
+            <Rule Name="fNotKnowIncidentCreation" Query="($.)='No'" Error="Warning" Text="Does your operations staff know how to create an incident/support request with CSS?" GUID="5e9ea50d-082e-4ad9-b5b4-20b9a25bb833" />
+          </Object>
+          <Object Type="Operations" Name="Are SQL Server staff roles clearly defined and filled?" Class="Question" GroupingClass="True">
+            <Setting Key1="797350a0-a8ad-41ed-a058-5d9161b80fc6" />
+            <Rule Name="fNoDedicatedDBAStaff" Query="($.)='No'" Error="Warning" Text="Are SQL Server staff roles clearly defined and filled?" GUID="8c5e0dbe-3358-4c89-9fd9-822758b1bdb5" />
+          </Object>
+          <Object Type="Operations" Name="Do you require base-level certification for your operations staff?" Class="Question" GroupingClass="True">
+            <Setting Key1="28158ed3-ec2b-422e-aa6d-0cd683dca5cb" />
+            <Rule Name="fNoStaffBaselineCert" Query="($.)='No'" Error="Warning" Text="Do you require base-level certification for your operations staff?" GUID="bdc5ae31-0b7f-4eea-8150-8cbbd5c91a45" />
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="General" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Do you have a performance baseline of all the SQL Server servers to use as a comparison for performance tuning?" Class="Question" GroupingClass="True">
+            <Setting Key1="b7e25cca-ec03-47f4-a037-f61daba8a63d" />
+            <Object Type="Operations" Name="Do you have a processor time baseline?" Class="Question" GroupingClass="True">
+              <Setting Key1="fedcacb4-ea57-494d-9086-e318303b0c87" />
+              <Rule Name="fNoProcessorBaseline" Query="($.)='No'" Error="Warning" Text="Do you have a processor time baseline?" GUID="b5d8eaba-4af1-4ba6-a7d9-6525cdeb025c" />
+            </Object>
+            <Object Type="Operations" Name="Do you have a disk I/O baseline for log and database drives?" Class="Question" GroupingClass="True">
+              <Setting Key1="bf37b2cb-4d27-4617-99d6-cbb35f3c50ac" />
+              <Rule Name="fNodiskIOBaseline" Query="($.)='No'" Error="Warning" Text="Do you have a disk I/O baseline for log and database drives?" GUID="49f313d5-db3a-4ce6-b6ca-76e78227c254" />
+            </Object>
+            <Object Type="Operations" Name="Do you have a disk latency baseline?" Class="Question" GroupingClass="True">
+              <Setting Key1="007db4e6-3db1-47ac-a49a-9663a9ae40c5" />
+              <Rule Name="fNoDiskLatencyBaseline" Query="($.)='No'" Error="Warning" Text="Do you have a disk latency baseline?" GUID="0a046c75-af2e-435f-b6c9-dc33c0a75e67" />
+            </Object>
+            <Object Type="Operations" Name="Do you have a user load baseline?" Class="Question" GroupingClass="True">
+              <Setting Key1="29619828-fcf5-458d-9c56-6cbc778ecd84" />
+              <Rule Name="fNoUserLoadBaseline" Query="($.)='No'" Error="Warning" Text="Do you have a user load baseline?" GUID="7bda6a6d-a457-4d5b-bf97-fc6bbc2ffc86" />
+            </Object>
+            <Object Type="Operations" Name="Do you have a memory baseline?" Class="Question" GroupingClass="True">
+              <Setting Key1="a2c50598-a678-46ed-a6c4-c6a44a8a2836" />
+              <Rule Name="fNoMemoryBaseline" Query="($.)='No'" Error="Warning" Text="Do you have a memory baseline?" GUID="c55c8bfa-2aa0-474c-83f7-fc095e709791" />
+            </Object>
+            <Object Type="Operations" Name="Do you have a performance baseline for pertinent counters?" Class="Question" GroupingClass="True">
+              <Setting Key1="d3b81f54-7333-4b32-a5d7-37ae1dda3ad8" />
+              <Rule Name="fNoSQLServerCounterBaseline" Query="($.)='No'" Error="Warning" Text="Do you have a performance baseline for pertinent counters?" GUID="452c41fb-a00f-4ff0-a96e-61a657103ec6" />
+            </Object>
+            <Rule Name="fNoPerfBaselines" Query="($.)='No'" Error="Warning" Text="Do you have a performance baseline of all the SQL Server servers to use as a comparison for performance tuning?" GUID="753aefb4-ff3e-4ff3-bd73-3f385fe4ee0e" />
+          </Object>
+          <Object Type="Operations" Name="Do you update index statistics on a regular basis?" Class="Question" GroupingClass="True">
+            <Setting Key1="b9a556d4-ad14-4ee9-ba8c-df1d39d08cf6" />
+            <Rule Name="fNoUpdateStatistics" Query="($.)='No'" Error="Warning" Text="Do you update index statistics on a regular basis?" GUID="7e0ff868-e278-4ecd-9038-9dc8004991c2" />
+          </Object>
+          <Object Type="Operations" Name="Do you perform index defragementation on a scheduled basis?" Class="Question" GroupingClass="True">
+            <Setting Key1="8e1a4d7a-f96d-4ce4-8600-9742631bee1c" />
+            <Setting Key1="5e94ace1-daac-44e6-a61b-dad89afae9a3" />
+            <Setting Key1="1e4ad91e-5242-4de6-be30-7b2abe4e3ac3" />
+            <Rule Name="fNoIndexDefragSchedule" Query="..//Setting/Value[text()='c']" Error="Warning" Text="Do you perform index defragementation on a scheduled basis?" GUID="3f591ff5-36d4-44b6-a174-219f1f011bab" />
+          </Object>
+          <Object Type="Operations" Name="Do you perform regular DBCC checks in your production environment?" Class="Question" GroupingClass="True">
+            <Setting Key1="80b4b8a8-a513-432d-8712-abc3de7485d6" />
+            <Rule Name="fNoRegularDBCCCheck" Query="($.)='No'" Error="Warning" Text="Do you perform regular DBCC checks in your production environment?" GUID="d58ffe9c-e46c-42d3-a198-c22bc5b90952" />
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Business Continuity" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Do you have a documented disaster recovery plan?" Class="Question" GroupingClass="True">
+            <Setting Key1="a8c606a8-017d-412d-9a9a-36bbeffad2e2" />
+            <Object Type="Operations" Name="Is your disaster recovery plan documented thoroughly enough so that any member of your staff can perform a successful recovery when needed?" Class="Question" GroupingClass="True">
+              <Setting Key1="42c2058d-6b35-41ff-b30c-f35aef898c1f" />
+              <Rule Name="fCannotFollowDRPLan" Query="($.)='No'" Error="Warning" Text="Is your disaster recovery plan documented thoroughly enough so that any member of your staff can perform a successful recovery when needed?" GUID="88d9231b-9131-427d-8352-5a463776115a" />
+            </Object>
+            <Rule Name="fNoDRPlan" Query="($.)='No'" Error="Error" Text="Do you have a documented disaster recovery plan?" GUID="3de8850e-76a2-4919-8de3-7031dcf071a8" />
+          </Object>
+          <Object Type="Operations" Name="Have you defined disaster recovery service level agreements (SLAs) for backup and recovery?" Class="Question" GroupingClass="True">
+            <Setting Key1="8cd5db78-5f87-4f23-9d41-b71c0ca85bba" />
+            <Rule Name="fNoDRSLA" Query="($.)='No'" Error="Warning" Text="Have you defined disaster recovery service level agreements (SLAs) for backup and recovery?" GUID="36da7ded-a04e-4e05-abe0-0df39895f12b" />
+          </Object>
+          <Object Type="Operations" Name="Do you practice or test your disaster recovery plans at least once every six months?" Class="Question" GroupingClass="True">
+            <Setting Key1="e9ab758f-d7be-4763-ba7a-0be846ba5152" />
+            <Rule Name="fNoDRPlanTest" Query="($.)='No'" Error="Warning" Text="Do you practice or test your disaster recovery plans at least once every six months?" GUID="366f6756-4037-4c21-83ed-cb6b91ff88f0" />
+          </Object>
+          <Object Type="Operations" Name="Do you have dedicated servers for SQL Server disaster recovery?" Class="Question" GroupingClass="True">
+            <Setting Key1="71edc630-ac03-4696-bcf7-555a0e724e25" />
+            <Rule Name="fNoDedicatedDRServers" Query="($.)='No'" Error="Best Practice" Text="Do you have dedicated servers for SQL Server disaster recovery?" GUID="300feabd-c964-42aa-bcfa-d49386770b6c" />
+          </Object>
+          <Object Type="Operations" Name="Do database administrators have physical access to database servers when necessary, or have correct contact and access to those who do?" Class="Question" GroupingClass="True">
+            <Setting Key1="db562d39-aedf-4240-9e4c-36aa580987d3" />
+            <Rule Name="fNoPhysicalDBServerAccess" Query="($.)='No'" Error="Warning" Text="Do database administrators have physical access to database servers when necessary, or have correct contact and access to those who do?" GUID="e62d1ed9-a538-4a95-83c7-c9218391c287" />
+          </Object>
+          <Object Type="Operations" Name="Do database administrators have physical access to SQL Server install media or have correct contact and access to those who do?" Class="Question" GroupingClass="True">
+            <Setting Key1="93a2e2a7-eea0-4887-beb4-4cb48fd0855c" />
+            <Rule Name="fNoInstallMediaAccess" Query="($.)='No'" Error="Warning" Text="Do database administrators have physical access to SQL Server install media or have correct contact and access to those who do?" GUID="5a3eabad-8d2f-4eac-bb8a-b5842af72182" />
+          </Object>
+          <Object Type="Operations" Name="Do you back up both system and user databases?" Class="Question" GroupingClass="True">
+            <Setting Key1="27749b67-1e6f-47e7-8d88-47cefac08b44" />
+            <Rule Name="fInadquateBackupStrategy" Query="($.)='No'" Error="Error" Text="Do you back up both system and user databases?" GUID="ab40c7c5-0da3-4aec-9ddb-5b560f1c6b57" />
+          </Object>
+          <Object Type="Operations" Name="What is your backup media?" Class="Question" GroupingClass="True">
+            <Setting Key1="ee01ec82-6716-44b8-a210-2bcc964bc8be" />
+            <Setting Key1="4ac88eb0-70a7-4659-8787-2d0febac06f7" />
+            <Setting Key1="e0f4b642-2eff-4490-99b8-f5d675f2897a" />
+            <Setting Key1="5d5ec250-8a79-4403-99ca-85ac7a50bc3a" />
+            <Rule Name="fMediaBackupStrategyNotBP" Query="..//Setting/Value[text()='b'] or ..//Setting/Value[text()='c']" Error="Warning" Text="What is your backup media?" GUID="ec779348-ba6b-4ee7-8662-e7d0369b7b31" />
+          </Object>
+          <Object Type="Operations" Name="How do you secure your backup files?" Class="Question" GroupingClass="True">
+            <Setting Key1="0e28c077-5a09-4760-8bb7-47578c1f3a58" />
+            <Setting Key1="f5f7485d-f091-46b7-b168-69e1a0b6e3fc" />
+            <Setting Key1="7e5e53aa-e435-406d-9a0c-9749dab2ff48" />
+            <Setting Key1="fec77e1c-30cb-4733-8ee3-dd7b64791586" />
+            <Rule Name="fUnsecureBackups" Query="..//Setting/Value[text()='d']" Error="Error" Text="How do you secure your backup files?" GUID="c3b2f5e5-2f90-42ca-b75a-9093f9c8c79f" />
+          </Object>
+          <Object Type="Operations" Name="Is there a process in place to verify that your backups are valid and restorable?" Class="Question" GroupingClass="True">
+            <Setting Key1="441a1a9b-44bd-4dba-80c1-07b2b3e86a2f" />
+            <Rule Name="fBackupsNotValidated" Query="($.)='No'" Error="Warning" Text="Is there a process in place to verify that your backups are valid and restorable?" GUID="23a2bd2f-356d-4e2f-90c6-e72a2d8e2afe" />
+          </Object>
+          <Object Type="Operations" Name="Is there a process in place to protect and verify the SQL Server configuration data and dependencies? (registry, replication schema, system databases…)" Class="Question" GroupingClass="True">
+            <Setting Key1="626d5d1b-a0f1-4a98-8842-c5b331373866" />
+            <Rule Name="fSQLServerConfigNotBackup" Query="($.)='No'" Error="Warning" Text="Is there a process in place to protect and verify the SQL Server configuration data and dependencies? (registry, replication schema, system databases…)" GUID="de00c4aa-d78c-4a18-94ac-e1ecdc573c24" />
+          </Object>
+          <Object Type="Operations" Name="Do you back up more than transaction logs during business hours?" Class="Question" GroupingClass="True">
+            <Setting Key1="227d775d-7700-4a6d-8ad1-d4efb50bb484" />
+            <Rule Name="fBackupsNotOptimizedforMinBizImpact" Query="($.)='Yes'" Error="Error" Text="Do you back up more than transaction logs during business hours?" GUID="63281d60-2875-43d0-8947-37f8d648a821" />
+          </Object>
+          <Object Type="Operations" Name="Do you utilize a Stripe Set for SQL Server backups?" Class="Question" GroupingClass="True">
+            <Setting Key1="c2550ff1-f122-4d00-a8f4-542bee331969" />
+            <Rule Name="fBackupMultipleDevices" Query="($.)='Yes'" Error="Error" Text="Do you utilize a Stripe Set for SQL Server backups?" GUID="b3ee66f9-69be-4418-baf7-628ae476e74e" />
+          </Object>
+          <Object Type="Operations" Name="Do you have additional disk space available on the SQL Server servers for the database restore use?" Class="Question" GroupingClass="True">
+            <Setting Key1="1a3f1169-ff9d-466b-a17d-f8b917a01852" />
+            <Rule Name="fNoSpaceForDBRestore" Query="($.)='No'" Error="Best Practice" Text="Do you have additional disk space available on the SQL Server servers for the database restore use?" GUID="480e8713-56bf-4a43-ae8a-b9df24112698" />
+          </Object>
+          <Object Type="Operations" Name="Do you have an additional backup copy offsite?" Class="Question" GroupingClass="True">
+            <Setting Key1="09b67e99-924c-4139-b474-19fdf9b5a2dd" />
+            <Object Type="Operations" Name="Can you restore from offsite backup to meet your data recovery requirements (SLA/OLA)?" Class="Question" GroupingClass="True">
+              <Setting Key1="8adb306b-8a1b-459c-86ed-02b94d7aa15e" />
+              <Rule Name="fBackupsTakeTooLong" Query="($.)='No'" Error="Warning" Text="Can you restore from offsite backup to meet your data recovery requirements (SLA/OLA)?" GUID="b997b46a-a303-49f7-86dc-492580cabda4" />
+            </Object>
+            <Rule Name="fNoOffsiteBackupsUsed" Query="($.)='No'" Error="Warning" Text="Do you have an additional backup copy offsite?" GUID="357577e8-ea15-45e5-af2b-c70d0d4d89a3" />
+          </Object>
+          <Object Type="Operations" Name="What kind of RAID is used for SQL Server data volumes?" Class="Question" GroupingClass="True">
+            <Setting Key1="e6861b20-a7d5-4818-9c01-328a6e19d5c9" />
+            <Setting Key1="3d69dee0-a69e-4565-9753-c3f992d0d0f8" />
+            <Setting Key1="c445135c-d94c-44bd-9f26-0f72510641fd" />
+            <Setting Key1="62c6986e-2f3b-4cbc-9a35-acf960dd986b" />
+            <Setting Key1="7212b5f6-0ea3-4c56-a86e-d88068a55304" />
+            <Setting Key1="07c8f70d-35b1-4bfc-a85c-89f1ed02e057" />
+            <Rule Name="fInappropriateRaidLevel" Query="(..//Setting/Value[text()='e']) or (..//Setting/Value[text()='a'])" Error="Warning" Text="What kind of RAID is used for SQL Server data volumes?" GUID="81aaff18-9ab5-4362-8241-05d61b8e5008" />
+          </Object>
+          <Object Type="Operations" Name="Is data storage shared or dedicated to SQL Server?" Class="Question" GroupingClass="True">
+            <Setting Key1="31048e96-b06c-4845-a8ec-31676d382175" />
+            <Setting Key1="d6842fd7-bf53-4523-9109-a6112180d26b" />
+            <Rule Name="fSharedDataStorage" Query="(..//Setting/Value[text()='a'])" Error="Warning" Text="Is data storage shared or dedicated to SQL Server?" GUID="76d8b55d-9332-4c7e-9520-1a9b7ba71e66" />
+          </Object>
+          <Object Type="Operations" Name="Do you implement “stretch clusters” (geo-clustering) or other data replication technologies for SQL Server?" Class="Question" GroupingClass="True">
+            <Setting Key1="6d364962-c59e-47e4-b84f-cefa13e1c8ee" />
+            <Rule Name="fNonSQLReplicationUsed" Query="($.)='Yes'" Error="Best Practice" Text="Do you implement “stretch clusters” (geo-clustering) or other data replication technologies for SQL Server?" GUID="86b02184-c31a-402b-9677-274a6b92001a" />
+          </Object>
+          <Object Type="Operations" Name="What high availability options are configured?" Class="Question" GroupingClass="True">
+            <Setting Key1="7333c2e7-593d-432b-a815-befb9d1e260a" />
+            <Setting Key1="aecee730-ae7e-496a-a5e3-20d1d40ec293" />
+            <Setting Key1="2b8d23e8-b6c2-4be0-a646-cb089e14a360" />
+            <Setting Key1="bebf84e8-b17b-4208-a084-bc018aa64433" />
+            <Setting Key1="42bc9d96-d418-45d5-b766-053269c2f98b" />
+            <Object Type="Operations" Name="Is your SQL Server failover cluster solution listed in the Windows Server Catalog (WSC)/Hardware Compatibility List (HCL)?" Class="Question" GroupingClass="True">
+              <Setting Key1="2149c8b8-3f64-4428-88ec-a18e17b257ea" />
+              <Setting Key1="5aec6af5-9da8-4f83-976b-001b0a2eb84a" />
+              <Setting Key1="7c5a2e14-f0ff-468a-b28d-eaafc95839c9" />
+              <Rule Name="fClusterOnHCL" Query="..//Setting/Value[text()='No']" Error="Warning" Text="Is your SQL Server failover cluster solution listed in the Windows Server Catalog (WSC)/Hardware Compatibility List (HCL)?" GUID="3c9c9994-d5cb-4e22-aa7e-95b639b00cc2" />
+            </Object>
+            <Rule Name="fHighAvailOptionsIncreaseComplexity" Query="not (..//Setting/Value[text()='e'])" Error="Warning" Text="What high availability options are configured?" GUID="36f4edac-6039-41b3-a130-0abe2067ac20" />
+            <Rule Name="fNoHighAvailOptionsConfigured" Query="..//Setting/Value[text()='e']" Error="Warning" Text="What high availability options are configured?" GUID="579D1B7E-6F6A-4325-9A08-7CB3EF6E8096"></Rule>
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Change, Configuration and Release Management (CCR)" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Do you have a change control process?" Class="Question" GroupingClass="True">
+            <Setting Key1="749c3dfa-d8ed-4093-83c3-596977dba139" />
+            <Rule Name="fNoChangeControl" Query="($.)='No'" Error="Warning" Text="Do you have a change control process?" GUID="36f4edac-6039-41b3-a130-0abe2067ac20" />
+          </Object>
+          <Object Type="Operations" Name="Do you have a separate, dedicated environment for non-production activity (for example, development or testing)?" Class="Question" GroupingClass="True">
+            <Setting Key1="0cd87903-296e-4239-90a9-bc3403b05af1" />
+            <Rule Name="fNoDedicatedNonProdEnvironment" Query="($.)='No'" Error="Warning" Text="Do you have a separate, dedicated environment for non-production activity (for example, development or testing)?" GUID="c0f0e750-d83b-4c09-8b24-96421e203a91" />
+          </Object>
+          <Object Type="Operations" Name="Do your release and deployment plans include a rollback plan?" Class="Question" GroupingClass="True">
+            <Setting Key1="7da1194a-46ff-4432-acee-862d085c8faf" />
+            <Rule Name="fNoRollbackPlan" Query="($.)='No'" Error="Warning" Text="Do your release and deployment plans include a rollback plan?" GUID="db83f2af-872f-4f85-b1b2-6a551835b9c4" />
+          </Object>
+          <Object Type="Operations" Name="Does the Database Operations team have an approval voice for other IT changes that might affect the database service?" Class="Question" GroupingClass="True">
+            <Setting Key1="1ba6cb45-2032-49b4-82d7-2281f57bc321" />
+            <Rule Name="fDBOpsApprovalVoice" Query="($.)='No'" Error="Warning" Text="Does the Database Operations team have an approval voice for other IT changes that might affect the database service?" GUID="406037f7-0ee1-40e0-a584-12e5a0f21313" />
+          </Object>
+          <Object Type="Operations" Name="Do you have scheduled releases to keep the hardware, operating system, SQL Server, and antivirus software on the servers up to date (for example, service packs)?" Class="Question" GroupingClass="True">
+            <Setting Key1="77114b5b-e5ac-4531-a820-a583fc4725b8" />
+            <Rule Name="fNoScheduleForSPsReleases" Query="($.)='No'" Error="Warning" Text="Do you have scheduled releases to keep the hardware, operating system, SQL Server, and antivirus software on the servers up to date (for example, service packs)?" GUID="78289b42-7c73-4605-85f0-d04b59afc327" />
+          </Object>
+          <Object Type="Operations" Name="Do you apply Microsoft Windows updates (non security patches) to your servers at least every six months?" Class="Question" GroupingClass="True">
+            <Setting Key1="a44fc473-4461-42f7-9381-aaac5c1671c3" />
+            <Rule Name="fInfrequentWindowsUpdates" Query="($.)='No'" Error="Warning" Text="Do you apply Microsoft Windows updates (non security patches) to your servers at least every six months?" GUID="372859e0-7640-4216-accc-a073ab9fd09a" />
+          </Object>
+          <Object Type="Operations" Name="Do you apply Microsoft SQL Server updates (non security patches) to your servers at least every six months?" Class="Question" GroupingClass="True">
+            <Setting Key1="e2346604-2e87-419a-9bc7-91b59333b6c4" />
+            <Rule Name="fInfrequentSQLUpdates" Query="($.)='No'" Error="Warning" Text="Do you apply Microsoft SQL Server updates (non security patches) to your servers at least every six months?" GUID="eb2cfdf6-b7cb-47ae-8547-2a532fe84364" />
+          </Object>
+          <Object Type="Operations" Name="Do you review and proactively apply security updates (patches) as they become available?" Class="Question" GroupingClass="True">
+            <Setting Key1="1b88cdb5-3a6a-4370-b6cf-85649fdf09b9" />
+            <Object Type="Operations" Name="Does it take more than a week to apply a critical security update to all servers?" Class="Question" GroupingClass="True">
+              <Setting Key1="7b307a91-4593-4037-8ef7-80df34ce082c" />
+              <Rule Name="fTooLongSecurityUpdates" Query="($.)='Yes'" Error="Warning" Text="Does it take more than a week to apply a critical security update to all servers?" GUID="d356192e-bdb5-4672-b143-408a85c8284d" />
+            </Object>
+            <Rule Name="fInfrequentSecurityUpdates" Query="($.)='No'" Error="Warning" Text="Do you review and proactively apply security updates (patches) as they become available?" GUID="a21643fb-54b8-4526-b44b-70927d7ebf04" />
+          </Object>
+          <Object Type="Operations" Name="Do you review and test updates before deployment?" Class="Question" GroupingClass="True">
+            <Setting Key1="722e9b83-390c-49df-aed0-e5bb63ea24fa" />
+            <Rule Name="fNoReviewTestUpdates" Query="($.)='No'" Error="Warning" Text="Do you review and test updates before deployment?" GUID="bf2d12e2-54b4-4a3b-899f-199c2b54c689" />
+          </Object>
+          <Object Type="Operations" Name="Do you have a lab that contains the same roles, code, and services you run in the production environment where you can test changes in the code and configuration?" Class="Question" GroupingClass="True">
+            <Setting Key1="04ef13dd-5a76-4546-acdc-01c45e24d796" />
+            <Rule Name="fNoProdLikeEnvironment" Query="($.)='No'" Error="Warning" Text="Do you have a lab that contains the same roles, code, and services you run in the production environment where you can test changes in the code and configuration?" GUID="4cba189c-1a26-42f9-a8ce-bc97b38cc31e" />
+          </Object>
+          <Object Type="Operations" Name="Do you have detailed Microsoft Windows and SQL Server build documents for your servers?" Class="Question" GroupingClass="True">
+            <Setting Key1="8c0fca13-f52c-4d9f-9acf-1aa5ace2033b" />
+            <Rule Name="fNoBuildDocs" Query="($.)='No'" Error="Warning" Text="Do you have detailed Microsoft Windows and SQL Server build documents for your servers?" GUID="c464f128-6e86-40be-8f2b-5c2aa213d71a" />
+          </Object>
+          <Object Type="Operations" Name="Do you allow ad-hoc change to occur in your production environment" Class="Question" GroupingClass="True">
+            <Setting Key1="5c0984cc-e4cd-418d-a5bc-7d9dd277a41f" />
+            <Rule Name="fAdHocChangesAllowed" Query="($.)='Yes'" Error="Error" Text="Do you allow ad-hoc change to occur in your production environment" GUID="fc0601c0-b6db-4ae7-8bd9-0244b34eceb4" />
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Service Monitoring and Control" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Do you monitor your Microsoft SQL Server environment?" Class="Question" GroupingClass="True">
+            <Setting Key1="36227ca0-a793-4cbb-8586-79b5a9e5cb59" />
+            <Object Type="Operations" Name="Which of the following do you monitor?" Class="Question" GroupingClass="True">
+              <Setting Key1="a80c40b7-9b97-4222-806f-71f31823b373"></Setting>
+              <Setting Key1="b4f2273b-4768-4b3c-abf8-4debba73eb8e" />
+              <Setting Key1="38c85ff1-703b-4024-8285-22509f20ddeb"></Setting>
+              <Setting Key1="3eb609a5-fbf0-4695-a4fc-c837667d769d"></Setting>
+              <Setting Key1="9645d54f-5dbe-4bc7-8dd5-0e53fa067328"></Setting>
+              <Rule Name="fMonitoringNotComprehensive" Query="(count(..//Setting/Value[text()='']) != 0) and not ($fNoSQLMonitoring)" Error="Error" Text="Which of the following do you monitor?" GUID="A4346F78-62C6-4f28-981E-E4C90D64CD8A" />
+            </Object>
+            <Object Type="Operations" Name="Is there an action plan or operations guide for each alert, such as a troubleshooting guide?" Class="Question" GroupingClass="True">
+              <Setting Key1="716c6c15-8853-46fe-aefc-894c8052c0a9" />
+              <Rule Name="fNoOpsGuideForAlerts" Query="($.)='No'" Error="Warning" Text="Is there an action plan or operations guide for each alert, such as a troubleshooting guide?" GUID="9109d757-6849-4493-8cb0-45f3c5ba111e" />
+            </Object>
+            <Object Type="Operations" Name="Is there someone who is held accountable for responding to each alert?" Class="Question" GroupingClass="True">
+              <Setting Key1="7edf4cce-a59a-4377-9224-692c36e7b2bd" />
+              <Rule Name="fNoresponsibleForAlerts" Query="($.)='No'" Error="Warning" Text="Is there someone who is held accountable for responding to each alert?" GUID="8d9afde7-2c6b-4aa9-adbd-a32b94a623a5" />
+            </Object>
+            <Object Type="Operations" Name="Do you have automated notifications for monitored alerts?" Class="Question" GroupingClass="True">
+              <Setting Key1="51463e6e-71c4-472e-ae56-b536c665bb68" />
+              <Rule Name="fNoAutomatedAlerts" Query="($.)='No'" Error="Warning" Text="Do you have automated notifications for monitored alerts?" GUID="4a879346-e74c-42d0-b8f1-8cdb78eab03e" />
+            </Object>
+            <Object Type="Operations" Name="Is your Microsoft SQL Server environment monitored 24 hours a day, 7 days a week?" Class="Question" GroupingClass="True">
+              <Setting Key1="beca9099-9d68-46ac-baea-ca84b1b8d90b" />
+              <Rule Name="fMonitoringNot247" Query="($.)='No'" Error="Error" Text="Is your Microsoft SQL Server environment monitored 24 hours a day, 7 days a week?" GUID="50587028-eca6-48fa-8af0-bef0652c53fc" />
+            </Object>
+            <Rule Name="fNoSQLMonitoring" Query="($.)='No'" Error="Error" Text="Do you monitor your Microsoft SQL Server environment?" GUID="4F8F035D-8698-4063-9EF2-2AE0AF38E2B2" />
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Service Level Management" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Do you have defined operating level agreements (OLAs) for the database service?" Class="Question" GroupingClass="True">
+            <Setting Key1="a88d2dfa-6ff1-46d8-933a-7d64175ee8f0" />
+            <Object Type="Operations" Name="Does your operating level agreement (OLA) include a database restore time?" Class="Question" GroupingClass="True">
+              <Setting Key1="7489718d-1ae1-4536-bde0-e230a80dc575" />
+              <Rule Name="fOLArestoreTime" Query="($.)='No'" Error="Warning" Text="Does your operating level agreement (OLA) include a database restore time?" GUID="c509e5b7-dbc8-4319-8091-c40919039f16" />
+            </Object>
+            <Object Type="Operations" Name="Do you have defined operating level agreements (OLAs) with the teams who own the services that support the database service?" Class="Question" GroupingClass="True">
+              <Setting Key1="2fa85fb8-85b5-4a1b-a71d-50b0eb891a30" />
+              <Rule Name="fNoOLAswithSupportingTeams" Query="($.)='No'" Error="Warning" Text="Do you have defined operating level agreements (OLAs) with the teams who own the services that support the database service?" GUID="c2d27447-597f-478e-ac55-a9affffbc5bc" />
+            </Object>
+            <Object Type="Operations" Name="Do you meet regularly as a team to review performance against OLAs and to define target action?" Class="Question" GroupingClass="True">
+              <Setting Key1="6609a173-4b08-46dc-b79a-29608cff8772" />
+              <Rule Name="fNoOLAReviews" Query="($.)='No'" Error="Warning" Text="Do you meet regularly as a team to review performance against OLAs and to define target action?" GUID="9459c7d5-b9e2-427b-8dd3-294002fe59e3" />
+            </Object>
+            <Rule Name="fNoOLAs" Query="($.)='No'" Error="Warning" Text="Do you have defined operating level agreements (OLAs) for the database service?" GUID="4f8541fe-5a13-4121-a848-1dc50127dda9" />
+          </Object>
+          <Object Type="Operations" Name="Do you have regularly scheduled times to perform maintenance?" Class="Question" GroupingClass="True">
+            <Setting Key1="ab0b59ea-6c64-4af2-a730-818f8e92a286" />
+            <Rule Name="fNoRegularMaintenanceTime" Query="($.)='No'" Error="Warning" Text="Do you have regularly scheduled times to perform maintenance?" GUID="9d856362-6fec-4e7d-8e7d-be141ec41f42" />
+          </Object>
+          <Object Type="Operations" Name="Do you regularly review with the business units the service level targets and your team's performance against those targets?" Class="Question" GroupingClass="True">
+            <Setting Key1="d7c39251-f9f1-4e36-b018-080c365eefd8" />
+            <Rule Name="fNoSLAReviews" Query="($.)='No'" Error="Warning" Text="Do you regularly review with the business units the service level targets and your team's performance against those targets?" GUID="327f6317-cc18-45e0-8b37-d3870dfcd8ca" />
+          </Object>
+          <Object Type="Operations" Name="Are you able to meet your service level agreements?" Class="Question" GroupingClass="True">
+            <Setting Key1="e1d1cf8f-9d55-47e0-ba95-1f54e2da4c19" />
+            <Rule Name="fDoesNotMeetSLAs" Query="($.)='No'" Error="Warning" Text="Are you able to meet your service level agreements?" GUID="6c9e8f8c-cb85-4335-915c-b29481046405" />
+          </Object>
+          <Object Type="Operations" Name="Do you measure application availability in your environment?" Class="Question" GroupingClass="True">
+            <Setting Key1="1b46f832-22f4-4a3d-aca4-85a4f95dbf8d" />
+            <Object Type="Operations" Name="Is the application availability measurement automated?" Class="Question" GroupingClass="True">
+              <Setting Key1="5fc05719-8ad6-4a38-a87c-66e1436fa7b0" />
+              <Rule Name="fAvailMeasureNotAutomated" Query="($.)='No'" Error="Warning" Text="Is the application availability measurement automated?" GUID="57e9571d-f25f-4c42-b103-b8481220dbc8" />
+            </Object>
+            <Rule Name="fNoMeasureAvailability" Query="($.)='No'" Error="Warning" Text="Do you measure application availability in your environment?" GUID="4c5e42e4-2db4-4b87-ba34-b9720ff058ba" />
+          </Object>
+          <Object Type="Operations" Name="Do you measure user, customer, and business unit satisfaction with the database service?" Class="Question" GroupingClass="True">
+            <Setting Key1="f51bd8d9-8c8a-401d-80ed-295f2a258c72" />
+            <Rule Name="fNoMeasureSatisfaction" Query="($.)='No'" Error="Warning" Text="Do you measure user, customer, and business unit satisfaction with the database service?" GUID="a70c22f6-0ad4-45f3-9782-f76f1d761081" />
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Security" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="How do you classify your data for security?" Class="Question" GroupingClass="True">
+            <Setting Key1="fe8b869a-1ff3-420e-add4-92d8e40b51f9" />
+            <Setting Key1="fca315f1-a63c-4bc4-97a8-15dd98e0c7f8" />
+            <Setting Key1="1a0eb22f-b3c6-41e8-859d-3190c5493a9a" />
+            <Setting Key1="0bf3fd08-2351-4de4-a1c8-3b04da169702" />
+            <Object Type="Operations" Name="What technologies does your organization use to protect the confidentiality and integrity of data at the store and in transit?" Class="Question" GroupingClass="True">
+              <Setting Key1="e9b1c43a-d493-469c-bcca-4e06f08a44c8" />
+              <Setting Key1="9151c23d-5f25-47cb-a05d-e7b74c4ec6b1" />
+              <Setting Key1="0d280731-30de-4fb1-8caa-826ec7b3507f" />
+              <Setting Key1="8eb93068-caea-4de6-bbbc-34906d03a721" />
+              <Setting Key1="50cc23db-af07-41db-9543-6ad6b581c20b" />
+              <Setting Key1="2ed633df-b7ba-4bf4-b4e6-50d7a25d4716" />
+              <Setting Key1="e6f3f1d7-c104-4666-a2c7-f2c37e3dbdb1" />
+              <Rule Name="fHBIDataNotSecured" Query="(..//Setting/Value[text()='g']) and ($fDummy)" Error="Error" Text="What technologies does your organization use to protect the confidentiality and integrity of data at the store and in transit?" GUID="acb46ca7-f219-4d9d-8fe1-a661d5be2152" />
+              <Rule Name="fSecureDataIncreaseComplexity" Query="not ($fHBIDataNotSecured) and ($fDummy)" Error="Error" Text="What technologies does your organization use to protect the confidentiality and integrity of data at the store and in transit?" GUID="6C2534FE-5AEA-47c9-A3A3-02AD3D7EF878" />
+            </Object>
+            <Rule Name="fDataNotClassifiedForSecurity" Query="..//Setting/Value[text()='4']" Error="Warning" Text="How do you classify your data for security?" GUID="aaddad4a-d5ef-4649-9432-83884bd95ed5" />
+            <Rule Name="fDummy" Query="..//Setting/Value[text()='1']" Error="None" Text="How do you classify your data for security?" GUID="aaddad4a-d5ef-4649-9432-83884bd95ed5" />
+          </Object>
+          <Object Type="Operations" Name="Do you enable only the network libraries that you absolutely require? (This is dependent on what the customer requires - named pipes, tcp/ip, etc.)" Class="Question" GroupingClass="True">
+            <Setting Key1="225d192e-8a54-4b64-8788-6e47321c5608" />
+            <Rule Name="fUnnecessaryLibraries" Query="($.)='No'" Error="Warning" Text="Do you enable only the network libraries that you absolutely require? (This is dependent on what the customer requires - named pipes, tcp/ip, etc.)" GUID="8a69b779-01e8-4901-b0d4-03c6a44ffdea" />
+          </Object>
+          <Object Type="Operations" Name="Do new designs or core changes to the SQL Server infrastructure go through a formal security review process (internal or external)?" Class="Question" GroupingClass="True">
+            <Setting Key1="f54a1634-26b3-4052-944a-191fb7a3e2fe" />
+            <Rule Name="fNoSecurityReview" Query="($.)='No'" Error="Warning" Text="Do new designs or core changes to the SQL Server infrastructure go through a formal security review process (internal or external)?" GUID="a2fa48c4-f652-4dd6-9754-f0d1481b0393" />
+          </Object>
+          <Object Type="Operations" Name="Do you perform security logging in the SQL Server environment?" Class="Question" GroupingClass="True">
+            <Setting Key1="26175d8e-63a1-4716-bc40-98162cb63520" />
+            <Rule Name="fNoSecuriyLogging" Query="($.)='No'" Error="Error" Text="Do you perform security logging in the SQL Server environment?" GUID="d7f31619-2e40-47f3-9881-772554b6ef94" />
+          </Object>          
+          <Object Type="Operations" Name="What technologies does your organization use to restrict or regulate access to user data?" Class="Question" GroupingClass="True">
+            <Setting Key1="eadefbdb-ce26-4f9c-b9c3-c0d1088edcc5" />
+            <Setting Key1="02a14b48-9f89-483b-bdc7-f35f8249c788" />
+            <Setting Key1="ef95491f-0848-4a56-a6a7-6bfcdfb20e89" />
+            <Setting Key1="dab58719-76c0-41a7-a513-7eb4922a048a" />
+            <Setting Key1="fee39d8c-d80d-42d4-ada0-caf250d5c617" />
+            <Setting Key1="c999f2ed-6516-4a27-ac0e-4f7c380acce5" />
+            <Rule Name="fInsufficientDataAccessRestrictions" Query="count(..//Setting/Value[text()='']) &gt; 4" Error="Warning" Text="What technologies does your organization use to restrict or regulate access to user data?" GUID="4f733347-da8f-4358-846d-bdec12667878" />
+          </Object>
+          <Object Type="Operations" Name="How often does an audit occur to verify that only appropriate users have access to databases?" Class="Question" GroupingClass="True">
+            <Setting Key1="be75a451-df5f-4f97-8ac3-93a789494058" />
+            <Setting Key1="bec47af8-702a-473e-9a38-1da367a45faf" />
+            <Setting Key1="2556f220-d79d-4fb2-9c85-07dd069137d7" />
+            <Setting Key1="44ff7803-4c50-4365-ba18-255aecee90c3" />
+            <Setting Key1="3f38b09c-d599-4e0a-9a68-23c9d5988506" />
+            <Rule Name="fInsufficientAccessAuditing" Query="(..//Setting/Value[text()='d']) or (..//Setting/Value[text()='e'])" Error="Warning" Text="How often does an audit occur to verify that only appropriate users have access to databases?" GUID="21d77e39-0182-497a-9f41-5dcde04188df" />
+          </Object>
+        </Object>
+      </Object>
+      <Object Type="Operations" Name="Environmental Dependencies (Environment)" Class="Section" GroupingClass="True">
+        <Object Type="Operations" Name="OS Configuration" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Do you have antivirus software installed on your SQL Server?" Class="Question" GroupingClass="True">
+            <Setting Key1="2e1b6002-ec9f-4079-8a54-73b0f798dbf6" />
+            <Object Type="Operations" Name="Do your antivirus file exclusions follow best practices?" Class="Question" GroupingClass="True">
+              <Setting Key1="ccbf8d5d-f552-4d5c-95ff-9874c295b8fb" />
+              <Rule Name="fAntivirusMisconfigured" Query="($.)='No'" Error="Error" Text="Do your antivirus file exclusions follow best practices?" GUID="94de3e7d-c4a6-4b87-967b-b8c1ab1d44c5" />
+            </Object>
+            <Rule Name="fNoAntivirusOnSQL" Query="($.)='No'" Error="Warning" Text="Do you have antivirus software installed on your SQL Server?" GUID="9581649f-1178-4812-ab65-7858e7c3a256" />
+          </Object>
+          <Object Type="Operations" Name="Are servers physically secure?" Class="Question" GroupingClass="True">
+            <Setting Key1="ff71c722-784c-4fe6-9373-d558530098a3" />
+            <Rule Name="fServersNotPhysicallySecure" Query="($.)='No'" Error="Error" Text="Are servers physically secure?" GUID="45b050de-2327-437c-926d-a91b4db23180" />
+          </Object>
+          <Object Type="Operations" Name="Is hyper-threading enabled on Windows 2000 server in the assessed environment?" Class="Question" GroupingClass="True">
+            <Setting Key1="1eed4458-025e-4391-87f5-52d88b8db743" />
+            <Setting Key1="4eec4226-7527-4e1b-a204-26d84308d989" />
+            <Setting Key1="a3f66955-1e3c-427e-a2b6-7da65a2a5631" />
+            <Rule Name="fHyperThreadingOnWinTwoK" Query="..//Setting/Value[text()='a']" Error="Warning" Text="Is hyper-threading enabled on Windows 2000 server in the assessed environment?" GUID="901b6fba-48e0-4479-b1ec-515196fc8622" />
+          </Object>
+        </Object>
+        <Object Type="Operations" Name="Protocols" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Do your servers in the network perimeter have all unnecessary protocols and ports disabled including SMB?" Class="Question" GroupingClass="True">
+            <Setting Key1="f029c967-d75c-4028-8ccb-3d4e942c3416" />
+            <Setting Key1="4333483d-8c96-4f01-a667-3749d82f1bc9" />
+            <Setting Key1="a72a27f6-56d4-401b-9081-77f1f8f74251" />
+            <Rule Name="fSMBNotDisabled" Query="..//Setting/Value[text()='b'] or ..//Setting/Value[text()='c']" Error="Warning" Text="Do your servers in the network perimeter have all unnecessary protocols and ports disabled including SMB?" GUID="6d9007ba-5c1f-4cf8-860d-9671926441f2" />
+          </Object>
+        </Object>
+      </Object>
+      <Object Type="Operations" Name="SQL Architecture" Class="Section" GroupingClass="True">
+        <Object Type="Operations" Name="TSQL Coding" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="For PFE Only: Check the boxes below if you would like to EXCLUDE these sections from the Key Findings report. Exclude these only if you plan to not run any tests corresponding to these sections and , therefore, do not want them in the report. If you later choose to run tests and issues are found, the sections will appear." Class="Question" GroupingClass="True">
+            <Setting Key1="20f75968-53e3-4027-9c6e-2fd5cebabde9" />
+            <Setting Key1="a57d3cc0-dc4a-4c0e-a434-0bed58352815" />
+            <Setting Key1="89339fdd-bf61-4f21-917d-cb700ade804c" />
+            <Setting Key1="fec3814d-4b3c-4ed2-845f-c6d387490379" />
+            <Setting Key1="4448555e-2922-418f-a873-dd7ae7f357cf" />
+            <Setting Key1="6729849c-abad-4d97-a148-0917c1e580ad" />
+            <Setting Key1="554d2b7f-69ee-45c7-871a-8730d76ce5a4" />
+            <Setting Key1="5ac4bcec-b82d-44ca-a434-d6f85f08bd7e" />
+            <Setting Key1="f932ff86-de57-4bc6-98a3-717be4b7385c" />
+            <Rule Name="CategoryNotAvailable_supressTSQLCursors" Query="..//Setting/Value[text()='a']" Error="Warning" Text="Do you process or plan to process Cursors data via T_SQL?" GUID="7dbf08d5-d7c8-4c4c-85f7-098db082aec0" />
+            <Rule Name="CategoryNotAvailable_supressTSQLExecution" Query="..//Setting/Value[text()='b']" Error="Warning" Text="Do you process or plan to process Execution via T_SQL?" GUID="836aba6c-0fe1-4cfd-954c-ec9792b853b1" />
+            <Rule Name="CategoryNotAvailable_supressTSQLHints" Query="..//Setting/Value[text()='c']" Error="Warning" Text="Do you process or plan to process Hints via T_SQL?" GUID="001f5efd-362f-4b38-b9d5-25581e25d919" />
+            <Rule Name="CategoryNotAvailable_supressTSQLLogicalExpressions" Query="..//Setting/Value[text()='d']" Error="Warning" Text="Do you process or plan to process Logical Expressions via T_SQL?" GUID="b14d9ba8-7240-429b-961e-1bba61e6b9f4" />
+            <Rule Name="CategoryNotAvailable_supressTSQLNamingConventions" Query="..//Setting/Value[text()='e']" Error="Warning" Text="Do you process or plan to process Naming Conventions via T_SQL?" GUID="ddbdb04e-ac7f-4ac7-b8ea-d3baa0eae185" />
+            <Rule Name="CategoryNotAvailable_supressTSQLNotLogic" Query="..//Setting/Value[text()='f']" Error="Warning" Text="Do you process or plan to process Logic via T_SQL?" GUID="1dd37b2d-e959-4226-9398-014e646716d7" />
+            <Rule Name="CategoryNotAvailable_supressTSQLXML" Query="..//Setting/Value[text()='g']" Error="Warning" Text="Do you process or plan to process XML data via T_SQL?" GUID="981e96c4-3ae6-4d41-9f79-03276fb8ff98" />
+            <Rule Name="CategoryNotAvailable_supressDatabaseDesign" Query="..//Setting/Value[text()='h']" Error="Warning" Text="Do you process or plan to process Database Design data via T_SQL?" GUID="2386af68-af8a-437a-a63b-2c2a3e7fdc3a" />
+          </Object>
+        </Object>
+      </Object>
+      <Object Type="Operations" Name="SQL Configuration" Class="Section" GroupingClass="True">
+        <Object Type="Operations" Name="Configuration Settings" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Is the customer using Startup Parameters?" Class="Question" GroupingClass="True">
+            <Setting Key1="e553e9be-85a8-4b36-9c72-e0012f15088d" />
+            <Rule Name="fStartupParametersUsed" Query="($.)='Yes'" Error="Warning" Text="Is the customer using Startup Parameters?" GUID="1ca13844-8e2a-4ace-b98e-2ea58e4c8cb2" />
+          </Object>
+        </Object>
+      </Object>
+      <Object Type="Operations" Name="High Availability" Class="Section" GroupingClass="True">
+        <Object Type="Operations" Name="Clustering" Class="Section" GroupingClass="True">
+          <Object Type="Operations" Name="Does the environment you are on site to assess utilize SQL Server Clustering?" Class="Question" GroupingClass="True">
+            <Setting Key1="068a05e0-ef31-4187-9021-cbc9bda8caf3" />
+            <Object Type="Operations" Name="Is there more than one Cluster IP Address used for the SQL Server Resource?" Class="Question" GroupingClass="True">
+              <Setting Key1="4c288e10-b4fc-4a16-9eea-ca75549cc1e7" />
+              <Rule Name="fMultipleIPAddressForSQLResource" Query="($.)='Yes'" Error="Warning" Text="Is there more than one Cluster IP Address used for the SQL Server Resource?" GUID="ab627906-a0fb-473e-a418-2f9f881582a9" />
+            </Object>
+            <Object Type="Operations" Name="Do your side-by-side SQL Server 2000/2005 clustered instances use the same service account?" Class="Question" GroupingClass="True">
+              <Setting Key1="9b7c236c-d4d6-4d14-a6b9-3ba91126c404" />
+              <Rule Name="fTwokTwokFiveUsingSameSvcAccount" Query="($.)='Yes'" Error="Warning" Text="Do your side-by-side SQL Server 2000/2005 clustered instances use the same service account?" GUID="a77cb0d4-8275-42fd-bed1-6feb588c75e1" />
+            </Object>
+            <Object Type="Operations" Name="Are there non-SQL Server resources that are dependent on the SQL Server resource?" Class="Question" GroupingClass="True">
+              <Setting Key1="e7b561e9-d4f3-4496-be3d-572538925b69" />
+              <Rule Name="fNonSQLServerResourceDependent" Query="($.)='Yes'" Error="Warning" Text="Are there non-SQL Server resources that are dependent on the SQL Server resource?" GUID="8e5fb7a0-71ad-4774-999e-fe7f669f8ad4" />
+            </Object>
+            <Rule Name="CategoryNotAvailable_fhasNoHighAvailabilityClusteringDeployed" Query="($.)='No'" Error="Warning" Text="Does the environment you are on site to assess utilize SQL Server Clustering?" GUID="1C48D21F-5599-4fca-A79A-70B62897B658" />
+          </Object>
+        </Object>
+      </Object>
+    </Object>
+  </Object>
+</ObjectCollector>

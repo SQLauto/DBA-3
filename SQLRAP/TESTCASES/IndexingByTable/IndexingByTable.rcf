@@ -1,0 +1,85 @@
+<TestCase Signature="82D1517DE1E4ADC4" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="30" ExecutionOrder="3">
+  <WorkItem
+    Name            =   "IndexingByTable"
+    Category        =   "Indexing"
+    DisplayName     =   "Indexing: Data Collection by Table"
+    Description     =   "This test case computes a count of indexes on each user table in the selected databases on the instance."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.IndexingByTable.IndexingByTableResultData, Microsoft.SqlRap.Client" />
+
+          <ScriptRule TargetLevel="database" IncludeSystemDatabases="false" >
+					
+<SqlScript FileName ="Testcases\IndexingByTable\SQL_indexes_by_table.sql" IssueFileRuleQuery = ""/>
+		</ScriptRule>
+	    </StateBag>
+    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="IndexingCount(Table).htm" WorkItem="IndexingCount(Table)" DisplayName="Indexing - Count (Table)" Description="Gather the indexes data for every table of user databases." Details="This test case computes a count of indexes on each user table in the selected databases on the instance."/>
+
+  <RuleSet>
+	    <!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	    <!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+			
+      <!--<Rule Type="Microsoft.SqlRap.Client.Core.XmlSqlDBProcessor, Microsoft.SqlRap.Client" Name="SQL_index_count_per_table"/>-->
+    <Rule Name="sql_index_no_clustered" Type="Microsoft.SqlRap.Client.Core.IndexingRuleProcessor, Microsoft.SqlRap.Client">
+      <RuleArgument Name="RowName1" Value="ClusteredHeap" />
+      <RuleArgument Name="Field1" Value="ClusteredHeap" />
+      <RuleArgument Name="Value1" Value="Heap" />
+      <RuleArgument Name="Operation1" Value="Equals" />
+      <RuleArgument Name="Type1" Value="string" />
+      <RuleArgument Name="RowName2" Value="IndexCount" />
+      <RuleArgument Name="Field2" Value="IndexCount" />
+      <RuleArgument Name="Value2" Value="0" />
+      <RuleArgument Name="Operation2" Value="GreaterThan" />
+      <RuleArgument Name="Type2" Value="int" />
+      <RuleArgument Name="BitwiseOperation" Value="And" />
+    </Rule>
+    <Rule Name="SQL_index_more_indexes_than_columns" Type="Microsoft.SqlRap.Client.Core.IndexingRuleProcessor, Microsoft.SqlRap.Client">
+      <RuleArgument Name="RowName" Value="IndexCount" />
+      <RuleArgument Name="Field" Value="IndexCount" />
+      <RuleArgument Name="Value" Value="Custom:ColumnCount" />
+      <RuleArgument Name="Operation" Value="GreaterThan" />
+      <RuleArgument Name="Type" Value="int" />
+    </Rule>
+    <Rule Name="sql_index_tables_with_no_indexes" Type="Microsoft.SqlRap.Client.Core.IndexingRuleProcessor, Microsoft.SqlRap.Client">
+      <RuleArgument Name="RowName" Value="IndexCount" />
+      <RuleArgument Name="Field" Value="IndexCount" />
+      <RuleArgument Name="Value" Value="1" />
+      <RuleArgument Name="Operation" Value="lessthan" />
+      <RuleArgument Name="Type" Value="int" />
+    </Rule>
+  </RuleSet>
+  <ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+    <TableStates>
+		<TableState Name            ="IndexingCount(Table)" 
+			    SortColumn      ="_txtServerName" 
+			    SortDirection   ="ascending" 
+			    Title           ="Indexing - Count (Table)" 
+			    ShowFilter      ="true" 
+			    ShowTitle       ="true" 
+			    ShowToolstrip   ="true" 
+			    ShowTotalCount  ="true" 
+			    ShowSelectedCount="true" 
+			    UndoEdit         ="true">
+ 			<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName"  HeaderText = "Server Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName"  HeaderText = "Instance Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtDatabaseName"  DataPropertyName ="DatabaseName"  HeaderText = "Database Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtOwnerName"  DataPropertyName ="OwnerName"  HeaderText = "Owner/Schema Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtObjectName"  DataPropertyName ="ObjectName"  HeaderText = "Object Name"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtClusteredHeap"  DataPropertyName ="ClusteredHeap"  HeaderText = "Clustered or Heap"  Frozen = "false" Visible="true" /> 
+			<ColumnState Name="_txtIndexCount"  DataPropertyName ="IndexCount"  HeaderText = "Index Count"  Frozen = "false" Visible="true" ColumnType="int" /> 
+			<ColumnState Name="_txtColumnCount"  DataPropertyName ="ColumnCount"  HeaderText = "Column Count"  Frozen = "false" Visible="true" ColumnType="int" /> 
+			<ColumnState Name="_txtApproximateRows"  DataPropertyName ="ApproximateRows"  HeaderText = "Approximate Rows"  Frozen = "false" Visible="true" ColumnType="int" /> 
+    </TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>

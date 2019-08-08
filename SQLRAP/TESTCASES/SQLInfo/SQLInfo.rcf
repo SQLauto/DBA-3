@@ -1,0 +1,103 @@
+<TestCase Signature="124436B61EE2FE96" xmlns="http://www.microsoft.com/StaticWorkItem"  xmlns:help="http://www.microsoft.com/Rapid/HelpIndex" SortOrder="5" ExecutionOrder="2">
+  <!-- DataType is the type which is used to communicate between Collection and Analysis stage. 
+       Type is the type which does the work of collection of the data...
+  -->	
+  <WorkItem
+    Name            =   "SQLInfo"
+    Category        =   "Environment"
+    DisplayName     =   "SQL Info"
+    Description     =   "Returns summary information regarding the SQL Instance and databases."
+    Schema          =   ""
+    DataType        =   ""
+    Type            =   "Microsoft.SqlRap.Client.Core.InstanceCollatedWorkItem,  Microsoft.SqlRap.Client">
+
+	    <Configuration>
+	    </Configuration>
+
+	    <State>
+        <StateBag>
+          <ResultControl Type="Microsoft.SqlRap.Client.TestCases.SQLInfo.SQLInfoDispliayResultData, Microsoft.SqlRap.Client" />
+       
+		<ScriptRule TargetLevel="instance" IncludeSystemDatabases="false" >
+			<SqlScript FileName ="TestCases\SQLInfo\SQL_Info.sql" IssueFileRuleQuery = "SQL_Info"/>
+		</ScriptRule>
+        </StateBag>
+	    </State>
+  </WorkItem>
+
+  <help:HelpItem FileName="SQLInfo.htm" WorkItem="SQLInfo" DisplayName="SQLInfo" Description="Provides the comprehensive information around SQL Server instance and individual databases." Details="Returns summary information regarding the SQL Instance and databases."/>
+  
+  <RuleSet>
+	    <!--Name of the rule should match IPIssues.IpIssue.RuleQuery -->
+	    <!--Rule Type is the .net type to which the collected data will be handed over to for processing -->
+      <Rule Type="Microsoft.SqlRap.Client.TestCases.SQLInfo.Rules.dbCollation, Microsoft.SqlRap.Client" Name="dbCollation"/>
+      <Rule Type="Microsoft.SqlRap.Client.TestCases.SQLInfo.Rules.cDatabaseMirroring, Microsoft.SqlRap.Client" Name="cDatabaseMirroring"/>
+    <Rule Type="Microsoft.SqlRap.Client.TestCases.SQLInfo.Rules.pageVerifyNotChecksum2005, Microsoft.SqlRap.Client" Name="pageVerifyNotChecksum2005"/>
+  </RuleSet>
+<ResultsViewer Type="WpfGenericResultControl.ResultControl, WpfGenericResultControl">
+<TableStates>
+	<TableState Name            ="SQLInfoMain"
+			SortColumn      ="_txtInstanceName"
+			SortDirection   = "ascending"
+			Title           ="Sql Information"
+			ShowFilter      ="true"
+			ShowTitle       ="true"
+			ShowToolstrip   ="true"
+			ShowTotalCount  ="true"
+			ShowSelectedCount="true"
+			UndoEdit         ="true">
+		<ColumnState Name="_txtServerName"  DataPropertyName ="ServerName" HeaderText = "Server Name" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtInstanceName"  DataPropertyName ="InstanceName" HeaderText = "Instance Name" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtServicePack"  DataPropertyName ="ServicePack" HeaderText = "ServicePack" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtEdition"  DataPropertyName ="Edition" HeaderText = "Edition" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtBuildNumber"  DataPropertyName ="BuildNumber" HeaderText = "Build Number" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtNUMAConfig"  DataPropertyName ="NUMAConfig" HeaderText = "NUMA Configuration" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtSQLServerSvcAccount"  DataPropertyName ="SQLServerSvcAccount" HeaderText = "SQLServer Service Account" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtSQLServerAgentSvcAccount"  DataPropertyName ="SQLServerAgentSvcAccount" HeaderText = "SQLServer Agent Service Account" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtTotalBufferPoolSize"  DataPropertyName ="Memory_Manager_Total_Server_Memory__KB_" HeaderText = "Total Buffer Pool size" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtTargetServerMemory"  DataPropertyName ="Memory_Manager_Target_Server_Memory__KB_" HeaderText = "Target Server Memory" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtPageLifeExpectancy"  DataPropertyName ="Buffer_Manager_Page_life_expectancy" HeaderText = "Page Life Expectancy" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtStolenPages"  DataPropertyName ="Buffer_Manager_Stolen_pages" HeaderText = "Stolen Pages" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtDatabasePages"  DataPropertyName ="Buffer_Manager_Database_pages" HeaderText = "Data_Index_pages" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtLockMemory"  DataPropertyName ="Memory_Manager_Lock_Memory_KB_" HeaderText = "Lock Memory" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtSortMemory"  DataPropertyName ="Memory_Manager_Granted_Workspace_Memory__KB_" HeaderText = "Sort_Hash_Memory" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtOptimizerMemory"  DataPropertyName ="Memory_Manager_Optimizer_Memory__KB_" HeaderText = "Optimizer Memory" Frozen = "false" Visible="true" />
+	</TableState>
+	<TableState Name            ="SQLInfoDetail"
+			 SortColumn      ="_txtInstanceName"
+			 SortDirection   = "ascending"
+			 Title           ="Sql Information"
+			 ShowFilter      ="true"
+			 ShowTitle       ="true"
+			 ShowToolstrip   ="true"
+			 ShowTotalCount  ="true"
+			 ShowSelectedCount="true"
+			 UndoEdit         ="true">
+		<ColumnState Name="_txtDatabaseName"  DataPropertyName ="Database" HeaderText = "Database Name" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtDatabaseStatus"  DataPropertyName ="DatabaseStatus" HeaderText = "Database Status" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtRecoveryModel"  DataPropertyName ="RecoveryModel" HeaderText = "Recovery Model" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtAutoCreateStats"  DataPropertyName ="AutoCreateStats" HeaderText = "AutoCreateStats" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtAutoUpdateStats"  DataPropertyName ="AutoUpdateStats" HeaderText = "AutoUpdateStats" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtAutoUpdateStatsAsyncStatus"  DataPropertyName ="AutoUpdateStatsAsyncStatus" HeaderText = "AutoUpdateStatsAsyncStatus" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtPageVerifyOption"  DataPropertyName ="PageVerifyOption" HeaderText = "PageVerifyOption" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtAutoShrinkStatus"  DataPropertyName ="AutoShrinkStatus" HeaderText = "AutoShrinkStatus" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtAutoCloseStatus"  DataPropertyName ="AutoCloseStatus" HeaderText = "AutoCloseStatus" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtGuestUser"  DataPropertyName ="GuestUser" HeaderText = "Guest Users" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtDatabaseChaining"  DataPropertyName ="DatabaseChaining" HeaderText = "DatabaseChaining" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtCompatabilityLevel"  DataPropertyName ="CompatibilityLevel" HeaderText = "CompatibilityLevel" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtTrustWorthyBit"  DataPropertyName ="TrustworthyBit" HeaderText = "TrustworthyBit" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtForcedParameterization"  DataPropertyName ="ForcedParameterization" HeaderText = "ForcedParameterization" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txt_is_read_committed_snapshot_on"  DataPropertyName ="is_read_committed_snapshot_on" HeaderText = "is_read_committed_snapshot_on" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtPublisher"  DataPropertyName ="Publisher" HeaderText = "Publisher" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtSubscriber"  DataPropertyName ="Subscriber" HeaderText = "Subscriber" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtDistributor"  DataPropertyName ="Distributor" HeaderText = "Distributor" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtServiceBrokerEnabled"  DataPropertyName ="ServiceBrokerEnabled" HeaderText = "ServiceBrokerEnabled" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtlog_reuse_wait"  DataPropertyName ="log_reuse_wait" HeaderText = "log_reuse_wait" Frozen = "false" Visible="true" />
+		<ColumnState Name="_txtsnapshotIsolationLevel"  DataPropertyName ="snapshotIsolationLevel" HeaderText = "snapshotIsolationLevel" Frozen = "false" Visible="true" />
+	</TableState>
+	</TableStates>
+  </ResultsViewer>
+</TestCase>
+
+
+
