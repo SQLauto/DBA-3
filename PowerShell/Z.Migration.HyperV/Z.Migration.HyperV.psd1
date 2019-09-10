@@ -69,7 +69,8 @@ Copyright = '(c) 2019 Z. All rights reserved.'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @('Copy-ZDatabase', 'Move-ZDatabase')
+FunctionsToExport = @('Copy-ZDatabase', 'Move-ZDatabase', 'Test-Set-ZStorage-BlobContent', 'Set-ZStorage-BlobContent', 'Get-ZStorage-ContainerContent', 'Backup-ZDatabase-CopyOnly',
+                        'Archive-ZDatabase', 'Test-Archive-ZDatabase', 'Delete-ZStorage-Blob' , 'Rebuild-ZDatabase-Indexes')
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
