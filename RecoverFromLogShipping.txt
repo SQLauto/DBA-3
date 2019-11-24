@@ -1,0 +1,37 @@
+In general you should follow the following steps for effective logshipping swing.
+
+1. Ensure all scheduled backups have completed successfully
+
+2. STOP/DISABLE LOG SHIPPING BACKUP JOBS
+
+3. RUN (LOG SHIPPING) TRAN LOG COPY AND RESTORE JOBS ON Secondary until the last log is applied then DISABLE all copy & restore jobs.
+
+4. REMOVE THE LOG-SHIPPING FROM PRIMARY SERVER’S MAINTENANCE PLANS for the required Db's
+
+i. Go to maintenance jobs folder ON Primary
+
+ii. delete destination server information from inside the maintenance job for each DB.
+
+iii. remove logshipping & delete maintenance job
+
+5. Kill all users IN Required database on primary server
+
+6. BACKUP LAST TRAN LOG On Primary Server and place them is easy accessible folder Eg.(\\Primary Server Name\C$\MSSQL\Backup\FTRN)
+
+eg. BACKUP LOG Check21DB TO DISK = 'C:\MSSQL\BACKUP\FTRN\' WITH norecovery
+
+7. COPY LAST LOGS TO Secondary Server to say ‘FTRN’ folder (\\Secondary Server \C$\MSSQL\Backup\FTRN)
+
+E.g
+
+xp_cmdshell 'copy \\PriamryServer \C$\MSSQL\BACKUP\FTRN\*.trn \\SecondaryServer\C$\MSSQL\Backup\FTRN'
+
+8. RESTORE the above LAST LOGs for each database ON Secondary with recovery
+
+RESTORE LOG DBNAME
+
+FROM DISK = '\\SecondaryServer\C$\MSSQL\Backup\FTRN\xxx.trn'
+
+WITH RECOVERY
+
+and once all the logs have been applied you can make setup Log shipping on Secondary.[/font][/font]
