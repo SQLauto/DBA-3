@@ -1,22 +1,11 @@
-use adventureworks;
+Select *
+From sys.dm_db_index_physical_stats(db_id(),object_id('Z_CS_WC_IND_COST_TRAN'),null,null,'detailed') AS SDDIPS
+Inner join sys.sysindexes AS SI on SDDIPS.[object_id] = SI.id 
+AND SDDIPS.index_id = SI.indid
 
-select index_id, avg_fragmentation_in_percent, avg_page_space_used_in_percent
-from sys.dm_db_index_physical_stats (DB_ID('AdventureWorks'),
-                                     object_id('HumanResources.Employee'),
-                                     null, null, 'detailed')
-where index_id <> 0; -- no heap analysis performed
 
-alter index all on HumanResources.Employee
- rebuild with (fillfactor = 90, online = on);
+Select *
+From sys.dm_db_index_physical_stats(db_id(),object_id('Z_CS_WC_IND_WAL_COST_TRAN'),null,null,'detailed') AS SDDIPS
+Inner join sys.sysindexes AS SI on SDDIPS.[object_id] = SI.id 
+AND SDDIPS.index_id = SI.indid
 
-select index_id, avg_fragmentation_in_percent, avg_page_space_used_in_percent
-from sys.dm_db_index_physical_stats (DB_ID('AdventureWorks'),
-                                     object_id('HumanResources.Employee'),
-                                     null, null, 'detailed')
-where index_id <> 0; -- no heap analysis performed
-
-alter index all on HumanResources.Employee
-reorganize;
-
--- 60 < page_space < 75 OR 10 < fragmentation < 15 - REORGANIZE
--- page_space < 60 OR fragmentation > 15 - REBUILD

@@ -8,11 +8,11 @@ INSERT #x EXEC sp_readerrorlog 1, 1, N'Restore', N'MB/sec';
 --...
 
 CREATE TABLE #y(LogDate DATETIME, p SYSNAME, [Text] NVARCHAR(MAX));
-INSERT #y EXEC sp_readerrorlog 1, 1, N'is marked RESTORING', N'IFCSNZDATAPRD';
+INSERT #y EXEC sp_readerrorlog 1, 1, N'is marked RESTORING', N'PC';
 -- again repeat for 1, 2, 3, 4, 5, 6 like above
 
 CREATE TABLE #z(LogDate DATETIME, p SYSNAME, [Text] NVARCHAR(MAX));
-INSERT #z EXEC sp_readerrorlog 1, 1, N'Restore is complete',  N'IFCSNZDATAPRD';
+INSERT #z EXEC sp_readerrorlog 1, 1, N'Restore is complete',  N'PC';
 -- one more time, you may need to repeat if you want more history
 
 SELECT LogDate, [Text]

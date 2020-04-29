@@ -50,42 +50,8 @@ FROM   msdb.dbo.backupmediafamily
         -------------------------------------------------------------------------------*/
 WHERE  1 = 1
 
-       /* ----------------------------------------------------------------------------
-       WHERE statement to find Device Backups with '{' and date n days back
-       ------------------------------------------------------------------------------- */
-       -- AND     physical_device_name LIKE '{%'
-
-       /* -------------------------------------------------------------------------------
-       WHERE statement to find Backups saved in standard directories, msdb.dbo.backupfile AS b 
-       ---------------------------------------------------------------------------------- */
-       -- AND     physical_device_name  LIKE '[fF]:%'                          -- STANDARD F: Backup Directory
-       -- AND     physical_device_name  NOT LIKE '[nN]:%'                      -- STANDARD N: Backup Directory
-
-       -- AND     physical_device_name  NOT LIKE '{%'                          -- Outstanding Analysis
-       -- AND     physical_device_name  NOT LIKE '%$\Sharepoint$\%' ESCAPE '$' -- Sharepoint Backs up to Share
-       -- AND     backupset_name NOT LIKE '%Galaxy%'                           -- CommVault Sympana Backup
-
-
-       /* -------------------------------------------------------------------------------
-       WHERE Statement to find backup information for a certain period of time, msdb.dbo.backupset AS b 
-       ---------------------------------------------------------------------------------- 
-       AND    (CONVERT(datetime, msdb.dbo.backupset.backup_start_date, 102) >= GETDATE() - 7)  -- 7 days old or younger
-       AND    (CONVERT(datetime, msdb.dbo.backupset.backup_start_date, 102) <= GETDATE())  -- n days old or older
-
-       */
-
-       /* -------------------------------------------------------------------------------
-       WHERE Statement to find backup information for (a) given database(s) 
-       ---------------------------------------------------------------------------------- */
-       AND database_name IN ('ZIntegrationControl') -- database names
-       -- AND     database_name IN ('rtc')  -- database names
-
-        /* -------------------------------------------------------------------------------
-        ORDER Clause for other statements
-        ---------------------------------------------------------------------------------- */
-        --ORDER BY        msdb.dbo.backupset.database_name, msdb.dbo.backupset.backup_finish_date -- order clause
-
-        ---WHERE msdb..backupset.type = 'I' OR  msdb..backupset.type = 'D'
+	    AND database_name = 'PC'
+        AND msdb..backupset.type = 'I' 
 ORDER BY
        --2,
 
